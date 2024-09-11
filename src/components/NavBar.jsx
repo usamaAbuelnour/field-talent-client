@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { Home, PlusCircle, LogIn, Menu, X, ChevronDown ,Sun  } from 'lucide-react';
-// بعد ما اخلص لوجيك 
+// بعد ما اخلص لوجيك
 // import { Home, PlusCircle, User, LogIn, LogOut, Menu, X,Sun, ChevronDown } from 'lucide-react';
 import NavLink from './NavLink';
 export default function NavBar({isUserLoggedIn,handleLoginOut}) {
@@ -10,37 +10,37 @@ export default function NavBar({isUserLoggedIn,handleLoginOut}) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   console.log('is drop',isUserLoggedIn)
-
-
+ 
+ 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
-    window.addEventListener('scroll', handleScroll); 
-
+    window.addEventListener('scroll', handleScroll);
+ 
     ///qution1 to eng yaasser
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);   
-
+  }, []);  
+ 
   ////////////
   // useEffect(() => {
   //   const handleScroll = () => {
   //     setIsScrolled(window.scrollY > 10);
   //   };
-  //   window.addEventListener('scroll', handleScroll); 
-
+  //   window.addEventListener('scroll', handleScroll);
+ 
   //   ///qution1 to eng yaasser
   //   return () => window.removeEventListener('scroll', handleScroll);
   // }, [isScrolled]);  
   // console.log(isScrolled)
   ////////////
-
-
+ 
+ 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50  transition-all duration-300 ease-in-out
       ${isScrolled ? 'bg-white shadow-md' : 'bg-transparent'}`}>
-
-
+ 
+ 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -49,11 +49,11 @@ export default function NavBar({isUserLoggedIn,handleLoginOut}) {
               <NavLink to="/addpost" icon={PlusCircle} label="Add Job" />
             </div>
           </div>
-          
+         
           <div className="flex items-center">
             {isUserLoggedIn ? (
               <div  className="relative hidden md:inline">
-                <button 
+                <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className={`flex items-center focus:outline-none transition-colors duration-300
                     ${isScrolled ? 'text-dark hover:text-main' : 'text-white hover:text-s-light'}`}
@@ -77,8 +77,8 @@ export default function NavBar({isUserLoggedIn,handleLoginOut}) {
                 )}
               </div>
             ) : (
-              <Link 
-                to="/login" 
+              <Link
+                to="/login"
                 className="flex items-center gap-2 bg-main text-white px-4 py-2 rounded-md hover:bg-main-600 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md"
               >
                 <LogIn size={20} />
@@ -86,13 +86,13 @@ export default function NavBar({isUserLoggedIn,handleLoginOut}) {
               </Link>
             )}
           </div>
-          
+         
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className={`inline-flex items-center justify-center p-2 rounded-md transition-colors duration-300
-                ${isScrolled 
-                  ? 'text-dark hover:text-main hover:bg-s-light' 
+                ${isScrolled
+                  ? 'text-dark hover:text-main hover:bg-s-light'
                   : 'text-main hover:text-dark hover:bg-white hover:bg-opacity-20'
                 } focus:outline-none focus:ring-2 focus:ring-inset focus:ring-main`}
             >
@@ -101,12 +101,12 @@ export default function NavBar({isUserLoggedIn,handleLoginOut}) {
           </div>
         </div>
       </div>
-
+ 
       {/* Mobile menu */}
-
-
-
-
+ 
+ 
+ 
+ 
       <div className={`md:hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-screen' : 'max-h-0'} overflow-hidden`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-inner">
           <NavLink to="/" icon={Home} label="Home" isfrommob={true}/>

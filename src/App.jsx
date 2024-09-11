@@ -6,6 +6,8 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Registration from './pages/Registration';
 import NotFound from './pages/NotFound'
+import ShowJobs from './pages/ShowJobs'; 
+
 
 
 import './App.css'
@@ -51,6 +53,7 @@ function App() {
           <Route index element={<Home  isUserLoggedIn={user.isUserLoggedIn} />} />
           <Route path="login" element={<Login handleLogin={handleLogin}  isUserLoggedIn={user.isUserLoggedIn}  />} />
           <Route path="registration" element={<Registration/>} />
+          <Route path="showjobs" element={<ShowJobs />} />
           <Route path="*" element={<NotFound />} />
        
       </Routes>
