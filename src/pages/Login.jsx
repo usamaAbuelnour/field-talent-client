@@ -1,11 +1,17 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
-import Button from "../components/Button";
 
-// import { TokenContext } from "../component/TokenContext"; 
+
+import { useNavigate } from "react-router-dom";
+import Button from "../components/Button";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+
+
 
 const schema = yup.object({
   email: yup
@@ -19,18 +25,30 @@ const schema = yup.object({
     .required("Password is required"),
 }).required();
 
-export default function Login() {
+export default function Login({handleLogin ,isUserLoggedIn}) {
+  const navigate = useNavigate();
+
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 
-//   const { setToken } = useContext(TokenContext);
+
+  useEffect(() => {
+    if (isUserLoggedIn) {
+      navigate('/', { replace: true });
+    }
+  }, [isUserLoggedIn, navigate]);
+     
+
 
   const onSubmit = async (data) => {
     try {
       const response = await axios.post("https://auto-gear.vercel.app/login", data);
-    //   setToken(response.data.token); 
-      console.log("Login successful:", response.data);
+      
+
+    console.log(response.data.token,response.data.name,response.data.email)
+    {handleLogin (response.data.token,response.data.name,response.data.email)}
+      console.log("Login successful:", {...response.data});
     } catch (error) {
       console.error("Login failed:", error);
     }
