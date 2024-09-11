@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 const Button = ({ 
   to, 
   text, 
+  type, 
   variant = 'fill', 
   size = 'md', 
   disabled = false, 
@@ -16,7 +17,7 @@ const Button = ({
     lg: 'btn-lg'
   };
   const variantClasses = {
-    fill: 'bg-main hover:bg-main-600 text-white',
+    fill: 'bg-main text-white  hover:bg-main-600 hover:text-dark',
     outline: 'btn-outline border-main text-main hover:bg-main hover:text-white'
   };
 
@@ -27,6 +28,18 @@ const Button = ({
     ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
     ${className}
   `.trim();
+
+  if (type) {
+    return (
+      <button
+        type={type}
+        className={buttonClasses}
+        disabled={disabled}
+      >
+        {text}
+      </button>
+    );
+  }
 
   return (
     <Link

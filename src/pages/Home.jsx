@@ -14,7 +14,7 @@ function Home() {
           </p>
           <div className="card-actions justify-center md:justify-start">
             <Button 
-              to="/" 
+              to="/login" 
               text="Learn More" 
               variant="fill" 
               size="lg" 

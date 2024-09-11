@@ -41,14 +41,14 @@ export default function Registraion() {
   };
 
   return (
-    <div className="hero min-h-fit container py-14">
+    <div className="hero min-h-fit min-w-fit container py-14">
       <div className="hero-content min-w-full flex-row-reverse">
-        <div className="w-full mx-5 text-center relative">
+        <div className="hidden md:block md:w-full mx-5 text-center relative">
           <img src="Registraion.svg" alt="Register illustration" className="mb-0" />
         </div>
         <div className="card w-full bg-s-light shadow-2xl">
           <form className="card-body space-y-4" onSubmit={handleSubmit(onSubmit)}>
-            <h1 className="text-center text-xl lg:text-5xl font-bold">Register Now</h1>
+            <h1 className="text-center text-3xl md:text-5xl font-bold">Register Now</h1>
 
             <div className="form-control">
               <label htmlFor="firstName" className="label">

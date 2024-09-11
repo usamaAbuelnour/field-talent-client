@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
+import Button from "../components/Button";
+
 // import { TokenContext } from "../component/TokenContext"; 
 import { Link } from "react-router-dom";
 
@@ -35,14 +37,14 @@ export default function Login() {
   };
 
   return (
-    <div className="hero min-h-fit container py-14">
+    <div className="hero min-h-fit text-lg container py-14">
       <div className="hero-content min-w-full flex-row-reverse">
-        <div className="w-full mx-5 text-center relative">
+        <div className="hidden md:block md:w-full mx-5 text-center relative">
           <img src="login.svg" alt="Login illustration" className="mb-0" />
         </div>
         <div className="card w-full bg-s-light shadow-2xl">
           <form className="card-body space-y-4" onSubmit={handleSubmit(onSubmit)}>
-            <h1 className="text-center text-xl lg:text-5xl font-bold">Login Now</h1>
+            <h1 className="text-center text-4xl  md:text-5xl  font-bold">Login Now</h1>
 
             <div className="form-control">
               <label htmlFor="email" className="label">
@@ -77,14 +79,10 @@ export default function Login() {
               {errors.password && (
                 <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
               )}
-              <Link to="/registraion" aria-label="Create a new account">
-                Create new account?
-              </Link>
+              
             </div>
             <div className="form-control mt-6">
-              <button type="submit" className="btn bg-main w-full hover:text-dark hover:font-bold">
-                Login
-              </button>
+              <Button type="submit" text="login"/>
             </div>
             <p className="text-center text-sm mt-4">
               Create new account? <Link to="/registration" className="text-blue-600">Register here</Link>
