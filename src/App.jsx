@@ -4,6 +4,8 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Registration from './pages/Registration';
 import NotFound from './pages/NotFound'
+import ShowJobs from './pages/ShowJobs'; 
+
 
 
 import './App.css'
@@ -18,6 +20,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
           <Route path="registration" element={<Registration/>} />
+          <Route path="show-jobs" element={<ShowJobs />} />
           <Route path="*" element={<NotFound />} />
        
       </Routes>

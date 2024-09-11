@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import { Home, PlusCircle, LogIn, Menu, X, ChevronDown ,Sun  } from 'lucide-react';
+import { Home, PlusCircle, LogIn, Menu, X, ChevronDown ,Sun ,List } from 'lucide-react';
 // بعد ما اخلص لوجيك 
 // import { Home, PlusCircle, User, LogIn, LogOut, Menu, X, ChevronDown } from 'lucide-react';
 import NavLink from './NavLink';
@@ -50,6 +50,7 @@ export default function NavBar() {
             <NavLink to="/" icon={Sun} label="Field Talent"  is/>
             <div className="hidden md:ml-6 md:flex md:space-x-4">
               <NavLink to="/addpost" icon={PlusCircle} label="Add Job" />
+              <NavLink to="/show-jobs" icon={List} label="Show Jobs" />
             </div>
           </div>
           
@@ -114,8 +115,8 @@ export default function NavBar() {
       <div className={`md:hidden transition-all duration-300 ease-in-out ${isMenuOpen ? 'max-h-screen' : 'max-h-0'} overflow-hidden`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-inner">
           <NavLink to="/" icon={Home} label="Home" isfrommob={true}/>
-          <NavLink to="/addpost" icon={PlusCircle} isfrommob={true} label="Add Job" />
-        </div>
+          <NavLink to="/show-jobs" icon={List} isfrommob={true} label="Show Jobs" />
+          </div>
         {isUserLoggedIn && (
           <div className="pt-4 pb-3 border-t border-s-light bg-white">
             <div className="flex items-center px-5">

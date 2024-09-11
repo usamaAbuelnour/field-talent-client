@@ -1,0 +1,66 @@
+[
+    {
+      "title": "Villa - Plastering Works",
+      "description": "Specialist in applying plaster and finishing to walls and ceilings in villas. Includes improving surface quality and preparing it for painting or final finishes.",
+      "category": "Finishing Works",
+      "service": "Plastering",
+      "location": "Cairo, Egypt"
+    },
+    {
+      "title": "Ground Floor - Concrete Works",
+      "description": "Specialist in concrete work for ground floors. Includes overseeing concrete pouring and applying appropriate design techniques.",
+      "category": "Concrete Works",
+      "service": "Ground Floor Concrete",
+      "location": "Cairo, Egypt"
+    },
+    {
+      "title": "Apartment - Plumbing Works",
+      "description": "Expert in installing and maintaining plumbing systems in apartments. Includes working on pipe installations, water connections, and sewage systems.",
+      "category": "Finishing Works",
+      "service": "Plumbing",
+      "location": "Giza, Egypt"
+    },
+    {
+      "title": "Repeated Floors - Concrete Works",
+      "description": "Responsible for concrete work on repeated floors. Includes designing and executing concrete layers for multiple floors according to engineering specifications.",
+      "category": "Concrete Works",
+      "service": "Repeated Floor Concrete",
+      "location": "Giza, Egypt"
+    },
+    {
+      "title": "House - Masonry Works",
+      "description": "Expert in working with bricks, stones, and blocks in houses. Includes building walls, arches, and other masonry structures using various materials.",
+      "category": "Finishing Works",
+      "service": "Masonry",
+      "location": "Alexandria, Egypt"
+    },
+    {
+      "title": "Tank - Concrete Works",
+      "description": "Specialist in designing and executing concrete for tanks. Includes ensuring tanks are resistant to leakage and wear using specialized concrete techniques.",
+      "category": "Concrete Works",
+      "service": "Tank Concrete",
+      "location": "Alexandria, Egypt"
+    },
+    {
+      "title": "Property Sale Consultant",
+      "description": "Provides consulting for clients looking to sell properties. Includes offering advice on property valuation and sales procedures.",
+      "category": "Consulting",
+      "service": "Sale Consulting",
+      "location": "Cairo, Egypt"
+    },
+    {
+      "title": "Property Purchase Consultant",
+      "description": "Offers consulting for potential buyers. Includes assisting clients in finding suitable properties and providing advice on purchase processes.",
+      "category": "Consulting",
+      "service": "Purchase Consulting",
+      "location": "Giza, Egypt"
+    },
+    {
+      "title": "Construction and Renovation Consultant",
+      "description": "Provides consulting for construction and renovation projects. Includes offering recommendations on design, project planning, and construction management.",
+      "category": "Consulting",
+      "service": "Construction and Renovation Consulting",
+      "location": "Alexandria, Egypt"
+    }
+  ]
+  
