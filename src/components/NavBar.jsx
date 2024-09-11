@@ -3,15 +3,13 @@ import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { Home, PlusCircle, LogIn, Menu, X, ChevronDown ,Sun  } from 'lucide-react';
 // بعد ما اخلص لوجيك 
-// import { Home, PlusCircle, User, LogIn, LogOut, Menu, X, ChevronDown } from 'lucide-react';
+// import { Home, PlusCircle, User, LogIn, LogOut, Menu, X,Sun, ChevronDown } from 'lucide-react';
 import NavLink from './NavLink';
-export default function NavBar() {
+export default function NavBar({isUserLoggedIn,handleLoginOut}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  // const location = useLocation();
-  const isUserLoggedIn = true;
-  console.log('is drop',isDropdownOpen)
+  console.log('is drop',isUserLoggedIn)
 
 
   useEffect(() => {
@@ -22,8 +20,7 @@ export default function NavBar() {
 
     ///qution1 to eng yaasser
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);    console.log(isScrolled)
-     
+  }, []);   
 
   ////////////
   // useEffect(() => {
@@ -47,7 +44,7 @@ export default function NavBar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <NavLink to="/" icon={Sun} label="Field Talent"  is/>
+            <NavLink to="/" icon={Sun} label="Field Talent"  isfrommob={true}/>
             <div className="hidden md:ml-6 md:flex md:space-x-4">
               <NavLink to="/addpost" icon={PlusCircle} label="Add Job" />
             </div>
@@ -74,8 +71,7 @@ export default function NavBar() {
                        style={{ animation: 'fadeIn 0.2s ease-out forwards' }}>
                     <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
                       <Link to="/profile" className="block px-4 py-2 text-sm text-dark hover:bg-s-light transition-colors duration-150" role="menuitem">Profile</Link>
-                      <Link to="/settings" className="block px-4 py-2 text-sm text-dark hover:bg-s-light transition-colors duration-150" role="menuitem">Settings</Link>
-                      <button className="block w-full text-left px-4 py-2 text-sm text-dark hover:bg-s-light transition-colors duration-150" role="menuitem">Sign out</button>
+                      <button className="block w-full text-left px-4 py-2 text-sm text-dark hover:bg-s-light transition-colors duration-150" role="menuitem"onClick={handleLoginOut}>logout</button>
                     </div>
                   </div>
                 )}
@@ -129,7 +125,7 @@ export default function NavBar() {
             </div>
             <div className="mt-3 px-2 space-y-1">
               <Link to="/profile" className="block px-3 py-2 rounded-md text-base font-medium text-dark hover:bg-s-light transition-colors duration-150">Profile</Link>
-              <button className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-dark hover:bg-s-light transition-colors duration-150">Sign out</button>
+              <button className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-dark hover:bg-s-light transition-colors duration-150" onClick={handleLoginOut}>logout</button>
             </div>
           </div>
         )}
