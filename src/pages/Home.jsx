@@ -1,4 +1,4 @@
-import Button from '../components/Button'; // Assuming the Button component is in the same directory
+import Button from '../components/Button'; 
 
 function Home() {
   return (
