@@ -2,7 +2,7 @@ import Button from '../components/Button'; // Assuming the Button component is i
 
 function Home() {
   return (
-    <main className="container mx-auto my-12 px-6">
+    <main className="container mx-auto my-12 px-6 py-14 ">
       <div className="hero flex flex-col md:flex-row justify-between items-center mb-12">
         <div className="about text-center md:text-left p-6 md:p-14 flex flex-col justify-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-main">Field Talent</h1>

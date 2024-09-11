@@ -41,7 +41,7 @@ export default function Registraion() {
   };
 
   return (
-    <div className="hero min-h-fit container">
+    <div className="hero min-h-fit container py-14">
       <div className="hero-content min-w-full flex-row-reverse">
         <div className="w-full mx-5 text-center relative">
           <img src="Registraion.svg" alt="Register illustration" className="mb-0" />
