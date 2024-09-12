@@ -6,59 +6,61 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Registration from './pages/Registration';
 import NotFound from './pages/NotFound'
-import ShowJobs from './pages/ShowJobs'; 
+import ShowJobs from './pages/ShowJobs';
 import Footer from "./components/Footer";
 
 
 import './App.css'
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
 
 function App() {
-  const userScema={
-    name:"",
-    email:"",
-    token:"",
-    isUserLoggedIn:false,
+  const userSchema = {
+    name: "",
+    email: "",
+    token: "",
+    isUserLoggedIn: false,
   }
 
-  const [user, setUser] = useState(userScema
-);
+  const [user, setUser] = useState(() => {
+    const savedUser = sessionStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : userSchema;
+  });
 
-// <---------------------------------handeling---------------------->
+  useEffect(() => {
+    sessionStorage.setItem('user', JSON.stringify(user));
+  }, [user]);
 
- const handleLogin  =(token,name,email)=>{
-  let newUser={...user}
-  newUser.email=email
-  newUser.name=name
-  newUser.token=token
-  newUser.isUserLoggedIn=true
-  setUser(newUser)
- } 
- const handleLoginOut=()=>{
-  let defultUserScema={...userScema}
-  setUser(defultUserScema)
+  // <---------------------------------handling---------------------->
+  const handleLogin = (token, name, email) => {
+    const newUser = {
+      ...userSchema,
+      email: email,
+      name: name,
+      token: token,
+      isUserLoggedIn: true
+    }
+    setUser(newUser);
+  }
 
-
- }
-
-
-  console.log( "LOGIN",)
+  const handleLogout = () => {
+    setUser(userSchema);
+    sessionStorage.removeItem('user');
+  }
+  console.log (user)
 
   return (
     <>
       <BrowserRouter>
-      <NavBar  isUserLoggedIn={user.isUserLoggedIn} handleLoginOut={handleLoginOut}/>
-      <Routes >
-          <Route index element={<Home  isUserLoggedIn={user.isUserLoggedIn} />} />
-          <Route path="login" element={<Login handleLogin={handleLogin}  isUserLoggedIn={user.isUserLoggedIn}  />} />
-          <Route path="registration" element={<Registration/>} />
+        <NavBar  user={user} handleLogout={handleLogout} />
+        <Routes>
+          <Route index element={<Home isUserLoggedIn={user.isUserLoggedIn} />} />
+          <Route path="login" element={<Login handleLogin={handleLogin} isUserLoggedIn={user.isUserLoggedIn} />} />
+          <Route path="registration" element={<Registration handleLogin={handleLogin} isUserLoggedIn={user.isUserLoggedIn} />} />
           <Route path="showjobs" element={<ShowJobs />} />
           <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Footer/>
-    </BrowserRouter>
-
+        </Routes>
+        <Footer />
+      </BrowserRouter>
     </>
   )
 }

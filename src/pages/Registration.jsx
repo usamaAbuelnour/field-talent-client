@@ -1,8 +1,16 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-constant-condition */
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import axios from "axios";
+import { useEffect,useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+
+
+import Button from "../components/Button";
 
 const schema = yup.object({
   firstName: yup
@@ -22,7 +30,22 @@ const schema = yup.object({
     .required("Password is a required field"),
 }).required();
 
-export default function Registraion() {
+export default function Registraion({isUserLoggedIn,handleLogin}) {
+  const navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+
+  useEffect(() => {   
+
+    if (isUserLoggedIn) {
+      navigate('/', { replace: true });
+      console.log("isUserLoggedIn",isUserLoggedIn)
+
+    }
+  }, [isUserLoggedIn, navigate]);
+console.log("isUserLoggedIn",isUserLoggedIn)
+
   const {
     register,
     handleSubmit,
@@ -33,10 +56,20 @@ export default function Registraion() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post("https://auto-gear.vercel.app/register", data);
+      setIsLoading(true)
+      const response = await axios.post("https://field-talent.vercel.app/register", data);
+      console.log(data)
+      {handleLogin (response.data.token,response.data.name,response.data.email)}
+      navigate("/");
+      console.log("isUserLoggedIn",isUserLoggedIn)
+
+
       console.log("Registration successful:", response.data);
     } catch (error) {
       console.error("Registration failed:", error);
+    }finally{
+      setIsLoading(false)
+
     }
   };
 
@@ -123,9 +156,14 @@ export default function Registraion() {
             </div>
 
             <div className="form-control mt-6">
-              <button type="submit" className="btn bg-main w-full hover:text-dark hover:font-bold">
-                Register
-              </button>
+              
+              
+              <Button
+                type="submit"
+                variant="fill"
+                text={isLoading ? "Logging in..." : "Register"}
+              />
+            
             </div>
 
             <p className="text-center text-sm mt-4">

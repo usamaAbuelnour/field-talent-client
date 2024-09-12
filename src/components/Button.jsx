@@ -17,7 +17,7 @@ const Button = ({
     lg: 'btn-lg'
   };
   const variantClasses = {
-    fill: 'bg-main text-white  hover:bg-main-600 hover:text-dark',
+    fill: 'bg-main text-white  hover:bg-teal-700',
     outline: 'btn-outline border-main text-main hover:bg-main hover:text-white'
   };
 
@@ -25,7 +25,6 @@ const Button = ({
     ${baseClasses}
     ${sizeClasses[size]}
     ${variantClasses[variant]}
-    ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
     ${className}
   `.trim();
 
@@ -34,7 +33,6 @@ const Button = ({
       <button
         type={type}
         className={buttonClasses}
-        disabled={disabled}
       >
         {text}
       </button>
