@@ -1,28 +1,46 @@
-import { Link } from 'react-router-dom'; 
-
-const NotFound = () => {
+import Button from "../components/Button";
+function NotFound() {
   return (
-    <div className="flex flex-col lg:flex-row items-center justify-center min-h-screen bg-gray-100 py-14">
-      
-      <div className="text-center  lg:w-1/2 p-6">
-        <h1 className="text-6xl font-bold text-gray-800 ">404</h1>
-        <p className="mt-4 text-xl lg:text-3xl  lg:my-20 text-gray-600">Oops! Page not found.</p>
-        <p className="mt-2 text-gray-500  lg:text-2xl">The page you are looking for doesnt exist.</p>
-        <Link
-          to="/"
-          className="mt-6 inline-block px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600"
-        >
-          Go Home
-        </Link>
+    <div className="flex flex-col lg:flex-row items-center justify-center min-h-screen bg-gradient-to-r from-blue-100 to-purple-100 p-8">
+      <div className="text-center lg:text-left lg:w-1/2 lg:pr-12">
+        <h1 className="text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-main to-teal-200 ">
+          404
+        </h1>
+        <p className="mt-4 text-2xl lg:text-4xl font-bold text-gray-800">
+          Oops! You have gone off course
+        </p>
+        <p className="mt-4 text-xl text-gray-600 max-w-md mx-auto lg:mx-0">
+          The page you are looking for has drifted into space. Lets get you back
+          to familiar territory.
+        </p>
+        <div className="mt-8 space-y-4 lg:space-y-0 lg:space-x-4">
+          <Button
+            to="/"
+            text="Go Home"
+            variant="fill"
+            size="lg"
+            className="w-full lg:w-auto"/>
+          
+          <Button
+            to="/report"
+            text="Report Issue"
+            variant="outline"
+            size="lg"
+            className="w-full lg:w-auto"/>          
+        </div>
       </div>
-      <div className="flex-shrink-0 lg:w-1/2 p-6">
-        <img
-          src="Lost Tourist-big.png" 
-          alt="Page Not Found"
-          className="w-full h-auto rounded-lg shadow-lg"
-        />
+      <div className="lg:w-1/2 mt-12 lg:mt-0">
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full filter blur-3xl opacity-30 animate-pulse"></div>
+          <img
+            src="Astronaut-big.png"
+            alt="Lost in Space"
+            className="relative z-10 w-full max-w-lg mx-auto rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300"
+          />
+        </div>
       </div>
     </div>
   );
-};
-export default NotFound
+}
+
+export default NotFound;
