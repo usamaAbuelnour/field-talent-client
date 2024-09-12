@@ -7,7 +7,7 @@ import Login from './pages/Login';
 import Registration from './pages/Registration';
 import NotFound from './pages/NotFound'
 import ShowJobs from './pages/ShowJobs'; 
-
+import Footer from "./components/Footer";
 
 
 import './App.css'
@@ -55,8 +55,8 @@ function App() {
           <Route path="registration" element={<Registration/>} />
           <Route path="showjobs" element={<ShowJobs />} />
           <Route path="*" element={<NotFound />} />
-       
       </Routes>
+      <Footer/>
     </BrowserRouter>
 
     </>
