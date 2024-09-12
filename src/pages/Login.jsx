@@ -4,14 +4,10 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
-
-
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
-
-
+import { useEffect, useState } from "react";
 
 const schema = yup.object({
   email: yup
@@ -25,32 +21,40 @@ const schema = yup.object({
     .required("Password is required"),
 }).required();
 
-export default function Login({handleLogin ,isUserLoggedIn}) {
+export default function Login({ handleLogin, isUserLoggedIn }) {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(schema),
   });
 
-
   useEffect(() => {
     if (isUserLoggedIn) {
-      navigate('/', { replace: true });
+      console.log("isUserLoggedIn",isUserLoggedIn)
+
+      navigate("/", { replace: true });
     }
   }, [isUserLoggedIn, navigate]);
-     
-
+  console.log("isUserLoggedIn login",isUserLoggedIn)
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post("https://auto-gear.vercel.app/login", data);
-      
+      setIsLoading(true);
 
-    console.log(response.data.token,response.data.name,response.data.email)
-    {handleLogin (response.data.token,response.data.name,response.data.email)}
-      console.log("Login successful:", {...response.data});
+      const response = await axios.post("https://field-talent.vercel.app/login", data);
+
+      handleLogin(response.data.token, response.data.name, response.data.email);
+
+      navigate("/");
     } catch (error) {
       console.error("Login failed:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -62,7 +66,7 @@ export default function Login({handleLogin ,isUserLoggedIn}) {
         </div>
         <div className="card w-full bg-s-light shadow-2xl">
           <form className="card-body space-y-4" onSubmit={handleSubmit(onSubmit)}>
-            <h1 className="text-center text-4xl  md:text-5xl  font-bold">Login Now</h1>
+            <h1 className="text-center text-4xl md:text-5xl font-bold">Login Now</h1>
 
             <div className="form-control">
               <label htmlFor="email" className="label">
@@ -81,6 +85,7 @@ export default function Login({handleLogin ,isUserLoggedIn}) {
                 <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
               )}
             </div>
+
             <div className="form-control">
               <label htmlFor="password" className="label">
                 <span className="label-text">Password</span>
@@ -94,16 +99,23 @@ export default function Login({handleLogin ,isUserLoggedIn}) {
                   errors.password ? "border-red-500" : "border-gray-300"
                 }`}
               />
-              {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
-              )}
-              
+             
             </div>
+
+            
             <div className="form-control mt-6">
-              <Button type="submit" text="login"/>
+              <Button
+                type="submit"
+                variant="fill"
+                text={isLoading ? "Logging in..." : "Login"}
+              />
             </div>
+
             <p className="text-center text-sm mt-4">
-              Create new account? <Link to="/registration" className="text-blue-600">Register here</Link>
+              Create new account?{" "}
+              <Link to="/registration" className="text-blue-600">
+                Register here
+              </Link>
             </p>
           </form>
         </div>

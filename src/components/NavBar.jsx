@@ -1,15 +1,16 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import { Home, PlusCircle, LogIn, Menu, X, ChevronDown ,Sun  } from 'lucide-react';
-// بعد ما اخلص لوجيك
-// import { Home, PlusCircle, User, LogIn, LogOut, Menu, X,Sun, ChevronDown } from 'lucide-react';
+
+import { Home, PlusCircle, LogIn, LogOut, Menu, X,Sun, ChevronDown } from 'lucide-react';
 import NavLink from './NavLink';
-export default function NavBar({isUserLoggedIn,handleLoginOut}) {
+export default function NavBar({handleLogout,user}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  console.log('is drop',isUserLoggedIn)
+console.log(user)
+  const { isUserLoggedIn, name, email } = user;
+
  
  
   useEffect(() => {
@@ -63,7 +64,7 @@ export default function NavBar({isUserLoggedIn,handleLoginOut}) {
                     src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
                     alt="User avatar"
                   />
-                  <span className="ml-2 hidden md:inline text-main">mostapha</span>
+                  <span className="ml-2 hidden md:inline text-main">{name}</span>
                   <ChevronDown size={20} className="ml-1 " />
                 </button>
                 {isDropdownOpen && (
@@ -71,7 +72,7 @@ export default function NavBar({isUserLoggedIn,handleLoginOut}) {
                        style={{ animation: 'fadeIn 0.2s ease-out forwards' }}>
                     <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
                       <Link to="/profile" className="block px-4 py-2 text-sm text-dark hover:bg-s-light transition-colors duration-150" role="menuitem">Profile</Link>
-                      <button className="block w-full text-left px-4 py-2 text-sm text-dark hover:bg-s-light transition-colors duration-150" role="menuitem"onClick={handleLoginOut}>logout</button>
+                      <button className="block w-full text-left px-4 py-2 text-sm text-dark hover:bg-s-light transition-colors duration-150" role="menuitem"onClick={handleLogout}>logout</button>
                     </div>
                   </div>
                 )}
@@ -102,7 +103,6 @@ export default function NavBar({isUserLoggedIn,handleLoginOut}) {
         </div>
       </div>
  
-      {/* Mobile menu */}
  
  
  
@@ -119,13 +119,13 @@ export default function NavBar({isUserLoggedIn,handleLoginOut}) {
                 <img className="h-10 w-10 rounded-full border-2 border-main" src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" alt="User avatar" />
               </div>
               <div className="ml-3">
-                <div className="text-base font-medium text-dark">mostapha</div>
-                <div className="text-sm font-medium text-s-dark">mostaphayasser18@gmail.com</div>
+                <div className="text-base font-medium text-dark">{name}</div>
+                <div className="text-sm font-medium text-s-dark">{email}</div>
               </div>
             </div>
             <div className="mt-3 px-2 space-y-1">
               <Link to="/profile" className="block px-3 py-2 rounded-md text-base font-medium text-dark hover:bg-s-light transition-colors duration-150">Profile</Link>
-              <button className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-dark hover:bg-s-light transition-colors duration-150" onClick={handleLoginOut}>logout</button>
+              <button className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-dark hover:bg-s-light transition-colors duration-150" onClick={handleLogout}><LogOut size={20} />logout</button>
             </div>
           </div>
         )}
