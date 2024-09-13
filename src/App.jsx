@@ -56,7 +56,7 @@ function App() {
           <Route index element={<Home isUserLoggedIn={user.isUserLoggedIn} />} />
           <Route path="login" element={<Login handleLogin={handleLogin} isUserLoggedIn={user.isUserLoggedIn} />} />
           <Route path="registration" element={<Registration handleLogin={handleLogin} isUserLoggedIn={user.isUserLoggedIn} />} />
-          <Route path="showjobs" element={<ShowJobs />} />
+          <Route path="showjobs" element={<ShowJobs token={user.token} />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
