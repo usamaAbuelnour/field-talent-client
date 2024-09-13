@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FilterJobs from '../components/FilterJobs';
 import ShowJobCard from '../components/ShowJobCard';
