@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -147,7 +148,7 @@ const Addjob = ({ token }) => {
             </label>
           </>
         );
-      case 'Finnishing Work':
+      case 'Finishing Works':
         return (
           <>
             <label className="block">
@@ -261,7 +262,7 @@ const Addjob = ({ token }) => {
                 <option value="">Select Category</option>
                 <option value="Concrete Construction">Concrete Construction</option>
                 <option value="Consultation">Consultation</option>
-                <option value="Finnishing Work">Finnishing Work</option>
+                <option value="Finishing Works">Finishing Works</option>
               </select>
             </div>
 

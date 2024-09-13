@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
@@ -12,8 +12,9 @@ import { useEffect, useState } from "react";
 const schema = yup.object({
   email: yup
     .string()
-    .email("Enter a valid email")
-    .required("Email is required"),
+    .required("Email is required")
+    .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,"Enter vaild email")
+    ,
   password: yup
     .string()
     .min(8, "Password must be at least 8 characters")
@@ -24,6 +25,7 @@ const schema = yup.object({
 export default function Login({ handleLogin, isUserLoggedIn }) {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [dataError,setError]=useState("")
 
   const {
     register,
@@ -53,6 +55,9 @@ export default function Login({ handleLogin, isUserLoggedIn }) {
       navigate("/");
     } catch (error) {
       console.error("Login failed:", error);
+      console.log(error.response.data)
+
+      setError(error.response.data)
     } finally {
       setIsLoading(false);
     }
@@ -74,7 +79,7 @@ export default function Login({ handleLogin, isUserLoggedIn }) {
               </label>
               <input
                 id="email"
-                type="email"
+                // type="email"
                 placeholder="Enter your email"
                 {...register("email")}
                 className={`input input-bordered w-full ${
@@ -102,7 +107,9 @@ export default function Login({ handleLogin, isUserLoggedIn }) {
              
             </div>
 
-            
+            {dataError && (
+                <p className="mt-1 text-sm text-red-600 text-center">{dataError}</p>
+              )}
             <div className="form-control mt-6">
               <Button
                 type="submit"
@@ -110,6 +117,7 @@ export default function Login({ handleLogin, isUserLoggedIn }) {
                 text={isLoading ? "Logging in..." : "Login"}
               />
             </div>
+
 
             <p className="text-center text-sm mt-4">
               Create new account?{" "}
