@@ -1,50 +1,78 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Addjob = () => {
+const Addjob = ({ token }) => {
   const [formData, setFormData] = useState({
     title: '',
-    image: null,
     description: '',
-    address: '',
+    location: '',
     category: '',
-    terms: false,
-    selectedOptions: [] // To store selected checkboxes
+    service: [],
   });
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!token) {
+      navigate('/login');
+    }
+  }, [token, navigate]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value
-    });
-  };
-
-  const handleImageChange = (e) => {
-    setFormData({
-      ...formData,
-      image: e.target.files[0]
+      [name]: type === 'checkbox' ? checked : value,
     });
   };
 
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
-    if (checked) {
-      setFormData((prevState) => ({
-        ...prevState,
-        selectedOptions: [...prevState.selectedOptions, value]
-      }));
-    } else {
-      setFormData((prevState) => ({
-        ...prevState,
-        selectedOptions: prevState.selectedOptions.filter(option => option !== value)
-      }));
-    }
+    setFormData((prevState) => ({
+      ...prevState,
+      service: checked
+        ? [...prevState.service, value]
+        : prevState.service.filter((option) => option !== value),
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    // Submit logic here
+
+    if (!formData.title || !formData.description || !formData.location) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    const requestData = { ...formData };
+
+    fetch('https://field-talent.vercel.app/jobs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then((response) => {
+        setIsSubmitting(false);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log('Job added successfully:', data);
+        navigate('/showjobs');
+      })
+      .catch((error) => {
+        setIsSubmitting(false);
+        console.error('Error adding job:', error);
+        alert('Failed to submit the job. Please try again.');
+      });
   };
 
   const renderCheckboxes = () => {
@@ -55,20 +83,32 @@ const Addjob = () => {
             <label className="block">
               <input
                 type="checkbox"
-                value="Option 1 for Concrete Construction"
+                value="Concrete1"
+                checked={formData.service.includes('Concrete1')}
                 onChange={handleCheckboxChange}
                 className="mr-2"
               />
-              Option 1 for Concrete Construction
+              Concrete1
             </label>
             <label className="block">
               <input
                 type="checkbox"
-                value="Option 2 for Concrete Construction"
+                value="Concrete2"
+                checked={formData.service.includes('Concrete2')}
                 onChange={handleCheckboxChange}
                 className="mr-2"
               />
-              Option 2 for Concrete Construction
+              Concrete2
+            </label>
+            <label className="block">
+              <input
+                type="checkbox"
+                value="Concrete3"
+                checked={formData.service.includes('Concrete3')}
+                onChange={handleCheckboxChange}
+                className="mr-2"
+              />
+              Concrete3
             </label>
           </>
         );
@@ -78,20 +118,32 @@ const Addjob = () => {
             <label className="block">
               <input
                 type="checkbox"
-                value="Option 1 for Consultation"
+                value="Consultation1"
+                checked={formData.service.includes('Consultation1')}
                 onChange={handleCheckboxChange}
                 className="mr-2"
               />
-              Option 1 for Consultation
+              Consultation1
             </label>
             <label className="block">
               <input
                 type="checkbox"
-                value="Option 2 for Consultation"
+                value="Consultation2"
+                checked={formData.service.includes('Consultation2')}
                 onChange={handleCheckboxChange}
                 className="mr-2"
               />
-              Option 2 for Consultation
+              Consultation2
+            </label>
+            <label className="block">
+              <input
+                type="checkbox"
+                value="Consultation3"
+                checked={formData.service.includes('Consultation3')}
+                onChange={handleCheckboxChange}
+                className="mr-2"
+              />
+              Consultation3
             </label>
           </>
         );
@@ -101,30 +153,41 @@ const Addjob = () => {
             <label className="block">
               <input
                 type="checkbox"
-                value="Option 1 for Finnishing Work"
+                value="Finishing1"
+                checked={formData.service.includes('Finishing1')}
                 onChange={handleCheckboxChange}
                 className="mr-2"
               />
-              Option 1 for Finnishing Work
+              Finishing1
             </label>
             <label className="block">
               <input
                 type="checkbox"
-                value="Option 2 for Finnishing Work"
+                value="Finishing2"
+                checked={formData.service.includes('Finishing2')}
                 onChange={handleCheckboxChange}
                 className="mr-2"
               />
-              Option 2 for Finnishing Work
+              Finishing2
+            </label>
+            <label className="block">
+              <input
+                type="checkbox"
+                value="Finishing3"
+                checked={formData.service.includes('Finishing3')}
+                onChange={handleCheckboxChange}
+                className="mr-2"
+              />
+              Finishing3
             </label>
           </>
         );
       default:
-        return null;
+        return <p className="text-gray-500">No services available for this category.</p>;
     }
   };
 
-  // ثابتة وغير مرتبطة بالفئة
-  const addressOptions = [
+  const locationOptions = [
     'portfouad',
     'portsaid',
     'suez',
@@ -134,7 +197,7 @@ const Addjob = () => {
     'el obour',
     'settlement',
     '10th of ramadan',
-    'el shrok'
+    'el shrok',
   ];
 
   return (
@@ -143,7 +206,7 @@ const Addjob = () => {
         <h2 className="text-2xl font-bold mb-6 text-gray-700 text-center">Add New Job</h2>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-6">
-            {/* Title */}
+            {/* title */}
             <div className="">
               <label className="block text-gray-600 font-medium mb-2">Title</label>
               <input
@@ -156,43 +219,7 @@ const Addjob = () => {
               />
             </div>
 
-            {/* Image */}
-            <div className="mb-4">
-              <label className="block text-gray-600 font-medium mb-2">Add Image</label>
-              <div className="flex items-center justify-center w-full">
-                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition duration-200">
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg
-                      className="w-8 h-8 mb-3 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M7 16V8m0 8l-4-4m4 4l4-4m0 0l-4-4m4 4h6"
-                      ></path>
-                    </svg>
-                    <p className="mb-2 text-sm text-gray-500">
-                      <span className="font-semibold">Click to upload</span> or drag and drop
-                    </p>
-                    <p className="text-xs text-gray-500">SVG, PNG, JPG or GIF (max. 800x400px)</p>
-                  </div>
-                  <input
-                    type="file"
-                    name="image"
-                    onChange={handleImageChange}
-                    className="hidden"
-                    accept="image/*"
-                  />
-                </label>
-              </div>
-            </div>
-
-            {/* Description */}
+            {/* description */}
             <div className="">
               <label className="block text-gray-600 font-medium mb-2">Description</label>
               <textarea
@@ -204,25 +231,25 @@ const Addjob = () => {
               ></textarea>
             </div>
 
-            {/* Address */}
+            {/* location */}
             <div className="mb-4">
-              <label className="block text-gray-600 font-medium mb-2">Address</label>
+              <label className="block text-gray-600 font-medium mb-2">Location</label>
               <select
-                name="address"
-                value={formData.address}
+                name="location"
+                value={formData.location}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="">Select Address</option>
-                {addressOptions.map((address) => (
-                  <option key={address} value={address}>
-                    {address}
+                <option value="">Select location</option>
+                {locationOptions.map((location) => (
+                  <option key={location} value={location}>
+                    {location}
                   </option>
                 ))}
               </select>
             </div>
 
-            {/* Category */}
+            {/* category */}
             <div className="mb-4">
               <label className="block text-gray-600 font-medium mb-2">Category</label>
               <select
@@ -238,31 +265,16 @@ const Addjob = () => {
               </select>
             </div>
 
-            {/* Render checkboxes based on category */}
-            <div className="mb-4 col-span-2">
-              {renderCheckboxes()}
-            </div>
-
-            {/* Terms Checkbox */}
-            <div className="mb-4 col-span-2">
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  name="terms"
-                  checked={formData.terms}
-                  onChange={handleChange}
-                  className="form-checkbox h-5 w-5 text-blue-600"
-                />
-                <span className="ml-2 text-gray-600">I agree to the terms and conditions</span>
-              </label>
-            </div>
+            {/*  show checks based on category*/}
+            <div className="mb-4 col-span-2">{renderCheckboxes()}</div>
           </div>
 
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-200"
+            disabled={isSubmitting}
           >
-            Submit
+            {isSubmitting ? 'Submitting...' : 'Submit'}
           </button>
         </form>
       </div>

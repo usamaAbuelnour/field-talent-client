@@ -47,7 +47,7 @@ console.log(user)
           <div className="flex items-center">
             <NavLink to="/" icon={Sun} label="Field Talent"  isfrommob={true}/>
             <div className="hidden md:ml-6 md:flex md:space-x-4">
-              <NavLink to="/addpost" icon={PlusCircle} label="Add Job" />
+              <NavLink to="/add-job" icon={PlusCircle} label="Add Job" />
             </div>
           </div>
          
