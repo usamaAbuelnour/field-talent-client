@@ -4,7 +4,7 @@ import FilterJobs from '../components/FilterJobs';
 import ShowJobCard from '../components/ShowJobCard';
 import { Bell } from 'lucide-react';
 
-const ShowJobs = ({ token }) => { 
+const ShowJobs = ({ token }) => {
   const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -14,13 +14,13 @@ const ShowJobs = ({ token }) => {
 
   useEffect(() => {
     if (!token) {
-      navigate('/login'); 
+      navigate('/login');
       return;
     }
 
     fetch('https://field-talent.vercel.app/jobs', {
       headers: {
-        'Authorization': `Bearer ${token}`,  
+        'Authorization': `Bearer ${token}`,
       }
     })
       .then(response => response.json())
@@ -47,7 +47,7 @@ const ShowJobs = ({ token }) => {
     }
 
     if (selectedServices.length > 0) {
-      filtered = filtered.filter(job => 
+      filtered = filtered.filter(job =>
         job.service.some(service => selectedServices.some(selected => selected.value === service))
       );
     }
@@ -64,13 +64,13 @@ const ShowJobs = ({ token }) => {
   const serviceOptions = uniqueServices.map(service => ({ value: service, label: service }));
 
   return (
-    <div className="container mx-auto p-4">
-       <h1 className=" font-bold  mb-8 mt-20 shadow-lg inline-block p-4 rounded-lg bg-white">
-      <span className="font-serif text-main text-xl md:text-2xl lg:text-3xl">
-        Available Jobs 
-        <Bell className="inline-block ml-2 text-main text-xl md:text-2xl lg:text-3xl" size={20} />
-      </span>
-    </h1>
+    <div className="container mx-auto p-2 sm:p-5">
+      <h1 className="font-bold mb-4 sm:mb-8 mt-10 sm:mt-20 text-center bg-white">
+        <span className="font-serif shadow-lg rounded-lg text-main text-lg sm:text-xl md:text-2xl lg:text-3xl inline-block p-3 sm:p-5">
+          Available Jobs
+          <Bell className="inline-block ml-2 text-main text-lg sm:text-xl md:text-2xl lg:text-3xl" size={20} />
+        </span>
+      </h1>
 
       <FilterJobs
         locationOptions={locationOptions}
@@ -84,7 +84,7 @@ const ShowJobs = ({ token }) => {
         setSelectedServices={setSelectedServices}
       />
 
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap px-2 sm:px-5 md:px-10 lg:px-20">
         {filteredJobs.map((job, index) => (
           <ShowJobCard
             key={index}
