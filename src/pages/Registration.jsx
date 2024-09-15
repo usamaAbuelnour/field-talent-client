@@ -21,7 +21,9 @@ const schema = yup.object({
     .required("Last Name is a required field!!"),
   email: yup
     .string()
-    .required("Email is a required field!!"),
+    .required("Email is required")
+    .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,"Enter vaild email")
+,
   
   password: yup
     .string()
@@ -32,6 +34,10 @@ const schema = yup.object({
 
 export default function Registraion({isUserLoggedIn,handleLogin}) {
   const navigate = useNavigate();
+  const [dataError,setError]=useState("")
+
+
+  
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -65,7 +71,7 @@ export default function Registraion({isUserLoggedIn,handleLogin}) {
 
       console.log("Registration successful:", response.data);
     } catch (error) {
-      console.error("Registration failed:", error);
+      setError(error.response.data)
     }finally{
       setIsLoading(false)
 
@@ -73,14 +79,14 @@ export default function Registraion({isUserLoggedIn,handleLogin}) {
   };
 
   return (
-    <div className="hero min-h-fit min-w-fit container py-14">
+    <div className="hero max-h-fit min-w-fit container pt-10">
       <div className="hero-content min-w-full flex-row-reverse">
         <div className="hidden md:block md:w-full mx-5 text-center relative">
           <img src="Registraion.svg" alt="Register illustration" className="mb-0" />
         </div>
         <div className="card w-full bg-s-light shadow-2xl">
-          <form className="card-body space-y-4" onSubmit={handleSubmit(onSubmit)}>
-            <h1 className="text-center text-3xl md:text-5xl font-bold">Register Now</h1>
+          <form className="card-body space-y-1" onSubmit={handleSubmit(onSubmit)}>
+            <h1 className=" text-main text-center text-3xl md:text-5xl font-bold">Register Now</h1>
 
             <div className="form-control">
               <label htmlFor="firstName" className="label">
@@ -156,11 +162,14 @@ export default function Registraion({isUserLoggedIn,handleLogin}) {
 
             <div className="form-control mt-6">
               
-              
+            {dataError && (
+                <p className=" text-sm text-red-600 text-center ">{dataError}</p>
+              )}
               <Button
                 type="submit"
                 variant="fill"
                 text={isLoading ? "Logging in..." : "Register"}
+                className="text-xl"
               />
             
             </div>

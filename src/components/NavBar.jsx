@@ -16,8 +16,8 @@ export default function NavBar({handleLogout,user}) {
  
   const { isUserLoggedIn, name, email } = user;
   useEffect(() => {
-    
-    setInLogin(location.pathname === "/login" ||"registration");
+
+    setInLogin(location.pathname === "/login" || location.pathname ===  "/registration");
   }, [location.pathname]);
  
  

@@ -4,7 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import FilterJobs from '../components/FilterJobs';
 import ShowJobCard from '../components/ShowJobCard';
 import Loading from '../components/lodding';
+import axios from 'axios';
+
 import { Bell } from 'lucide-react';
+import { data } from 'autoprefixer';
 
 const ShowJobs = ({ token }) => {
   const [jobs, setJobs] = useState([]);
@@ -20,25 +23,26 @@ const ShowJobs = ({ token }) => {
       navigate('/login');
       return;
     }
-
-    fetch('https://field-talent.vercel.app/jobs', {
+    window.scrollTo(0, 0);
+        axios.get('https://field-talent.vercel.app/jobs', {
       headers: {
         'Authorization': `Bearer ${token}`,
       }
     })
-      .then(response => response.json())
-      .then(data => {
-        setJobs(data);
-        setFilteredJobs(data);
-        setIsLoading(false);
-      })
-      .catch(error => {
-        console.error('Error fetching jobs:', error);
-        setIsLoading(false);
-      });
+    .then(response => {
+      setJobs(response.data);
+      console.log(response.data);
+      setFilteredJobs(response.data);
+      setIsLoading(false);
+    })
+    .catch(() => {
+      setIsLoading(false);
+      navigate('/not-found'); 
+    });
   }, [token, navigate]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     filterJobs();
   }, [selectedLocation, selectedCategory, selectedServices]);
 
@@ -95,13 +99,17 @@ const ShowJobs = ({ token }) => {
         setSelectedServices={setSelectedServices}
       />
 
-      <div className="flex flex-wrap px-2 sm:px-5 md:px-10 lg:px-20">
-        {filteredJobs.map((job, index) => (
-          <ShowJobCard
-            key={index}
-            job={job}
-          />
-        ))}
+<div className="flex flex-wrap px-2 sm:px-5 md:px-10 lg:px-20">
+        {filteredJobs.length > 0 ? (
+          filteredJobs.map((job, index) => (
+            <ShowJobCard
+              key={index}
+              job={job}
+            />
+          ))
+        ) : (
+          <p className="text-center text-main m-auto text-3xl"> No jobs available</p> 
+        )}
       </div>
     </div>
   );
