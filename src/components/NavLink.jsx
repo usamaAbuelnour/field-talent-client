@@ -10,7 +10,7 @@ function NavLink ({ to,addicon=true, icon: Icon, label, className = '',isfrommob
     <Link
       to={to}
       className={`
-        flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-300 ease-in-out
+        flex items-center dark:text-accent gap-2 px-4 py-2 rounded-md transition-all duration-300 ease-in-out
 
         ${isActive 
           ?  ' bg-main text-white shadow-md ' 
