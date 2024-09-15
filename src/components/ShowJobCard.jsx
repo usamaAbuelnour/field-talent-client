@@ -1,4 +1,4 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
 import { MapPin } from 'lucide-react';
 
 const ShowJobCard = ({ job }) => {
@@ -7,20 +7,21 @@ const ShowJobCard = ({ job }) => {
       <h2 className="font-bold mb-2 sm:mb-4 text-center p-1 sm:p-2 mx-auto w-full max-w-xs sm:max-w-sm md:max-w-md rounded-lg text-main text-sm sm:text-base md:text-lg lg:text-xl break-words">
         {job.title}
       </h2>
-      <p className="mb-2 sm:mb-4 p-2 sm:p-4 bg-white rounded-md text-xs sm:text-sm md:text-base">
+      <h3 className=" ps-2 sm:ps-4  rounded-md text-xs sm:text-sm md:text-base">description :</h3>
+      <p className="mb-2 sm:mb-4 p-2 sm:p-4 rounded-md text-xs sm:text-sm md:text-base break-all">
         {job.description}
       </p>
       <div className="flex flex-col mb-1">
-        <h3 className="font-semibold p-1 rounded-md text-main text-xs sm:text-sm md:text-base">
+        <h3 className="font-semibold p-1 ps-2 sm:ps-4 rounded-md text-main text-xs sm:text-sm md:text-base">
           Category: {job.category}
         </h3>
-        <div className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center text-xs sm:text-sm md:text-base p-1 sm:p-2">
+        <div className="flex flex-col ps-2 sm:ps-4 sm:flex-row sm:justify-between items-start sm:items-center text-xs sm:text-sm md:text-base p-1 sm:p-2">
           <p className="mb-1 sm:mb-0">
             Service: {job.service.join(' | ')}
           </p>
           <div className="flex items-center mt-1 sm:mt-0">
-            <MapPin className="text-main" size={16} />
-            <span className="ml-1 text-xs sm:text-sm md:text-base">{job.location}</span>
+            <MapPin className="text-main " size={20} />
+            <span className="ml-1 lg:text-xl sm:text-sm md:text-base">{job.location}</span>
           </div>
         </div>
       </div>
