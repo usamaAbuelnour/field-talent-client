@@ -31,7 +31,6 @@ const ShowJobs = ({ token }) => {
     .then(response => {
       setJobs(response.data);
       console.log(response.data);
-      
       setFilteredJobs(response.data);
       setIsLoading(false);
     })
