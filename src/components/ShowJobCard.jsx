@@ -1,8 +1,7 @@
-<<<<<<< HEAD
 /* eslint-disable react/prop-types */
-=======
+/* eslint-disable no-unused-vars */
+
 import React, { useState } from 'react';
->>>>>>> 9eff57e32069e3ac0a96c7b361cfa0b513a27e07
 import { MapPin } from 'lucide-react';
 
 const ShowJobCard = ({ job }) => {

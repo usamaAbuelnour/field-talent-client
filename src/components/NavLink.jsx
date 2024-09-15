@@ -2,7 +2,7 @@
 // محتاجه تعديلات  يا مصطفى 
 import { Link, useLocation } from 'react-router-dom';
 
-function NavLink ({ to, icon: Icon, label, className = '',isfrommob  }){
+function NavLink ({ to,addicon=true, icon: Icon, label, className = '',isfrommob  }){
   const location = useLocation();
   const isActive = location.pathname === to;
 
@@ -19,7 +19,8 @@ function NavLink ({ to, icon: Icon, label, className = '',isfrommob  }){
         ${className}
       `}
     >
-      <Icon size={20} />
+      {addicon &&
+      <Icon size={20} />}
       <span className={`
 
 ${isfrommob 
