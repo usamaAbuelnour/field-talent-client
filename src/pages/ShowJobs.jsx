@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FilterJobs from '../components/FilterJobs';
 import ShowJobCard from '../components/ShowJobCard';
+import Loading from '../components/lodding';
 import { Bell } from 'lucide-react';
 
 const ShowJobs = ({ token }) => {
@@ -10,6 +11,7 @@ const ShowJobs = ({ token }) => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedServices, setSelectedServices] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,8 +29,12 @@ const ShowJobs = ({ token }) => {
       .then(data => {
         setJobs(data);
         setFilteredJobs(data);
+        setIsLoading(false);
       })
-      .catch(error => console.error('Error fetching jobs:', error));
+      .catch(error => {
+        console.error('Error fetching jobs:', error);
+        setIsLoading(false);
+      });
   }, [token, navigate]);
 
   useEffect(() => {
@@ -62,6 +68,10 @@ const ShowJobs = ({ token }) => {
   const locationOptions = uniqueLocations.map(location => ({ value: location, label: location }));
   const categoryOptions = uniqueCategories.map(category => ({ value: category, label: category }));
   const serviceOptions = uniqueServices.map(service => ({ value: service, label: service }));
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="container mx-auto p-2 sm:p-5">
