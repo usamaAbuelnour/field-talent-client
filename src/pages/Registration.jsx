@@ -44,7 +44,6 @@ export default function Registraion({isUserLoggedIn,handleLogin}) {
 
     }
   }, [isUserLoggedIn, navigate]);
-console.log("isUserLoggedIn",isUserLoggedIn)
 
   const {
     register,
