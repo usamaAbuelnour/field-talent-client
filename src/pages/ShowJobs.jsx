@@ -21,8 +21,8 @@ const ShowJobs = ({ token }) => {
       navigate('/login');
       return;
     }
-
-    axios.get('https://field-talent.vercel.app/jobs', {
+    window.scrollTo(0, 0);
+        axios.get('https://field-talent.vercel.app/jobs', {
       headers: {
         'Authorization': `Bearer ${token}`,
       }
@@ -39,6 +39,7 @@ const ShowJobs = ({ token }) => {
   }, [token, navigate]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     filterJobs();
   }, [selectedLocation, selectedCategory, selectedServices]);
 
