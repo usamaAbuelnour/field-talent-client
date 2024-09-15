@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import  { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +8,6 @@ import Loading from '../components/lodding';
 import axios from 'axios';
 
 import { Bell } from 'lucide-react';
-import { data } from 'autoprefixer';
 
 const ShowJobs = ({ token }) => {
   const [jobs, setJobs] = useState([]);

@@ -42,7 +42,9 @@ export default function Registraion({isUserLoggedIn,handleLogin}) {
   const [isLoading, setIsLoading] = useState(false);
 
 
-  useEffect(() => {   
+  useEffect(() => {     
+      window.scrollTo(0,0)
+
 
     if (isUserLoggedIn) {
       navigate('/', { replace: true });

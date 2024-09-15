@@ -36,6 +36,8 @@ export default function Login({ handleLogin, isUserLoggedIn }) {
   });
 
   useEffect(() => {
+    window.scrollTo(0,0)
+
     if (isUserLoggedIn) {
       console.log("isUserLoggedIn",isUserLoggedIn)
 
