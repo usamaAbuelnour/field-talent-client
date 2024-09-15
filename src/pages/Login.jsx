@@ -67,11 +67,11 @@ export default function Login({ handleLogin, isUserLoggedIn }) {
     <div className="hero min-h-fit text-lg container py-14">
       <div className="hero-content min-w-full flex-row-reverse">
         <div className="hidden md:block md:w-full mx-5 text-center relative">
-          <img src="login.svg" alt="Login illustration" className="mb-0" />
+          <img src="login.svg" alt="Login image" className="mb-0" />
         </div>
         <div className="card w-full bg-s-light shadow-2xl">
           <form className="card-body space-y-4" onSubmit={handleSubmit(onSubmit)}>
-            <h1 className="text-center text-4xl md:text-5xl font-bold">Login Now</h1>
+            <h1 className="text-main text-center text-4xl md:text-5xl font-bold">Login Now</h1>
 
             <div className="form-control">
               <label htmlFor="email" className="label">
@@ -115,6 +115,7 @@ export default function Login({ handleLogin, isUserLoggedIn }) {
                 type="submit"
                 variant="fill"
                 text={isLoading ? "Logging in..." : "Login"}
+                className=" text-xl"
               />
             </div>
 

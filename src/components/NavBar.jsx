@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from 'react';
+import { useState, useEffect
+ } from 'react';
 import { Link } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 
 import { Home, PlusCircle, LogIn, LogOut, Menu, X,Sun, ChevronDown } from 'lucide-react';
 import NavLink from './NavLink';
@@ -8,12 +10,20 @@ export default function NavBar({handleLogout,user}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-console.log(user)
-  const { isUserLoggedIn, name, email } = user;
+  const [inLogin, setInLogin] = useState(false);
+  let location = useLocation();
 
+ 
+  const { isUserLoggedIn, name, email } = user;
+  useEffect(() => {
+
+    setInLogin(location.pathname === "/login" || location.pathname ===  "/registration");
+  }, [location.pathname]);
  
  
   useEffect(() => {
+
+    
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
@@ -71,7 +81,7 @@ console.log(user)
                   <div className="absolute mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transform  scale-95 transition-all duration-200 ease-out origin-top-right"
                        style={{ animation: 'fadeIn 0.2s ease-out forwards' }}>
                     <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-                      <Link to="/profile" className="block px-4 py-2 text-sm text-dark hover:bg-s-light transition-colors duration-150" role="menuitem">Profile</Link>
+                      <Link to="/profile" className="block  px-4 py-2 text-sm text-dark hover:bg-s-light transition-colors duration-150" role="menuitem">Profile</Link>
                       <button className="block w-full text-left px-4 py-2 text-sm text-dark hover:bg-s-light transition-colors duration-150" role="menuitem"onClick={handleLogout}>logout</button>
                     </div>
                   </div>
@@ -80,7 +90,7 @@ console.log(user)
             ) : (
               <Link
                 to="/login"
-                className="flex items-center gap-2 bg-main text-white px-4 py-2 rounded-md hover:bg-main-600 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md"
+                className={`flex items-center ${inLogin?"hidden":""} gap-2 bg-main text-white px-4 py-2 rounded-md hover:bg-main-600 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md`}
               >
                 <LogIn size={20} />
                 <span>Log In</span>

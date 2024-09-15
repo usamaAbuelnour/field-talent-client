@@ -4,6 +4,7 @@ import Button from "../components/Button";
 import { Building2, PaintBucket, Lightbulb, Zap, BookOpen, Cog } from 'lucide-react';
 import Section from '../components/Section';
 import AboutUsSection from '../components/AboutUsSection';
+import { useEffect } from "react";
 
 const categories = [
   {
@@ -41,7 +42,20 @@ const services = [
   }
 ];
 
+
 function Home() {
+
+
+
+  useEffect(()=>{
+    window.screenTop
+  }
+    
+    ,[])
+
+
+
+    
   return (
     <main className="container mx-auto my-12 px-6 py-14">
       <div className="hero flex flex-col md:flex-row justify-between items-center mb-12">
