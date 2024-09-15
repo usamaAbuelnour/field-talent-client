@@ -6,6 +6,7 @@ import Loading from '../components/lodding';
 import axios from 'axios';
 
 import { Bell } from 'lucide-react';
+import { data } from 'autoprefixer';
 
 const ShowJobs = ({ token }) => {
   const [jobs, setJobs] = useState([]);
@@ -29,6 +30,8 @@ const ShowJobs = ({ token }) => {
     })
     .then(response => {
       setJobs(response.data);
+      console.log(response.data);
+      
       setFilteredJobs(response.data);
       setIsLoading(false);
     })
