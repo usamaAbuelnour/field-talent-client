@@ -61,24 +61,23 @@ export default function NavBar({
 
   return (
     <nav
-    className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 dark:bg-black ease-in-out
+    className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out
     ${isDarkMode ? "dark" : ""}
-    ${isScrolled ? "bg-white dark:bg-slate-800 shadow-md" : "dark:bg-black"}
-    dark:text-s-light dark:bg-black`}
+    ${isScrolled ? "bg-white dark:bg-s-dark shadow-md dark:shadow-sm dark:shadow-light-dark" : "dark:bg-dark-light"}
+    dark:text-s-light`}
   >
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex justify-between h-16">
         <div className="flex items-center">
           <DarkModeSwitch
-            style={{ margin: '0px', padding: "0", cursor: 'pointer' }}
+            style={{ marginRight: '2rem', padding: "0", cursor: 'pointer' }}
             checked={isDarkMode}
             onChange={toggleDarkMode}
-            size={20}
+            size={35}
           />
-          <button onClick={toggleDarkMode}>isDarkMode{isDarkMode}</button>
           <NavLink to="/" addicon={false} label="Field Talent" isfrommob={true} />
-          <div className="hidden md:ml-6 md:flex md:space-x-4">
-            <NavLink to="/add-job" icon={PlusCircle} label="Add Job" />
+          <div className=" md:ml-6 flex " >
+            <NavLink to="/add-job" icon={PlusCircle} label="Add Job" isfrommob={true}  />
           </div>
         </div>
 
@@ -95,7 +94,7 @@ export default function NavBar({
                   src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
                   alt="User avatar"
                 />
-                <span className="ml-2 hidden md:inline text-main dark:text-s-light">{name}</span>
+                <span className="ml-2 hidden md:inline text-main dark:text-accent">{name}</span>
                 <ChevronDown size={20} className="ml-1" />
               </button>
               {isDropdownOpen && (
@@ -106,13 +105,13 @@ export default function NavBar({
                   <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
                     <Link
                       to="/profile"
-                      className="block px-4 py-2 text-sm text-dark dark:text-s-light hover:bg-s-light dark:hover:bg-slate-600 transition-colors duration-150"
+                      className="block px-4 py-2 text-sm text-text   dark:text-text-dark hover:bg-s-light dark:hover:bg-slate-600 transition-colors duration-150"
                       role="menuitem"
                     >
                       Profile
                     </Link>
                     <button
-                      className="block w-full text-left px-4 py-2 text-sm text-dark dark:text-s-light hover:bg-s-light dark:hover:bg-slate-600 transition-colors duration-150"
+                      className="block w-full text-left px-4 py-2 text-sm text-text  dark:text-text-dark hover:bg-s-light dark:hover:bg-slate-600 transition-colors duration-150"
                       role="menuitem"
                       onClick={handleLogout}
                     >
@@ -125,7 +124,7 @@ export default function NavBar({
           ) : (
             <Link
               to="/login"
-              className={`flex items-center ${inLogin ? "hidden" : ""} gap-2 bg-main text-white px-4 py-2 rounded-md hover:bg-main-600 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md`}
+              className={`flex items-center ${inLogin ? "hidden" : ""} gap-2 bg-main text-text-dark    px-4 py-2 rounded-md hover:bg-main-600 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md`}
             >
               <LogIn size={20} />
               <span>Log In</span>
@@ -147,18 +146,18 @@ export default function NavBar({
         </div>
       </div>
     </div>
-
+  {/* <-------------------mobile--------------------> */}
     <div
       className={`md:hidden transition-all duration-300 ease-in-out ${
         isMenuOpen ? "max-h-screen" : "max-h-0"
       } overflow-hidden`}
     >
-      <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white dark:bg-slate-800 shadow-inner">
+      <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white dark:bg-dark shadow-inner">
         <NavLink to="/" icon={Home} label="Home" isfrommob={true} />
         <NavLink to="/add-job" icon={PlusCircle} isfrommob={true} label="Add Job" />
       </div>
       {isUserLoggedIn && (
-        <div className="pt-4 pb-3 border-t border-s-light dark:border-slate-700 bg-white dark:bg-slate-800">
+        <div className="pt-4 pb-3 border-t border-s-light dark:border-slate-700 bg-white dark:bg-dark">
           <div className="flex items-center px-5">
             <div className="flex-shrink-0">
               <img
@@ -168,19 +167,14 @@ export default function NavBar({
               />
             </div>
             <div className="ml-3">
-              <div className="text-base font-medium text-dark dark:text-s-light">{name}</div>
-              <div className="text-sm font-medium text-s-dark dark:text-s-light">{email}</div>
+              <div className="text-base font-medium text-dark dark:text-accent">{name}</div>
+              <div className="text-sm font-medium text-s-dark dark:text-accent">{email}</div>
             </div>
           </div>
           <div className="mt-3 px-2 space-y-1">
-            <Link
-              to="/profile"
-              className="block px-3 py-2 rounded-md text-base font-medium text-dark dark:text-s-light hover:bg-s-light dark:hover:bg-slate-700 transition-colors duration-150"
-            >
-              Profile
-            </Link>
+           
             <button
-              className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-dark dark:text-s-light hover:bg-s-light dark:hover:bg-slate-700 transition-colors duration-150"
+              className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-dark dark:text-accent hover:bg-s-light dark:hover:bg-slate-700 transition-colors duration-150"
               onClick={handleLogout}
             >
               <LogOut size={20} className="inline mr-2" />
