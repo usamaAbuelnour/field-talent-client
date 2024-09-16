@@ -55,6 +55,7 @@ function App() {
     }
     setUser(newUser);
   }
+  // <---------------------------------handling---------------------->
 
   const handleLogout = () => {
     setUser(userSchema);
@@ -65,6 +66,7 @@ function App() {
     setIsDarkMode(prevMode => !prevMode)
 
   }
+  // <---------------------------------handling---------------------->
 
   return (
     <>
