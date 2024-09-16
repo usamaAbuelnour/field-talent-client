@@ -64,7 +64,7 @@ export default function NavBar({
     ${isDarkMode ? "dark" : ""}
     ${
       isScrolled
-        ? " dark:bg-main-dark shadow-md dark:shadow-sm dark:shadow-light-dark"
+        ? "bg-white dark:bg-main-dark shadow-md dark:shadow-sm dark:shadow-light-dark"
         : "dark:bg-dark-light"
     }
     dark:text-s-light`}
