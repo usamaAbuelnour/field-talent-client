@@ -52,23 +52,22 @@ const services = [
   },
 ];
 
-function Home(isDarkMode) {
+function Home() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
     <main
-      className={` ${isDarkMode ? "dark" : ""}
- container mx-auto my-12 px-6 py-14 dark:bg-dark-light dark:py-10`}
+      className={`dark}
+ container mx-auto my-12 px-6 py-14 `}
     >
-      {" "}
-      <div className="hero flex flex-col md:flex-row justify-between items-center mb-12">
-        <div className="about text-center dark:text-main md:text-left p-6 md:p-14 flex flex-col justify-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-main">
+      <div className="hero flex flex-col  md:flex-row justify-between items-center mb-12">
+        <div className="about text-center md:text-left p-6 md:p-14 flex flex-col justify-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-main dark:text-accent ">
             Field Talent
           </h1>
-          <p className="mb-6 text-lg leading-relaxed text-gray-700">
+          <p className="mb-6 text-lg text-black leading-relaxed dark:text-text-dark">
             Welcome to Field Talent! Your one-stop platform to connect quickly
             with professional finishing engineers. Whether you need expert
             advice or looking to hire a skilled engineer, Field Talent makes the
