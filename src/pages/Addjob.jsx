@@ -228,9 +228,9 @@ const Addjob = ({ token }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center pt-8 mx-8">
-      <div className="bg-white shadow-lg rounded-lg max-w-4xl w-full p-8 py-16 border border-main border-opacity-30 my-10">
-        <h2 className="text-2xl font-bold mb-6 text-main text-center">
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center pt-8 mx-8 dark:bg-transparent">
+      <div className="bg-white shadow-lg rounded-lg max-w-4xl w-full p-8 py-16 border border-main border-opacity-30 my-10 dark:bg-main-dark dark:bg-opacity-20">
+        <h2 className="  dark:text-accent text-2xl font-bold mb-6 text-main text-center">
           Add New Job
         </h2>
         <form onSubmit={handleSubmit}>
@@ -238,7 +238,7 @@ const Addjob = ({ token }) => {
             {/* Left Column */}
             <div>
               {/* title */}
-              <label className="block text-gray-600 font-medium mb-2">
+              <label className="block text-gray-600 font-medium mb-2 dark:text-white">
                 Title
               </label>
               <input
@@ -256,7 +256,7 @@ const Addjob = ({ token }) => {
               )}
 
               {/* location */}
-              <label className="block text-gray-600 font-medium mb-2 mt-4">
+              <label className=" dark:text-white block text-gray-600 font-medium mb-2 mt-4">
                 Location
               </label>
               <select
@@ -279,7 +279,7 @@ const Addjob = ({ token }) => {
               )}
 
               {/* category */}
-              <label className="block text-gray-600 font-medium mb-2 mt-4">
+              <label className=" dark:text-white block text-gray-600 font-medium mb-2 mt-4">
                 Category
               </label>
               <select
@@ -305,7 +305,7 @@ const Addjob = ({ token }) => {
             {/* Right Column */}
             <div>
               {/* description */}
-              <label className="block text-gray-600 font-medium mb-2">
+              <label className=" dark:text-white block text-gray-600 font-medium mb-2">
                 Description
               </label>
               <textarea
@@ -327,10 +327,10 @@ const Addjob = ({ token }) => {
 
             {/* service */}
             <div className="col-span-2">
-              <label className="block text-gray-600 font-medium mb-2">
+              <label className=" dark:text-white block text-gray-600 font-medium mb-2">
                 Service
               </label>
-              <div className="flex mb-4 justify-evenly">
+              <div className=" dark:text-white flex mb-4 justify-evenly">
                 {renderCheckboxes()}
               </div>
               {errors.service && (
