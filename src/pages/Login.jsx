@@ -66,18 +66,18 @@ export default function Login({ handleLogin, isUserLoggedIn }) {
   };
 
   return (
-    <div className="hero min-h-fit text-lg container py-14">
+    <div className=" hero min-h-fit text-lg container py-14 dark:bg-transparent">
       <div className="hero-content min-w-full flex-row-reverse">
         <div className="hidden md:block md:w-full mx-5 text-center relative">
-          <img src="login.svg" alt="Login image" className="mb-0" />
+          <img src="login.svg" alt="Login image" className="mb-0 dark:text-transparent " />
         </div>
-        <div className="card w-full bg-s-light shadow-2xl">
+        <div className="card w-full bg-s-light shadow-2xl  dark:bg-main-dark dark:bg-opacity-20">
           <form className="card-body space-y-4" onSubmit={handleSubmit(onSubmit)}>
-            <h1 className="text-main text-center text-4xl md:text-5xl font-bold">Login Now</h1>
+            <h1 className="text-main text-center text-4xl md:text-5xl font-bold dark:text-white">Login Now</h1>
 
-            <div className="form-control">
+            <div className="form-control ">
               <label htmlFor="email" className="label">
-                <span className="label-text">Email</span>
+                <span className="label-text dark:text-white">Email</span>
               </label>
               <input
                 id="email"
@@ -95,7 +95,7 @@ export default function Login({ handleLogin, isUserLoggedIn }) {
 
             <div className="form-control">
               <label htmlFor="password" className="label">
-                <span className="label-text">Password</span>
+                <span className="label-text dark:text-white">Password</span>
               </label>
               <input
                 id="password"
@@ -117,14 +117,14 @@ export default function Login({ handleLogin, isUserLoggedIn }) {
                 type="submit"
                 variant="fill"
                 text={isLoading ? "Logging in..." : "Login"}
-                className=" text-xl"
+                className=" text-xl dark:text-white "
               />
             </div>
 
 
-            <p className="text-center text-sm mt-4">
+            <p className="text-center text-sm mt-4 dark:text-white">
               Create new account?{" "}
-              <Link to="/registration" className="text-blue-600">
+              <Link to="/registration" className="text-blue-600 dark:text-accent">
                 Register here
               </Link>
             </p>
