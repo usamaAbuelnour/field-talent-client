@@ -1,5 +1,6 @@
 import Button from "../components/Button";
-function NotFound() {
+function NotFound(redirctuinUrl) {
+  
   return (
     <div className="flex flex-col lg:flex-row items-center justify-center min-h-screen bg-gradient-to-r from-blue-100 to-purple-100 p-8">
       <div className="text-center lg:text-left lg:w-1/2 lg:pr-12">
@@ -15,18 +16,12 @@ function NotFound() {
         </p>
         <div className="mt-8 space-y-4 lg:space-y-0 lg:space-x-4">
           <Button
-            to="/"
+            to={redirctuinUrl}
             text="Go Home"
             variant="fill"
             size="lg"
             className="w-full lg:w-auto"/>
-          
-          <Button
-            to="/report"
-            text="Report Issue"
-            variant="outline"
-            size="lg"
-            className="w-full lg:w-auto"/>          
+                    
         </div>
       </div>
       <div className="lg:w-1/2 mt-12 lg:mt-0">

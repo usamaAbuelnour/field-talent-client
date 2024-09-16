@@ -22,7 +22,7 @@ const schema = yup.object({
     .required("Password is required"),
 }).required();
 
-export default function Login({ handleLogin, isUserLoggedIn }) {
+export default function Login({ handleLogin, isUserLoggedIn, redirctuinUrl}) {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [dataError,setError]=useState("")
@@ -39,11 +39,11 @@ export default function Login({ handleLogin, isUserLoggedIn }) {
     window.scrollTo(0,0)
 
     if (isUserLoggedIn) {
-      console.log("isUserLoggedIn",isUserLoggedIn)
+      console.log("isUserLoggedIn",redirctuinUrl)
 
-      navigate("/", { replace: true });
+      navigate(redirctuinUrl, { replace: true });
     }
-  }, [isUserLoggedIn, navigate]);
+  }, [isUserLoggedIn, navigate,redirctuinUrl]);
   console.log("isUserLoggedIn login",isUserLoggedIn)
 
   const onSubmit = async (data) => {
@@ -54,7 +54,7 @@ export default function Login({ handleLogin, isUserLoggedIn }) {
 
       handleLogin(response.data.token, response.data.name, response.data.email);
 
-      navigate("/");
+      navigate(redirctuinUrl, { replace: true });
     } catch (error) {
       console.error("Login failed:", error);
       console.log(error.response.data)
