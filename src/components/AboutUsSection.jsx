@@ -3,8 +3,8 @@ import { Info, Headphones, Users } from 'lucide-react';
 import AboutCard from './AboutCard';
 function AboutUsSection() {
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-gray-100">
-      <div className="container mx-auto px-4">
+    <section className="   py-20 bg-gradient-to-b from-white to-gray-100">
+      <div className=" container mx-auto px-4">
         <h2 className="text-4xl font-bold mb-12 text-center text-gray-800 relative">
           About Us
           <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-main"></span>
