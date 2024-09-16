@@ -86,13 +86,13 @@ export default function Registraion({isUserLoggedIn,handleLogin}) {
         <div className="hidden md:block md:w-full mx-5 text-center relative">
           <img src="Registraion.svg" alt="Register illustration" className="mb-0" />
         </div>
-        <div className="card w-full bg-s-light shadow-2xl">
+        <div className="card w-full bg-s-light shadow-2xl dark:bg-main-dark dark:bg-opacity-10">
           <form className="card-body space-y-1" onSubmit={handleSubmit(onSubmit)}>
-            <h1 className=" text-main text-center text-3xl md:text-5xl font-bold">Register Now</h1>
+            <h1 className=" text-main text-center text-3xl md:text-5xl font-bold dark:text-white">Register Now</h1>
 
             <div className="form-control">
               <label htmlFor="firstName" className="label">
-                <span className="label-text">First Name</span>
+                <span className="label-text dark:text-white">First Name</span>
               </label>
               <input
                 id="firstName"
@@ -110,7 +110,7 @@ export default function Registraion({isUserLoggedIn,handleLogin}) {
 
             <div className="form-control">
               <label htmlFor="lastName" className="label">
-                <span className="label-text">Last Name</span>
+                <span className="label-text dark:text-white">Last Name</span>
               </label>
               <input
                 id="lastName"
@@ -128,7 +128,7 @@ export default function Registraion({isUserLoggedIn,handleLogin}) {
 
             <div className="form-control">
               <label htmlFor="email" className="label">
-                <span className="label-text">Email</span>
+                <span className="label-text dark:text-white">Email</span>
               </label>
               <input
                 id="email"
@@ -146,7 +146,7 @@ export default function Registraion({isUserLoggedIn,handleLogin}) {
 
             <div className="form-control">
               <label htmlFor="password" className="label">
-                <span className="label-text">Password</span>
+                <span className="label-text dark:text-white">Password</span>
               </label>
               <input
                 id="password"
@@ -176,8 +176,8 @@ export default function Registraion({isUserLoggedIn,handleLogin}) {
             
             </div>
 
-            <p className="text-center text-sm mt-4">
-              Already have an account? <Link to="/login" className="text-blue-600">Login here</Link>
+            <p className="text-center text-sm mt-4 dark:text-white">
+              Already have an account? <Link to="/login" className="text-blue-600 dark:text-accent">Login here</Link>
             </p>
           </form>
         </div>
