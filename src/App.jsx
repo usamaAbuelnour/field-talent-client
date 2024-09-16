@@ -8,11 +8,12 @@ import NotFound from './pages/NotFound'
 import ShowJobs from './pages/ShowJobs';
 import ShowProposal from './pages/ShowProposal';
 import Footer from "./components/Footer";
-
+import Addjob from "./pages/Addjob";
+import Profile from "./pages/Profile";
 
 import './App.css'
 import { useState, useEffect } from "react";
-import Addjob from "./pages/Addjob";
+
 
 function App() {
   const userSchema = {
@@ -84,6 +85,7 @@ function App() {
           <Route path="showjobs" element={<ShowJobs handleRedirctuinUrl={handleRedirctuinUrl} token={user.token} />} />
           <Route path="add-job" element={<Addjob handleRedirctuinUrl={handleRedirctuinUrl} token={user.token} />} />
           <Route path="showProposal" element={<ShowProposal />} />
+          <Route path="profile" element={<Profile user={user} />}/>
           <Route path="*" element={<NotFound redirctuinUrl={redirctuinUrl}/>} />
         </Routes>
         <Footer />

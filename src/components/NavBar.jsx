@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 
 import {
-
+  UserPen ,
   PlusCircle,
   LogIn,
   LogOut,
@@ -132,10 +132,11 @@ export default function NavBar({
                     >
                       <Link
                         to="/profile"
-                        className="block px-4 py-2 text-sm text-text   dark:text-text-dark hover:bg-s-light dark:hover:bg-slate-600 transition-colors duration-150"
+                        className="flex gap-1 px-4 py-2 text-sm text-text   dark:text-text-dark hover:bg-s-light dark:hover:bg-slate-600 transition-colors duration-150"
                         role="menuitem"
                       >
-                        Profile
+                        <UserPen size={15} />
+                         <span> Profile </span>
                       </Link>
                       <button
                         className="block w-full text-left px-4 py-2 text-sm text-text  dark:text-text-dark hover:bg-s-light dark:hover:bg-slate-600 transition-colors duration-150"
@@ -210,7 +211,7 @@ export default function NavBar({
                     
                     <NavLink
                       to="/profile"
-                      icon={PlusCircle}
+                      icon={UserPen }
                       isfrommob={true}
                       label="profile"
                     />
