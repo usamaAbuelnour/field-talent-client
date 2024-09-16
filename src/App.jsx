@@ -69,8 +69,8 @@ function App() {
         <NavBar  user={user} handleLogout={handleLogout} toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
         <Routes>
           <Route index element={<Home   isDarkMode={isDarkMode}/>} />
-          <Route path="login" element={<Login handleLogin={handleLogin} isUserLoggedIn={user.isUserLoggedIn} />} />
-          <Route path="registration" element={<Registration handleLogin={handleLogin} isUserLoggedIn={user.isUserLoggedIn} />} />
+          <Route path="login" element={<Login handleLogin={handleLogin} isUserLoggedIn={user.isUserLoggedIn}  isDarkMode={isDarkMode}/>} />
+          <Route path="registration" element={<Registration handleLogin={handleLogin} isUserLoggedIn={user.isUserLoggedIn}   isDarkMode={isDarkMode}/>} />
           <Route path="showjobs" element={<ShowJobs token={user.token} isDarkMode={isDarkMode} />} />
           <Route path="add-job" element={<Addjob token={user.token} />} />
           <Route path="*" element={<NotFound />} />
