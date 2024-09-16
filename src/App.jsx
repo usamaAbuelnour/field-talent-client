@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-
 import NavBar from "./components/NavBar";
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Registration from './pages/Registration';
 import NotFound from './pages/NotFound'
 import ShowJobs from './pages/ShowJobs';
+import ShowProposal from './pages/ShowProposal';
 import Footer from "./components/Footer";
 
 
@@ -78,6 +78,7 @@ function App() {
           <Route path="registration" element={<Registration handleLogin={handleLogin} isUserLoggedIn={user.isUserLoggedIn} />} />
           <Route path="showjobs" element={<ShowJobs token={user.token} />} />
           <Route path="add-job" element={<Addjob token={user.token} />} />
+          <Route path="showProposal" element={<ShowProposal />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
