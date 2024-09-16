@@ -71,7 +71,7 @@ function App() {
           <Route index element={<Home   isDarkMode={isDarkMode}/>} />
           <Route path="login" element={<Login handleLogin={handleLogin} isUserLoggedIn={user.isUserLoggedIn} />} />
           <Route path="registration" element={<Registration handleLogin={handleLogin} isUserLoggedIn={user.isUserLoggedIn} />} />
-          <Route path="showjobs" element={<ShowJobs token={user.token} />} />
+          <Route path="showjobs" element={<ShowJobs token={user.token} isDarkMode={isDarkMode} />} />
           <Route path="add-job" element={<Addjob token={user.token} />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
