@@ -9,7 +9,7 @@ import axios from 'axios';
 
 import { Bell } from 'lucide-react';
 
-const ShowJobs = ({ token }) => {
+const ShowJobs = ({ token , isDarkMode}) => {
   const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -77,11 +77,11 @@ const ShowJobs = ({ token }) => {
   if (isLoading) {
     return <Loading />;
   }
-
+  
   return (
-    <div className="container mx-auto p-2 sm:p-5 ">
-      <h1 className="font-bold mb-4 sm:mb-8 mt-10 sm:mt-20 text-center bg-white">
-        <span className="font-serif shadow-lg rounded-lg text-main text-lg sm:text-xl md:text-2xl lg:text-3xl inline-block p-3 sm:p-5">
+    <div className={`${isDarkMode ? "dark" : ""} container mx-auto p-2 sm:p-5 `}>
+      <h1 className="font-bold mb-4 sm:mb-8 mt-10 sm:mt-20 text-center ">
+        <span className="font-serif shadow-lg rounded-lg text-main text-lg sm:text-xl md:text-2xl lg:text-3xl inline-block p-3 sm:p-5 dark:text-accent">
           Available Jobs
           <Bell className="inline-block ml-2 text-main text-lg sm:text-xl md:text-2xl lg:text-3xl" size={20} />
         </span>
