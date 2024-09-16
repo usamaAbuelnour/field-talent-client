@@ -15,7 +15,7 @@ const SocialIcon = ({ Icon, href }) => (
 
 function Footer() {
   return (
-    <footer className="bg-main text-white">
+    <footer className="bg-main text-white dark:bg-opacity-20">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>

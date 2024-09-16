@@ -59,7 +59,7 @@ function Home() {
 
   return (
     <main
-      className={`dark}
+      className={`
  container mx-auto my-12 px-6 py-14 `}
     >
       <div className="hero flex flex-col  md:flex-row justify-between items-center mb-12">
