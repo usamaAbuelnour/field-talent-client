@@ -20,13 +20,15 @@ function App() {
     email: "",
     token: "",
     isUserLoggedIn: false,
-  }
-
+  }  
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem('darkMode');
+    return savedTheme ? JSON.parse(savedTheme) : false; 
+  });
   const [user, setUser] = useState(() => {
     const savedUser = sessionStorage.getItem('user');
     return savedUser ? JSON.parse(savedUser) : userSchema;
   });
-  const [isDarkMode,setisDarkMode]=useState(false)
 
   useEffect(() => {
     sessionStorage.setItem('user', JSON.stringify(user));
@@ -39,6 +41,7 @@ function App() {
     } else {
       document.documentElement.classList.remove("dark");
     }
+    localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
   }, [isDarkMode]);
 
   // <---------------------------------handling---------------------->
@@ -59,7 +62,7 @@ function App() {
   }
   const toggleDarkMode=()=>{
 
-    setisDarkMode(prevMode => !prevMode)
+    setIsDarkMode(prevMode => !prevMode)
 
   }
 
@@ -68,7 +71,7 @@ function App() {
       <BrowserRouter>
         <NavBar  user={user} handleLogout={handleLogout} toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
         <Routes>
-          <Route index element={<Home   isDarkMode={isDarkMode}/>} />
+          <Route index element={<Home isDarkMode={setIsDarkMode}/>} />
           <Route path="login" element={<Login handleLogin={handleLogin} isUserLoggedIn={user.isUserLoggedIn} />} />
           <Route path="registration" element={<Registration handleLogin={handleLogin} isUserLoggedIn={user.isUserLoggedIn} />} />
           <Route path="showjobs" element={<ShowJobs token={user.token} />} />
