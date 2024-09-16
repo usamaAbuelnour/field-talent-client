@@ -32,7 +32,7 @@ const schema = yup.object({
     .required("Password is a required field"),
 }).required();
 
-export default function Registraion({isUserLoggedIn,handleLogin}) {
+export default function Registraion({isUserLoggedIn,handleLogin,redirctuinUrl}) {
   const navigate = useNavigate();
   const [dataError,setError]=useState("")
 
@@ -47,11 +47,11 @@ export default function Registraion({isUserLoggedIn,handleLogin}) {
 
 
     if (isUserLoggedIn) {
-      navigate('/', { replace: true });
+      navigate(redirctuinUrl, { replace: true });
       console.log("isUserLoggedIn",isUserLoggedIn)
 
     }
-  }, [isUserLoggedIn, navigate]);
+  }, [isUserLoggedIn, navigate,redirctuinUrl]);
 
   const {
     register,
@@ -67,7 +67,7 @@ export default function Registraion({isUserLoggedIn,handleLogin}) {
       const response = await axios.post("https://field-talent.vercel.app/register", data);
       console.log(data)
       {handleLogin (response.data.token,response.data.name,response.data.email)}
-      navigate("/");
+      navigate(redirctuinUrl, { replace: true });
       console.log("isUserLoggedIn",isUserLoggedIn)
 
 

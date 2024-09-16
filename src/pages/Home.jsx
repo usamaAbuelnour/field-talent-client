@@ -52,11 +52,14 @@ const services = [
   },
 ];
 
-function Home() {
+function Home({isDarkMode,handleRedirctuinUrl}) {
+  handleRedirctuinUrl("/")
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    
   }, []);
-
+console.log(isDarkMode,"isDarkMode")
   return (
     <main
       className={`
@@ -77,11 +80,16 @@ function Home() {
             <Button to="/showjobs" text="Show Jobs" variant="fill" size="lg" />
           </div>
         </div>
+        {isDarkMode? <img
+          src="feildtalentlogodark.png"
+          alt="Field Talent Logo"
+          className="img-fluid w-full md:w-1/2 mt-8 md:mt-0 rounded-lg shadow-lg"
+        />:
         <img
           src="feildtalentlogo.png"
           alt="Field Talent Logo"
           className="img-fluid w-full md:w-1/2 mt-8 md:mt-0 rounded-lg shadow-lg"
-        />
+        />}
       </div>
       <hr className="my-12 border-gray-200" />
       <Section title="Our Categories" items={categories} />

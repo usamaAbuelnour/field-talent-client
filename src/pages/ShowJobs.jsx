@@ -9,7 +9,7 @@ import axios from 'axios';
 
 import { Bell } from 'lucide-react';
 
-const ShowJobs = ({ token , isDarkMode}) => {
+const ShowJobs = ({ token , isDarkMode,handleRedirctuinUrl}) => {
   const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -19,6 +19,7 @@ const ShowJobs = ({ token , isDarkMode}) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    handleRedirctuinUrl("/showjobs")
     if (!token) {
       navigate('/login');
       return;

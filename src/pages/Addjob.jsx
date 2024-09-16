@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Loading from '../components/lodding'; 
 
-const Addjob = ({ token }) => {
+const Addjob = ({ token,handleRedirctuinUrl }) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -18,10 +18,12 @@ const Addjob = ({ token }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    handleRedirctuinUrl("/add-job")
+
     if (!token) {
       navigate("/login");
     }
-  }, [token, navigate]);
+  }, [token, navigate,handleRedirctuinUrl]);
 
   const validateForm = () => {
     let newErrors = {};
@@ -228,7 +230,7 @@ const Addjob = ({ token }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center pt-8 mx-8 dark:bg-transparent">
+    <div className="min-h-screen  flex items-center justify-center pt-8 mx-8 dark:bg-transparent">
       <div className="bg-white shadow-lg rounded-lg max-w-4xl w-full p-8 py-16 border border-main border-opacity-30 my-10 dark:bg-main-dark dark:bg-opacity-20">
         <h2 className="  dark:text-accent text-2xl font-bold mb-6 text-main text-center">
           Add New Job

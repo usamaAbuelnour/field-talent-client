@@ -9,7 +9,7 @@ export default {
       colors: {
         'main': {
           DEFAULT: '#115e59',
-          dark: '#0d4b47',
+          dark: '#1d353b',
         },
         'text': {
           DEFAULT: '#374151',
@@ -17,7 +17,7 @@ export default {
         },
         'dark': {
           DEFAULT: '#1f2937',
-          light: '#374151',
+          light: '#212a33',
         },
         's-dark': {
           DEFAULT: '#4b5563',
