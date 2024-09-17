@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const ShowProposal = () => {
-  // Sample data directly inside the component
+  
   const proposals = [
     {
       avatar:
@@ -18,20 +18,20 @@ const ShowProposal = () => {
         "I have experience with similar projects and can deliver within a week. I have experience with similar projects and can deliver within a week. I have experience with similar projects and can deliver within a week.",
       salaryOffer: 600,
     },
-    // Add more proposals here
+    
   ];
 
-  // State for modal
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProposal, setSelectedProposal] = useState(null);
 
-  // Open modal and set selected proposal
+  
   const openModal = (proposal) => {
     setSelectedProposal(proposal);
     setIsModalOpen(true);
   };
 
-  // Close modal
+ 
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedProposal(null);
