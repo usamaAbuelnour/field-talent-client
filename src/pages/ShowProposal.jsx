@@ -77,7 +77,7 @@ const ShowProposal = () => {
               >
                 View Details
               </button>
-              {/* Accept and Reject Buttons outside the modal */}
+              
               <div className="flex space-x-2 ml-4">
                 <button className="btn btn-success text-sm py-1 px-3 bg-transparent border-2 border-green-600 text-green-600 hover:bg-green-500 hover:text-white hover:border-green-700 transition duration-300 ease-in-out">
                   Accept
@@ -117,7 +117,7 @@ const ShowProposal = () => {
                     <p className="text-green-600 font-semibold mb-4">
                       Salary Offer: ${selectedProposal.salaryOffer}
                     </p>
-                    {/* Accept and Reject Buttons inside the modal */}
+                    
                     <div className="flex space-x-2">
                       <button className="btn btn-success text-sm py-1 px-3 bg-transparent border-2 border-green-600 text-green-600 hover:bg-green-500 hover:text-white hover:border-green-700 transition duration-300 ease-in-out">
                         Accept
