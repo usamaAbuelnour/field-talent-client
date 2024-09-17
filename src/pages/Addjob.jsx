@@ -237,9 +237,9 @@ const Addjob = ({ token,handleRedirctuinUrl }) => {
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-6">
-            {/* Left Column */}
+           
             <div>
-              {/* title */}
+              
               <label className="block text-gray-600 font-medium mb-2 dark:text-white">
                 Title
               </label>
@@ -257,7 +257,7 @@ const Addjob = ({ token,handleRedirctuinUrl }) => {
                 <p className="text-red-500 text-sm mt-1">{errors.title}</p>
               )}
 
-              {/* location */}
+             
               <label className=" dark:text-white block text-gray-600 font-medium mb-2 mt-4">
                 Location
               </label>
@@ -280,7 +280,7 @@ const Addjob = ({ token,handleRedirctuinUrl }) => {
                 <p className="text-red-500 text-sm mt-1">{errors.location}</p>
               )}
 
-              {/* category */}
+              
               <label className=" dark:text-white block text-gray-600 font-medium mb-2 mt-4">
                 Category
               </label>
@@ -304,9 +304,9 @@ const Addjob = ({ token,handleRedirctuinUrl }) => {
               )}
             </div>
 
-            {/* Right Column */}
+            
             <div>
-              {/* description */}
+             
               <label className=" dark:text-white block text-gray-600 font-medium mb-2">
                 Description
               </label>
@@ -327,7 +327,7 @@ const Addjob = ({ token,handleRedirctuinUrl }) => {
               )}
             </div>
 
-            {/* service */}
+            
             <div className="col-span-2">
               <label className=" dark:text-white block text-gray-600 font-medium mb-2">
                 Service
