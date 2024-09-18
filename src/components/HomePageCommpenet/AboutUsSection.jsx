@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import { Info, Headphones, Users } from 'lucide-react';
-import AboutCard from './AboutCard';
+import { Info, Headphones, Users } from "lucide-react";
+import AboutCard from "./AboutCard";
 function AboutUsSection() {
   return (
     <section className="py-20  ">
@@ -27,7 +27,9 @@ function AboutUsSection() {
               description="Join our thriving community of professionals and clients. Collaborate, learn, and grow with Field Talent's expanding network of industry experts."
             />
             <div className=" dark:bg-main dark:bg-opacity-25 border dark:border-accent dark:text-text-dark  bg-white p-8 rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105">
-              <h3 className="text-2xl font-semibold mb-4 text-main dark:text-text-dark ">Why Choose Us?</h3>
+              <h3 className="text-2xl font-semibold mb-4 text-main dark:text-text-dark ">
+                Why Choose Us?
+              </h3>
               <ul className="list-disc list-inside space-y-2">
                 <li>Vetted, professional engineers</li>
                 <li>Seamless project management</li>
@@ -41,7 +43,5 @@ function AboutUsSection() {
     </section>
   );
 }
-
-
 
 export default AboutUsSection;

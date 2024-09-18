@@ -3,12 +3,11 @@
 import { set, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Button from "../components/Button";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-
+import Button from "../components/uiComponents/Button";
+import apiService from '../Api/Axios Service Configuration';
 const schema = yup.object({
   email: yup
     .string()
@@ -22,7 +21,7 @@ const schema = yup.object({
     .required("Password is required"),
 }).required();
 
-export default function Login({ handleLogin, isUserLoggedIn, redirctuinUrl}) {
+export default function Login({ handleLogin, isUserLoggedIn, redirectingUrl}) {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [dataError,setError]=useState("")
@@ -39,26 +38,20 @@ export default function Login({ handleLogin, isUserLoggedIn, redirctuinUrl}) {
     window.scrollTo(0,0)
 
     if (isUserLoggedIn) {
-      console.log("isUserLoggedIn",redirctuinUrl)
-
-      navigate(redirctuinUrl, { replace: true });
-    }
-  }, [isUserLoggedIn, navigate,redirctuinUrl]);
-  console.log("isUserLoggedIn login",isUserLoggedIn)
+      navigate(redirectingUrl, { replace: true });
+    }``
+  }, [isUserLoggedIn, navigate,redirectingUrl]);
 
   const onSubmit = async (data) => {
     try {
       setIsLoading(true);
 
-      const response = await axios.post("https://field-talent.vercel.app/login", data);
+      const response = await apiService.loginUser(data);
 
       handleLogin(response.data.token, response.data.name, response.data.email);
-
-      navigate(redirctuinUrl, { replace: true });
+      navigate(redirectingUrl, { replace: true });
     } catch (error) {
       console.error("Login failed:", error);
-      console.log(error.response.data)
-
       setError(error.response.data)
     } finally {
       setIsLoading(false);
@@ -81,7 +74,6 @@ export default function Login({ handleLogin, isUserLoggedIn, redirctuinUrl}) {
               </label>
               <input
                 id="email"
-                // type="email"
                 placeholder="Enter your email"
                 {...register("email")}
                 className={`input input-bordered w-full ${

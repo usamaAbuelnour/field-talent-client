@@ -3,13 +3,13 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
-import axios from "axios";
 import { useEffect,useState } from "react";
 import { useNavigate } from "react-router-dom";
+import apiService from '../Api/Axios Service Configuration';
 
 
 
-import Button from "../components/Button";
+import Button from "../components/uiComponents/Button";
 
 const schema = yup.object({
   firstName: yup
@@ -21,7 +21,7 @@ const schema = yup.object({
   email: yup
     .string()
     .required("Email is required")
-    .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,"Enter vaild email")
+    .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,"Enter valid email")
 ,
   
   password: yup
@@ -31,7 +31,7 @@ const schema = yup.object({
     .required("Password is a required field"),
 }).required();
 
-export default function Registraion({isUserLoggedIn,handleLogin,redirctuinUrl}) {
+export default function Registration({isUserLoggedIn,handleLogin, redirectingUrl}) {
   const navigate = useNavigate();
   const [dataError,setError]=useState("")
 
@@ -46,11 +46,10 @@ export default function Registraion({isUserLoggedIn,handleLogin,redirctuinUrl}) 
 
 
     if (isUserLoggedIn) {
-      navigate(redirctuinUrl, { replace: true });
-      console.log("isUserLoggedIn",isUserLoggedIn)
+      navigate(redirectingUrl, { replace: true });
 
     }
-  }, [isUserLoggedIn, navigate,redirctuinUrl]);
+  }, [isUserLoggedIn, navigate,redirectingUrl]);
 
   const {
     register,
@@ -63,14 +62,10 @@ export default function Registraion({isUserLoggedIn,handleLogin,redirctuinUrl}) 
   const onSubmit = async (data) => {
     try {
       setIsLoading(true)
-      const response = await axios.post("https://field-talent.vercel.app/register", data);
-      console.log(data)
+      const response = await apiService.registerUser(data);
       {handleLogin (response.data.token,response.data.name,response.data.email)}
-      navigate(redirctuinUrl, { replace: true });
-      console.log("isUserLoggedIn",isUserLoggedIn)
+      navigate(redirectingUrl, { replace: true });
 
-
-      console.log("Registration successful:", response.data);
     } catch (error) {
       setError(error.response.data)
     }finally{

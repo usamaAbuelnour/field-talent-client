@@ -90,7 +90,6 @@ const ShowProposal = () => {
           </div>
         ))}
 
-        {/* Modal */}
         {isModalOpen && (
           <div className="fixed inset-0 flex items-center justify-center z-50">
             <div className="modal modal-open">

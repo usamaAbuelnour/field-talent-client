@@ -1,4 +1,4 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
 import Select from 'react-select';
 import CustomOption from './CustomOption';
 
