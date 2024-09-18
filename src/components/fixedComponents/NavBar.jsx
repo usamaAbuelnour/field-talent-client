@@ -14,7 +14,7 @@ import {
   X,
   ChevronDown,
 } from "lucide-react";
-import NavLink from "./NavLink";
+import NavLink from "../uiComponents/NavLink";
 export default function NavBar({
   handleLogout,
   user,
@@ -40,23 +40,10 @@ export default function NavBar({
     };
     window.addEventListener("scroll", handleScroll);
 
-    ///qution1 to eng yaasser
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  ////////////
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     setIsScrolled(window.scrollY > 10);
-  //   };
-  //   window.addEventListener('scroll', handleScroll);
 
-  //   ///qution1 to eng yaasser
-  //   return () => window.removeEventListener('scroll', handleScroll);
-  // }, [isScrolled]);
-  // console.log(isScrolled)
-  ////////////
-  console.log(isDarkMode);
 
   return (
     <nav
@@ -69,7 +56,6 @@ export default function NavBar({
     }
     dark:text-s-light`}
     >
-      {/* <-----------Allldevice--------------> */}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
@@ -95,7 +81,10 @@ export default function NavBar({
               />
             </div>
           </div>
-          {/* <-----------Allldevice--------------> */}
+ 
+
+
+
 
           <div className="flex items-center">
             {isUserLoggedIn ? (
@@ -117,7 +106,7 @@ export default function NavBar({
                   <span className="ml-2 hidden md:inline text-main dark:text-accent">
                     {name}
                   </span>
-                  <ChevronDown size={20} className="ml-1" />
+                  <ChevronDown size={20} className="ml-1 text-text dark:text-accent" />
                 </button>
                 {isDropdownOpen && (
                   <div
@@ -161,7 +150,9 @@ export default function NavBar({
               </Link>
             )}
           </div>
-          {/*<------------------------------MENUEBTN------------------------->*/}
+
+
+
           {isUserLoggedIn && (
             <div className="md:hidden flex items-center">
               <button
@@ -179,7 +170,13 @@ export default function NavBar({
           )}
         </div>
       </div>
-      {/* <-------------------mobile--------------------> */}
+
+
+
+
+
+
+
       <div
         className={`md:hidden transition-all duration-300 ease-in-out ${
           isMenuOpen ? "max-h-screen" : "max-h-0"

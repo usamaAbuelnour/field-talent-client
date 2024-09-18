@@ -1,6 +1,4 @@
 /* eslint-disable react/prop-types */
-
-import Button from "../components/Button";
 import {
   Building2,
   PaintBucket,
@@ -9,8 +7,9 @@ import {
   BookOpen,
   Cog,
 } from "lucide-react";
-import Section from "../components/Section";
-import AboutUsSection from "../components/AboutUsSection";
+import Button from "../components/uiComponents/Button";
+import Section from "../components/HomePageCommpenet/Section";
+import AboutUsSection from "../components/HomePageCommpenet/AboutUsSection";
 import { useEffect } from "react";
 
 const categories = [
@@ -52,14 +51,13 @@ const services = [
   },
 ];
 
-function Home({isDarkMode,handleRedirctuinUrl}) {
-  handleRedirctuinUrl("/")
+function Home({isDarkMode,handleRedirectingUrl}) {
+  handleRedirectingUrl("/")
 
   useEffect(() => {
     window.scrollTo(0, 0);
     
   }, []);
-console.log(isDarkMode,"isDarkMode")
   return (
     <main
       className={`

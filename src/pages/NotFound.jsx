@@ -1,5 +1,6 @@
-import Button from "../components/Button";
-function NotFound(redirctuinUrl) {
+/* eslint-disable react/prop-types */
+import Button from "../components/uiComponents/Button";
+function NotFound() {
   
   return (
     <div className="flex flex-col lg:flex-row items-center justify-center min-h-screen bg-gradient-to-r from-blue-100 to-purple-100 p-8">
@@ -16,7 +17,7 @@ function NotFound(redirctuinUrl) {
         </p>
         <div className="mt-8 space-y-4 lg:space-y-0 lg:space-x-4">
           <Button
-            to={redirctuinUrl}
+            to={"/"}
             text="Go Home"
             variant="fill"
             size="lg"

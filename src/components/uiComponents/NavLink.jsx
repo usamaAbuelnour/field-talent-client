@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-// محتاجه تعديلات  يا مصطفى 
 import { Link, useLocation } from 'react-router-dom';
 
 function NavLink ({ to,addicon=true, icon: Icon, label, className = '',isfrommob  }){

@@ -1,10 +1,19 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../components/Button";
-import Loading from '../components/lodding'; 
+import Button from "../components/uiComponents/Button";
+import Loading from '../components/uiComponents/Loading'; 
+import apiService from '../Api/Axios Service Configuration';
 
-const Addjob = ({ token,handleRedirctuinUrl }) => {
+
+
+
+const Addjob = () => {
+
+
+
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -18,12 +27,14 @@ const Addjob = ({ token,handleRedirctuinUrl }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    handleRedirctuinUrl("/add-job")
+   
+    window.scrollTo(0, 0);
+    
+  }, []);
 
-    if (!token) {
-      navigate("/login");
-    }
-  }, [token, navigate,handleRedirctuinUrl]);
+
+
+
 
   const validateForm = () => {
     let newErrors = {};
@@ -61,40 +72,26 @@ const Addjob = ({ token,handleRedirctuinUrl }) => {
     setErrors((prevErrors) => ({ ...prevErrors, service: "" }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) return;
-
     setIsSubmitting(true);
-
-    const requestData = { ...formData };
-
-    fetch("https://field-talent.vercel.app/jobs", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(requestData),
-    })
-      .then((response) => {
-        setIsSubmitting(false);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Job added successfully:", data);
-        navigate("/showjobs");
-      })
-      .catch((error) => {
-        setIsSubmitting(false);
-        console.error("Error adding job:", error);
-        setErrors({ submit: "Failed to submit the job. Please try again." });
-      });
+    try {
+      const response = await apiService.addJob(formData);
+      navigate("/showjobs");
+    } catch (error) {
+      console.error("Error adding job:", error);
+      setErrors({ submit: "Failed to submit the job. Please try again." });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+
+
+
+
+
 
   const renderCheckboxes = () => {
     switch (formData.category) {

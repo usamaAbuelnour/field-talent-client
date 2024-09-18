@@ -1,46 +1,39 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import  { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import FilterJobs from '../components/FilterJobs';
-import ShowJobCard from '../components/ShowJobCard';
-import Loading from '../components/lodding';
-import axios from 'axios';
+import FilterJobs from '../components/showJopComponents/FilterJobs';
+import ShowJobCard from '../components/showJopComponents/ShowJobCard';
+import Loading from '../components/uiComponents/Loading';
+import apiService from '../Api/Axios Service Configuration';
 
 import { Bell } from 'lucide-react';
 
-const ShowJobs = ({ token , isDarkMode,handleRedirctuinUrl}) => {
+const ShowJobs = ({isDarkMode}) => {
   const [jobs, setJobs] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedServices, setSelectedServices] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    handleRedirctuinUrl("/showjobs")
-    if (!token) {
-      navigate('/login');
-      return;
-    }
+   
     window.scrollTo(0, 0);
-        axios.get('https://field-talent.vercel.app/jobs', {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      }
-    })
-    .then(response => {
+    fetchJobs();
+
+  }, []);
+  const fetchJobs = async () => {
+    try {
+      const response = await apiService.getJobs();
       setJobs(response.data);
-      console.log(response.data);
       setFilteredJobs(response.data);
       setIsLoading(false);
-    })
-    .catch(() => {
+    } catch (error) {
+      console.error('Error fetching jobs:', error);
       setIsLoading(false);
-      navigate('/not-found'); 
-    });
-  }, [token, navigate]);
+     
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
