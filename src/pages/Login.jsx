@@ -51,7 +51,6 @@ export default function Login({ handleLogin, isUserLoggedIn, redirectingUrl}) {
       handleLogin(response.data.token, response.data.name, response.data.email);
       navigate(redirectingUrl, { replace: true });
     } catch (error) {
-      console.error("Login failed:", error);
       setError(error.response.data)
     } finally {
       setIsLoading(false);

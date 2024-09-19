@@ -12,7 +12,7 @@ api.interceptors.request.use(
     const user = localStorage.getItem('user');
     const token =JSON.parse(user).token
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${"token"}`;
     }
     return config;
   },
@@ -22,12 +22,16 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response.status === 401) {
+    if (error.response.status === 401 && error.response.data === 'invalid signature') {
+      
       localStorage.removeItem('user');
       window.location.href = '/login';
-   
     }
+    console.log(error.response.status)
+    console.log()
+    console.log(error.response)
 
+    return Promise.reject(error)
   }
 );
 const apiService = {
