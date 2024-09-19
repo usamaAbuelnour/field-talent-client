@@ -26,7 +26,7 @@ const schema = yup
       .max(20, "Password can be at most 20 characters")
       .required("Password is a required field"),
 
-    role: yup.string().required("Please select a role"),
+    type: yup.string().required("Please select a type"),
   })
   .required();
 
@@ -57,6 +57,7 @@ export default function Registration({
   });
 
   const onSubmit = async (data) => {
+    console.log("type",data)
     try {
       setIsLoading(true);
       const response = await apiService.registerUser(data);
@@ -179,7 +180,7 @@ export default function Registration({
                 type="radio"
                 id="client"
                 value="client"
-                {...register("role")}
+                {...register("type")}
               />
               <label htmlFor="client" className="text-main dark:text-accent">
                 Client
@@ -188,12 +189,12 @@ export default function Registration({
                 type="radio"
                 id="engineer"
                 value="engineer"
-                {...register("role")}
+                {...register("type")}
               />
               <label htmlFor="engineer">Engineer</label>
-              {errors.role && (
+              {errors.type && (
                 <p className="mt-1 text-sm text-red-600">
-                  {errors.role.message}
+                  {errors.type.message}
                 </p>
               )}
             </div>
