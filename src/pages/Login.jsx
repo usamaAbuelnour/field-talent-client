@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Button from "../components/uiComponents/Button";
-import apiService from '../Api/Axios Service Configuration';
+import apiService from '../Api/AxiosServiceConfiguration';
 const schema = yup.object({
   email: yup
     .string()

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import apiService from "../Api/Axios Service Configuration";
+import apiService from "../Api/AxiosServiceConfiguration";
 
 import Button from "../components/uiComponents/Button";
 

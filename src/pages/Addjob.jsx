@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/uiComponents/Button";
 import Loading from '../components/uiComponents/Loading'; 
-import apiService from '../Api/Axios Service Configuration';
+import apiService from '../Api/AxiosServiceConfiguration';
 
 
 
