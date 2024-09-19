@@ -141,7 +141,7 @@ const FilterJobs = ({
               ...provided,
               color: whiteColor,
               ':hover': {
-                backgroundColor: mainColor,
+                backgroundColor: "red",
                 color: whiteColor,
               },
             }),
