@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Link } from "react-router-dom";
 import * as yup from "yup";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import apiService from "../Api/AxiosServiceConfiguration";
-
+import { Check, UserSearch, BriefcaseBusiness } from "lucide-react";
 import Button from "../components/uiComponents/Button";
 
 const schema = yup
@@ -25,8 +25,6 @@ const schema = yup
       .min(8, "Password must be at least 8 characters")
       .max(20, "Password can be at most 20 characters")
       .required("Password is a required field"),
-
-    type: yup.string().required("Please select a type"),
   })
   .required();
 
@@ -37,9 +35,9 @@ export default function Registration({
 }) {
   const navigate = useNavigate();
   const [dataError, setError] = useState("");
-
   const [isLoading, setIsLoading] = useState(false);
-
+  const [selectedType, setSelectedType] = useState("");
+  const [currentStage, setCurrentStage] = useState(1);
   useEffect(() => {
     window.scrollTo(0, 0);
 
@@ -57,17 +55,14 @@ export default function Registration({
   });
 
   const onSubmit = async (data) => {
-    console.log("type",data)
+    if (isLoading) return;
+
+    data.type = selectedType;
+    console.log("type", data);
     try {
       setIsLoading(true);
       const response = await apiService.registerUser(data);
-      {
-        handleLogin(
-          response.data.token,
-          response.data.name,
-          response.data.email
-        );
-      }
+      handleLogin(response.data.token, response.data.name, response.data.email);
       navigate(redirectingUrl, { replace: true });
     } catch (error) {
       setError(error.response.data);
@@ -76,152 +71,219 @@ export default function Registration({
     }
   };
 
+  const moveToStageTwo = () => {
+    if (selectedType) {
+      setCurrentStage(2);
+    }
+    console.log("work");
+  };
+  console.log(selectedType, currentStage);
+
   return (
     <div className="hero max-h-fit min-w-fit container p-10">
-      <div className="hero-content min-w-full flex-row-reverse">
-        <div className="hidden md:block md:w-full mx-5 text-center relative">
-          <img
-            src="Registraion.svg"
-            alt="Register illustration"
-            className="mb-0"
-          />
+      {currentStage === 1 && (
+        <div className="stageOne min-h-screen p-6 lg:p-14">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center mb-8 sm:mb-10 text-main dark:text-accent font-bold">
+            Join as a Client or Engineer
+          </h1>
+
+          <div className="flex flex-col lg:flex-row w-full space-y-4 lg:space-y-0 lg:space-x-4">
+            <div
+              className={`card relative text-lg sm:text-xl md:text-2xl lg:text-3xl bg-base-300 border-2 border-gray-500 p-4 sm:p-5 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col items-center justify-center w-full lg:w-1/2
+      hover:scale-105 hover:bg-slate-100 dark:hover:bg-main-dark ${
+        selectedType === "engineer" ? "border-accent" : "border-gray-500"
+      }`}
+              onClick={() => setSelectedType("engineer")}
+              aria-label="Select Engineer"
+            >
+              <BriefcaseBusiness
+                size={32}
+                className="absolute top-2 left-2 dark:text-accent"
+              />
+              <Check
+                className={`absolute top-2 right-2 bg-light-dark rounded-full text-white ${
+                  selectedType === "engineer"
+                    ? "block bg-accent text-white"
+                    : "bg-light-dark"
+                }`}
+              />
+              <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl p-4 sm:p-6 lg:p-8 text-center dark:text-text-dark">
+                I am an Engineer looking for work as talent
+              </p>
+            </div>
+
+            <div className="divider lg:divider-horizontal md:text-xl m-6 lg:m-10 dark:text-accent">
+              OR
+            </div>
+
+            <div
+              className={`card bg-base-300 border-2 text-lg sm:text-xl md:text-2xl lg:text-3xl border-gray-500 p-4 sm:p-5 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col items-center justify-center w-full lg:w-1/2
+      hover:scale-105 hover:bg-slate-100 dark:hover:bg-main-dark ${
+        selectedType === "client" ? "border-accent" : "border-gray-500"
+      }`}
+              onClick={() => setSelectedType("client")}
+              aria-label="Select Client"
+            >
+              <UserSearch
+                size={32}
+                className="absolute top-2 left-2 dark:text-accent"
+              />
+              <Check
+                className={`absolute top-2 right-2 bg-light-dark rounded-full text-white ${
+                  selectedType === "client"
+                    ? "block bg-accent text-white"
+                    : "bg-light-dark"
+                }`}
+              />
+              <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl p-4 sm:p-6 lg:p-8 text-center dark:text-text-dark">
+                I am a Client hiring talent for projects
+              </p>
+            </div>
+          </div>
+
+          <div className="text-center mt-8 sm:mt-10 lg:mt-12">
+            <Button
+              variant="fill"
+              size="lg"
+              text={
+                selectedType === "engineer"
+                  ? "Apply as Engineer"
+                  : selectedType === "client"
+                  ? "Join as Client"
+                  : "Create Account"
+              }
+              className="text-lg sm:text-xl lg:text-3xl lg:p-3 mt-6 lg:mt-10"
+              disabled={!selectedType}
+              onClick={moveToStageTwo}
+            />
+          </div>
+
+          <p className="text-center text-sm sm:text-base mt-4 dark:text-white">
+            Already have an account?{" "}
+            <Link to="/login" className="text-blue-600 dark:text-accent">
+              Login here
+            </Link>
+          </p>
         </div>
-        <div className="card w-full bg-s-light shadow-2xl dark:bg-main-dark dark:bg-opacity-10">
-          <form
-            className="card-body space-y-1"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <h1 className=" text-main text-center text-3xl md:text-5xl font-bold dark:text-white">
-              Register Now
-            </h1>
+      )}
 
-            <div className="form-control">
-              <label htmlFor="firstName" className="label">
-                <span className="label-text dark:text-white">First Name</span>
-              </label>
-              <input
-                id="firstName"
-                type="text"
-                placeholder="Enter your first name"
-                {...register("firstName")}
-                className={`input input-bordered w-full ${
-                  errors.firstName ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              {errors.firstName && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.firstName.message}
-                </p>
-              )}
-            </div>
+      {currentStage === 2 && (
+        <div className="hero-content stageTwo min-w-full flex-row-reverse mt-10">
+          <div className="hidden md:block md:w-full mx-5 text-center relative">
+            <img
+              src="Registraion.svg"
+              alt="Register illustration"
+              className="mb-0"
+            />
+          </div>
+          <div className="card w-full bg-s-light shadow-2xl dark:bg-main-dark dark:bg-opacity-10">
+            <form
+              className="card-body space-y-1"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <h1 className="text-main text-center text-3xl md:text-5xl font-bold dark:text-white">
+                Register Now
+              </h1>
 
-            <div className="form-control">
-              <label htmlFor="lastName" className="label">
-                <span className="label-text dark:text-white">Last Name</span>
-              </label>
-              <input
-                id="lastName"
-                type="text"
-                placeholder="Enter your last name"
-                {...register("lastName")}
-                className={`input input-bordered w-full ${
-                  errors.lastName ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              {errors.lastName && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.lastName.message}
-                </p>
-              )}
-            </div>
+              <div className="form-control">
+                <label htmlFor="firstName" className="label">
+                  <span className="label-text dark:text-white">First Name</span>
+                </label>
+                <input
+                  id="firstName"
+                  type="text"
+                  placeholder="Enter your first name"
+                  {...register("firstName")}
+                  className={`input input-bordered w-full ${
+                    errors.firstName ? "border-red-500" : "border-gray-300"
+                  }`}
+                />
+                {errors.firstName && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.firstName.message}
+                  </p>
+                )}
+              </div>
 
-            <div className="form-control">
-              <label htmlFor="email" className="label">
-                <span className="label-text dark:text-white">Email</span>
-              </label>
-              <input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                {...register("email")}
-                className={`input input-bordered w-full ${
-                  errors.email ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.email.message}
-                </p>
-              )}
-            </div>
+              <div className="form-control">
+                <label htmlFor="lastName" className="label">
+                  <span className="label-text dark:text-white">Last Name</span>
+                </label>
+                <input
+                  id="lastName"
+                  type="text"
+                  placeholder="Enter your last name"
+                  {...register("lastName")}
+                  className={`input input-bordered w-full ${
+                    errors.lastName ? "border-red-500" : "border-gray-300"
+                  }`}
+                />
+                {errors.lastName && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.lastName.message}
+                  </p>
+                )}
+              </div>
 
-            <div className="form-control">
-              <label htmlFor="password" className="label">
-                <span className="label-text dark:text-white">Password</span>
-              </label>
-              <input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                {...register("password")}
-                className={`input input-bordered w-full ${
-                  errors.password ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              {errors.password && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.password.message}
-                </p>
-              )}
-            </div>
+              <div className="form-control">
+                <label htmlFor="email" className="label">
+                  <span className="label-text dark:text-white">Email</span>
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  {...register("email")}
+                  className={`input input-bordered w-full ${
+                    errors.email ? "border-red-500" : "border-gray-300"
+                  }`}
+                />
+                {errors.email && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.email.message}
+                  </p>
+                )}
+              </div>
 
-            <div className="flex gap-3">
-              <input
-                type="radio"
-                id="client"
-                value="client"
-                {...register("type")}
-              />
-              <label htmlFor="client" className="text-main dark:text-accent">
-                Client
-              </label>
-              <input
-                type="radio"
-                id="engineer"
-                value="engineer"
-                {...register("type")}
-              />
-              <label htmlFor="engineer">Engineer</label>
-              {errors.type && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.type.message}
-                </p>
-              )}
-            </div>
+              <div className="form-control">
+                <label htmlFor="password" className="label">
+                  <span className="label-text dark:text-white">Password</span>
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  {...register("password")}
+                  className={`input input-bordered w-full ${
+                    errors.password ? "border-red-500" : "border-gray-300"
+                  }`}
+                />
+                {errors.password && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.password.message}
+                  </p>
+                )}
+              </div>
 
-            <div className="form-control mt-6">
+              <div className="form-control mt-6">
+                <Button
+                  type="submit"
+                  variant="fill"
+                  size="lg"
+                  text={isLoading ? "Registering..." : "Register"}
+                  disabled={isLoading}
+                />
+              </div>
+
               {dataError && (
-                <p className=" text-sm text-red-600 text-center ">
+                <p className="mt-2 text-sm text-red-600 text-center">
                   {dataError}
                 </p>
               )}
-              <Button
-                type="submit"
-                variant="fill"
-                text={isLoading ? "Logging in..." : "Register"}
-                className="text-xl"
-              />
-            </div>
-
-            <p className="text-center text-sm mt-4 dark:text-white">
-              Already have an account?{" "}
-              <Link to="/login" className="text-blue-600 dark:text-accent">
-                Login here
-              </Link>
-            </p>
-          </form>
+            </form>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
