@@ -17,27 +17,34 @@ const ShowJobs = ({ isDarkMode }) => {
   const [serviceOptions, setServiceOptions] = useState([]);
   const [NoAvailableMassage, setNoAvailableMassage] = useState(null);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
+    window.scrollTo(0,0)
     const searchParams = new URLSearchParams(location.search);
     fetchJobs(searchParams);
-  }, [location.search]);
+  }, [location.search, currentPage]);
 
   const fetchJobs = async (params) => {
     setIsLoading(true);
     setNoAvailableMassage(null);
     try {
-      const response = await apiService.getJobs(Object.fromEntries(params.entries()));
+      const response = await apiService.getJobs({
+        ...Object.fromEntries(params.entries()),
+        page: currentPage
+      });
       const jobsData = response.data;
-
-      if (Array.isArray(jobsData)) {
-        setJobs(jobsData);
-        updateFilterOptions(jobsData);
+      if (jobsData.jobs && Array.isArray(jobsData.jobs)) {
+        setJobs(jobsData.jobs);
+        setTotalPages(jobsData.pagesCount);
+        updateFilterOptions(jobsData.jobs);
       } else if (typeof jobsData === 'string') {
         setNoAvailableMassage(jobsData);
-      } 
+      }
     } catch (error) {
       navigate('/not-found', { replace: true });
     } finally {
@@ -100,8 +107,21 @@ const ShowJobs = ({ isDarkMode }) => {
     updateFilters({ service: selectedOptions.map(option => option.value) });
   };
 
+  const handlePageChange = (page) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set('page', page);
+    navigate(`?${searchParams.toString()}`, { replace: true });
+  };
+
   if (isLoading) {
     return <Loading />;
+  }
+
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
   }
 
   return (
@@ -137,6 +157,22 @@ const ShowJobs = ({ isDarkMode }) => {
           <p className="text-center text-main m-auto text-3xl">{NoAvailableMassage || 'No jobs available'}</p>
         )}
       </div>
+
+      {totalPages > 1 && (
+  <div className="flex flex-wrap justify-center gap-2 mt-4 sm:gap-4 md:mr-8">
+    {pageNumbers.map(number => (
+      <button
+        key={number}
+        onClick={() => handlePageChange(number)}
+        className={`px-3 py-1.5 text-sm sm:px-4 sm:py-2 sm:text-base md:px-5 md:py-2.5 md:text-lg lg:px-6 lg:py-3 lg:text-xl border rounded ${currentPage === number ? 'bg-main text-white' : 'text-main'}`}
+        disabled={currentPage === number}
+      >
+        {number}
+      </button>
+    ))}
+  </div>
+      )}
+
     </div>
   );
 };
