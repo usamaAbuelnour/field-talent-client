@@ -43,6 +43,7 @@ export default function Login({ handleLogin, isUserLoggedIn, redirectingUrl}) {
   }, [isUserLoggedIn, navigate,redirectingUrl]);
 
   const onSubmit = async (data) => {
+    if(isLoading) return;
     try {
       setIsLoading(true);
 
@@ -109,12 +110,14 @@ export default function Login({ handleLogin, isUserLoggedIn, redirectingUrl}) {
                 variant="fill"
                 text={isLoading ? "Logging in..." : "Login"}
                 className=" text-xl dark:text-white "
+                disabled={isLoading}
+
               />
             </div>
 
 
             <p className="text-center text-sm mt-4 dark:text-white">
-              Create new account?{" "}
+              Create new account?
               <Link to="/registration" className="text-blue-600 dark:text-accent">
                 Register here
               </Link>

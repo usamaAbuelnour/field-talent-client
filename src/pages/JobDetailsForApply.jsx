@@ -1,4 +1,3 @@
-import React from 'react';
 import JobDetails from '../components/JobDetailsForApplyComponents/JobDetails';
 import ClientDetails from '../components/JobDetailsForApplyComponents/ClientDetails';
 
