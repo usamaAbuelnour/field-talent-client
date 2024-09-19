@@ -10,6 +10,7 @@ import ShowProposal from "./pages/ShowProposal";
 import Footer from "./components/fixedComponents/Footer";
 import Addjob from "./pages/Addjob";
 import Profile from "./pages/Profile";
+import FreelancerProposals from "./pages/FreelancerProposals";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
 import JobDetailsForApply from "./pages/JobDetailsForApply";
 import "./App.css";
@@ -149,6 +150,17 @@ function App() {
             element={
               <PrivateRoute
                 element={<ShowProposal />}
+                isUserLoggedIn={user.isUserLoggedIn}
+                handleRedirectingUrl={handleRedirectingUrl}
+              />
+            }
+          />
+
+          <Route
+            path="/freelancerproposals"
+            element={
+              <PrivateRoute
+                element={<FreelancerProposals />}
                 isUserLoggedIn={user.isUserLoggedIn}
                 handleRedirectingUrl={handleRedirectingUrl}
               />
