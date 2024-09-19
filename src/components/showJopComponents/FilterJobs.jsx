@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import Select from 'react-select';
 import CustomOption from './CustomOption';
 
@@ -32,7 +31,7 @@ const FilterJobs = ({
   };
 
   return (
-    <div className="flex flex-col items-center mb-8  ">
+    <div className="flex flex-col items-center mb-8">
       <div className="flex flex-wrap justify-center gap-2 mb-4 w-full max-w-4xl">
         <Select
           className="w-full sm:w-60"
@@ -142,7 +141,7 @@ const FilterJobs = ({
               ...provided,
               color: whiteColor,
               ':hover': {
-                backgroundColor: 'red',
+                backgroundColor: mainColor,
                 color: whiteColor,
               },
             }),

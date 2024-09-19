@@ -34,8 +34,8 @@ api.interceptors.response.use(
 );
 const apiService = {
   addJob: (data) => api.post('/jobs', data),
-  getJobs: () => api.get('/jobs'),
-  loginUser: (credentials) => api.post('/login', credentials),
+  getJobs: (filters = {}) => api.get('/jobs', { params: filters }),
+    loginUser: (credentials) => api.post('/login', credentials),
   registerUser: (userData) => api.post('/register', userData),
 };
 
