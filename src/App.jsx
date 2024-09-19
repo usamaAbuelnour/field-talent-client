@@ -11,6 +11,7 @@ import Footer from "./components/fixedComponents/Footer";
 import Addjob from "./pages/Addjob";
 import Profile from "./pages/Profile";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
+import JobDetailsForApply from "./pages/JobDetailsForApply";
 import "./App.css";
 import { useState, useEffect } from "react";
 
@@ -153,6 +154,10 @@ function App() {
               />
             }
           />
+
+          <Route path="/job-details-for-apply" 
+          
+          element={<JobDetailsForApply />} />
 
           <Route
             path="*"

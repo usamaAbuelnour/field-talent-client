@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-
+import Button from '../uiComponents/Button';
 import React, { useState } from 'react';
 import { MapPin } from 'lucide-react';
 
@@ -66,10 +66,21 @@ const ShowJobCard = ({ job }) => {
               </span>
             ))}
           </div>
+          <div className="my-2 sm:my-0">
+            <Button
+              to="/job-details-for-apply" 
+              text="More Details"
+              variant="fill"
+              size="sm"
+              className="mx-2 rounded-full"
+            />
+          </div>
+
           <div className="flex items-center mt-1 sm:mt-0">
             <MapPin className="dark:text-white text-main" size={20} />
             <span className="dark:text-white ml-1 lg:text-xl sm:text-sm md:text-base">{job.location}</span>
           </div>
+          
         </div>
       </div>
     </div>
