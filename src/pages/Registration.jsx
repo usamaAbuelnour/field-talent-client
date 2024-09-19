@@ -3,53 +3,50 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import apiService from '../Api/Axios Service Configuration';
-
-
+import apiService from "../Api/Axios Service Configuration";
 
 import Button from "../components/uiComponents/Button";
 
-const schema = yup.object({
-  firstName: yup
-    .string()
-    .required("First Name is a required field!!"),
-  lastName: yup
-    .string()
-    .required("Last Name is a required field!!"),
-  email: yup
-    .string()
-    .required("Email is required")
-    .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,"Enter valid email")
-,
-  
-  password: yup
-    .string()
-    .min(8, "Password must be at least 8 characters")
-    .max(20, "Password can be at most 20 characters")
-    .required("Password is a required field"),
-}).required();
+const schema = yup
+  .object({
+    firstName: yup.string().required("First Name is a required field!!"),
+    lastName: yup.string().required("Last Name is a required field!!"),
+    email: yup
+      .string()
+      .required("Email is required")
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        "Enter valid email"
+      ),
+    password: yup
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .max(20, "Password can be at most 20 characters")
+      .required("Password is a required field"),
 
-export default function Registration({isUserLoggedIn,handleLogin, redirectingUrl}) {
+    role: yup.string().required("Please select a role"),
+  })
+  .required();
+
+export default function Registration({
+  isUserLoggedIn,
+  handleLogin,
+  redirectingUrl,
+}) {
   const navigate = useNavigate();
-  const [dataError,setError]=useState("")
-
-
-  
+  const [dataError, setError] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
 
-
-  useEffect(() => {     
-      window.scrollTo(0,0)
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
 
     if (isUserLoggedIn) {
       navigate(redirectingUrl, { replace: true });
-
     }
-  }, [isUserLoggedIn, navigate,redirectingUrl]);
+  }, [isUserLoggedIn, navigate, redirectingUrl]);
 
   const {
     register,
@@ -61,28 +58,41 @@ export default function Registration({isUserLoggedIn,handleLogin, redirectingUrl
 
   const onSubmit = async (data) => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const response = await apiService.registerUser(data);
-      {handleLogin (response.data.token,response.data.name,response.data.email)}
+      {
+        handleLogin(
+          response.data.token,
+          response.data.name,
+          response.data.email
+        );
+      }
       navigate(redirectingUrl, { replace: true });
-
     } catch (error) {
-      setError(error.response.data)
-    }finally{
-      setIsLoading(false)
-
+      setError(error.response.data);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="hero max-h-fit min-w-fit container pt-10">
+    <div className="hero max-h-fit min-w-fit container p-10">
       <div className="hero-content min-w-full flex-row-reverse">
         <div className="hidden md:block md:w-full mx-5 text-center relative">
-          <img src="Registraion.svg" alt="Register illustration" className="mb-0" />
+          <img
+            src="Registraion.svg"
+            alt="Register illustration"
+            className="mb-0"
+          />
         </div>
         <div className="card w-full bg-s-light shadow-2xl dark:bg-main-dark dark:bg-opacity-10">
-          <form className="card-body space-y-1" onSubmit={handleSubmit(onSubmit)}>
-            <h1 className=" text-main text-center text-3xl md:text-5xl font-bold dark:text-white">Register Now</h1>
+          <form
+            className="card-body space-y-1"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <h1 className=" text-main text-center text-3xl md:text-5xl font-bold dark:text-white">
+              Register Now
+            </h1>
 
             <div className="form-control">
               <label htmlFor="firstName" className="label">
@@ -98,7 +108,9 @@ export default function Registration({isUserLoggedIn,handleLogin, redirectingUrl
                 }`}
               />
               {errors.firstName && (
-                <p className="mt-1 text-sm text-red-600">{errors.firstName.message}</p>
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.firstName.message}
+                </p>
               )}
             </div>
 
@@ -116,7 +128,9 @@ export default function Registration({isUserLoggedIn,handleLogin, redirectingUrl
                 }`}
               />
               {errors.lastName && (
-                <p className="mt-1 text-sm text-red-600">{errors.lastName.message}</p>
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.lastName.message}
+                </p>
               )}
             </div>
 
@@ -134,7 +148,9 @@ export default function Registration({isUserLoggedIn,handleLogin, redirectingUrl
                 }`}
               />
               {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
@@ -152,14 +168,41 @@ export default function Registration({isUserLoggedIn,handleLogin, redirectingUrl
                 }`}
               />
               {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+
+            <div className="flex gap-3">
+              <input
+                type="radio"
+                id="client"
+                value="client"
+                {...register("role")}
+              />
+              <label htmlFor="client" className="text-main dark:text-accent">
+                Client
+              </label>
+              <input
+                type="radio"
+                id="engineer"
+                value="engineer"
+                {...register("role")}
+              />
+              <label htmlFor="engineer">Engineer</label>
+              {errors.role && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.role.message}
+                </p>
               )}
             </div>
 
             <div className="form-control mt-6">
-              
-            {dataError && (
-                <p className=" text-sm text-red-600 text-center ">{dataError}</p>
+              {dataError && (
+                <p className=" text-sm text-red-600 text-center ">
+                  {dataError}
+                </p>
               )}
               <Button
                 type="submit"
@@ -167,11 +210,13 @@ export default function Registration({isUserLoggedIn,handleLogin, redirectingUrl
                 text={isLoading ? "Logging in..." : "Register"}
                 className="text-xl"
               />
-            
             </div>
 
             <p className="text-center text-sm mt-4 dark:text-white">
-              Already have an account? <Link to="/login" className="text-blue-600 dark:text-accent">Login here</Link>
+              Already have an account?{" "}
+              <Link to="/login" className="text-blue-600 dark:text-accent">
+                Login here
+              </Link>
             </p>
           </form>
         </div>
