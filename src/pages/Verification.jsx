@@ -14,16 +14,17 @@ function Verification() {
 
 
    
-      <div className=" flex flex-col gap-10 h-screen items-center justify-center pt-28">
 
             
             
       <Stepper userType="client" />
-{/*<Stepper userType="engineer" />*/}
 
 
-          </div>
+
+
+
 )};
 
 
 export default Verification;
+{/*<Stepper userType="engineer" />*/}
