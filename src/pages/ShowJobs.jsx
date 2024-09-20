@@ -1,12 +1,10 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import FilterJobs from '../components/showJopComponents/FilterJobs';
 import ShowJobCard from '../components/showJopComponents/ShowJobCard';
 import Loading from '../components/uiComponents/Loading';
-import apiService from '../Api/AxiosServiceConfiguration';
 import { Bell } from 'lucide-react';
+import apiService from './../Api/AxiosServiceConfiguration';
 
 const ShowJobs = ({ isDarkMode }) => {
   const [jobs, setJobs] = useState([]);

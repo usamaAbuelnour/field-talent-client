@@ -1,16 +1,24 @@
+import React from 'react';
+import { useLocation } from 'react-router-dom';
 import JobDetails from '../components/JobDetailsForApplyComponents/JobDetails';
 import ClientDetails from '../components/JobDetailsForApplyComponents/ClientDetails';
 
 const JobDetailsForApply = () => {
+  const location = useLocation();
+  const job = location.state?.job;
+
   return (
-    <div className="container mx-auto my-10 p-6 ">
-      <div className="flex flex-col md:flex-row gap-8 mt-9">
-        <div className="md:flex-2 w-full md:w-1/5">
+    <div className="container mx-auto my-10 p-6 overflow-x-hidden">
+      <div className="flex flex-col lg:flex-row gap-8 mt-9">
+        <div className="md:flex-2 w-full lg:w-1/5">
           <ClientDetails />
         </div>
-
-        <div className="md:flex-1 w-full md:w-4/5">
-          <JobDetails />
+        <div className="md:flex-1 w-full lg:w-4/5">
+          {job ? (
+            <JobDetails job={job} />
+          ) : (
+            <div>No job data available. Please go back and try again.</div>
+          )}
         </div>
       </div>
     </div>

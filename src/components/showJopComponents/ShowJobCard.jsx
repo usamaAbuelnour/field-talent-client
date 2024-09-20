@@ -1,28 +1,25 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import Button from '../uiComponents/Button';
+import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { MapPin } from 'lucide-react';
 
 const ShowJobCard = ({ job }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const navigate = useNavigate();
+console.log(job);
 
-  const toggleShowMore = () => {
-    setIsExpanded(!isExpanded);
+  const toggleShowMore = (e) => {
+    e.stopPropagation();   
+     setIsExpanded(!isExpanded);
   };
 
-  const maxLength = 150;
+  const maxLength = 110;
 
   const truncateText = (text, maxLength) => {
     if (text.length <= maxLength) return text;
 
     let truncated = text.slice(0, maxLength);
-
-    const lastSpace = truncated.lastIndexOf(" ");
-
-    if (lastSpace !== -1) {
-      truncated = truncated.slice(0, lastSpace);
-    }
 
     return truncated.trim() + "...";
   };
@@ -30,9 +27,12 @@ const ShowJobCard = ({ job }) => {
 
   const displayedText = isExpanded ? job.description : truncateText(job.description, maxLength);
 
+  const handleCardClick = () => {
+    navigate('/job-details-for-apply', { state: { job } });
+  };
 
   return (
-    <div className=" dark:bg-main-dark dark:bg-opacity-20 dark:shadow-2xl  w-full px-2 sm:px-4 md:px-10 py-2 sm:py-11 mb-6 sm:mb-8 mx-auto rounded-lg shadow-md bg-gray-100 border border-main border-opacity-30 lg:px-24">
+    <div onClick={handleCardClick}  className=" dark:bg-main-dark dark:bg-opacity-20 dark:shadow-2xl cursor-pointer w-full px-2 sm:px-4 md:px-10 py-2 sm:py-11 mb-6 sm:mb-8 mx-auto rounded-lg shadow-md bg-gray-100 border border-main border-opacity-30 lg:px-24">
       <h2 className="  dark:text-accent font-bold mb-2 sm:mb-4 text-center p-1 sm:p-2 mx-auto w-full max-w-xs sm:max-w-sm md:max-w-md rounded-lg text-main text-sm sm:text-base md:text-lg lg:text-xl break-words">
         {job.title}
       </h2>
@@ -67,13 +67,7 @@ const ShowJobCard = ({ job }) => {
             ))}
           </div>
           <div className="my-2 sm:my-0">
-            <Button
-              to="/job-details-for-apply" 
-              text="More Details"
-              variant="fill"
-              size="sm"
-              className="mx-2 rounded-full"
-            />
+           
           </div>
 
           <div className="flex items-center mt-1 sm:mt-0">
