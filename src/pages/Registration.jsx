@@ -89,7 +89,7 @@ export default function Registration({
 
           <div className="flex flex-col lg:flex-row w-full space-y-4 lg:space-y-0 lg:space-x-4">
             <div
-              className={`card relative text-lg sm:text-xl md:text-2xl lg:text-3xl bg-base-300 border-2 border-gray-500 p-4 sm:p-5 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col items-center justify-center w-full lg:w-1/2
+              className={`card relative text-lg sm:text-xl md:text-2xl lg:text-3xl bg-base-300 border-2 p-4 sm:p-5 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col items-center justify-center w-full lg:w-1/2
       hover:scale-105 hover:bg-slate-100 dark:hover:bg-main-dark ${
         selectedType === "engineer" ? "border-accent" : "border-gray-500"
       }`}
@@ -101,7 +101,7 @@ export default function Registration({
                 className="absolute top-2 left-2 dark:text-accent"
               />
               <Check
-                className={`absolute top-2 right-2 bg-light-dark rounded-full text-white ${
+                className={`absolute top-2 right-2  rounded-full text-white ${
                   selectedType === "engineer"
                     ? "block bg-accent text-white"
                     : "bg-light-dark"
@@ -117,7 +117,7 @@ export default function Registration({
             </div>
 
             <div
-              className={`card bg-base-300 border-2 text-lg sm:text-xl md:text-2xl lg:text-3xl border-gray-500 p-4 sm:p-5 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col items-center justify-center w-full lg:w-1/2
+              className={`card bg-base-300 border-2 text-lg sm:text-xl md:text-2xl lg:text-3xl -4 sm:p-5 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col items-center justify-center w-full lg:w-1/2
       hover:scale-105 hover:bg-slate-100 dark:hover:bg-main-dark ${
         selectedType === "client" ? "border-accent" : "border-gray-500"
       }`}
@@ -129,7 +129,7 @@ export default function Registration({
                 className="absolute top-2 left-2 dark:text-accent"
               />
               <Check
-                className={`absolute top-2 right-2 bg-light-dark rounded-full text-white ${
+                className={`absolute top-2 right-2 rounded-full text-white ${
                   selectedType === "client"
                     ? "block bg-accent text-white"
                     : "bg-light-dark"

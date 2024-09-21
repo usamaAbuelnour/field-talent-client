@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import { MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
 import ApplyPopup from './ApplyPopup';
-import React, { useState } from 'react';
+import  { useState } from 'react';
 
 const FieldLoader = () => (
   <div className="inline-block w-4 h-4 border-t-2 border-main rounded-full animate-spin ml-2"></div>

@@ -7,6 +7,10 @@ import Select from "react-select";
 import { useState } from "react";
 
 function Profile() {
+
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
   const mainColor = "#3490dc";
   const whiteColor = "#ffffff";
   const user = {
@@ -40,7 +44,6 @@ function Profile() {
       ],
     },
     jobExperience: [
-     
       {
         date: "Jan 2021 - Dec 2021",
         title: "Frontend Developer",
@@ -61,32 +64,24 @@ function Profile() {
       },
     ],
     slides: [
-      {
-        url: "https://scontent.fcai22-1.fna.fbcdn.net/v/t1.6435-9/136825801_3749030028537769_6572915212363177294_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=13d280&_nc_ohc=7G-m0I6P6_MQ7kNvgFRq_ZI&_nc_ht=scontent.fcai22-1.fna&_nc_gid=AsxMnhnpIM1rWG8MKN1Y09G&oh=00_AYAI4JlDMo8ZDKcX7S3wv-d1fX3PbE4WSqT4kVxyXkUZcw&oe=6712C0BF",
-      },
-      {
-        url: "https://scontent.fcai22-4.fna.fbcdn.net/v/t1.6435-9/136972279_3749031121870993_2578192872088088597_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=13d280&_nc_ohc=ypvN9N5H_OIQ7kNvgFICOa9&_nc_ht=scontent.fcai22-4.fna&_nc_gid=AXiffzd3PPS4xvIBGIEeHQ9&oh=00_AYA-zXcKyyEHfwxEqjLtEWLNDPYE_kmJS7lUnyuOa3AUYQ&oe=6712C77F",
-      },
-      {
-        url: "https://scontent.fcai22-4.fna.fbcdn.net/v/t1.6435-9/136965044_3749031038537668_5911035214270310776_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=13d280&_nc_ohc=Ys7FcbsYuKkQ7kNvgFWh4Eo&_nc_ht=scontent.fcai22-4.fna&oh=00_AYCMWIWf2pRhf0vvdWfGNCCs9qs6ppliBVX6DS8RUt731w&oe=6712DFB2",
-      },
-
-      {
-        url: "https://www.facebook.com/photo?fbid=3749030865204352&set=pcb.3749035115203927",
-      },
-      {
-        url: "https://www.facebook.com/photo?fbid=3749030651871040&set=pcb.3749035115203927",
-      },
+      
+        "https://scontent.fcai22-1.fna.fbcdn.net/v/t1.6435-9/136825801_3749030028537769_6572915212363177294_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=13d280&_nc_ohc=7G-m0I6P6_MQ7kNvgFRq_ZI&_nc_ht=scontent.fcai22-1.fna&_nc_gid=AsxMnhnpIM1rWG8MKN1Y09G&oh=00_AYAI4JlDMo8ZDKcX7S3wv-d1fX3PbE4WSqT4kVxyXkUZcw&oe=6712C0BF"
+      ,
+      
+        "https://scontent.fcai22-4.fna.fbcdn.net/v/t1.6435-9/136972279_3749031121870993_2578192872088088597_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=13d280&_nc_ohc=ypvN9N5H_OIQ7kNvgFICOa9&_nc_ht=scontent.fcai22-4.fna&_nc_gid=AXiffzd3PPS4xvIBGIEeHQ9&oh=00_AYA-zXcKyyEHfwxEqjLtEWLNDPYE_kmJS7lUnyuOa3AUYQ&oe=6712C77F"
+      ,
+      
+        "https://scontent.fcai22-4.fna.fbcdn.net/v/t1.6435-9/136965044_3749031038537668_5911035214270310776_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=13d280&_nc_ohc=Ys7FcbsYuKkQ7kNvgFWh4Eo&_nc_ht=scontent.fcai22-4.fna&oh=00_AYCMWIWf2pRhf0vvdWfGNCCs9qs6ppliBVX6DS8RUt731w&oe=6712DFB2"
+      
     ],
-    education:
-      {graduationFrom:"cairo university",
-        graduationYear: "2020",
-        specialization: "Computer Science",
-        grade: "A",
-        finalProject: "Blockchain-Based Voting System",
-        projectGrade: "A+",
-      },
-    
+    education: {
+      graduationFrom: "cairo university",
+      graduationYear: "2020",
+      specialization: "Computer Science",
+      grade: "good",
+      finalProject: "Blockchain-Based Voting System",
+      projectGrade: "very good",
+    },
   };
 
   const options = [
@@ -95,23 +90,14 @@ function Profile() {
     { value: "vanilla", label: "Vanilla" },
   ];
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const prevSlide = () => {
-    const isFirstSlide = currentIndex === 0;
-    const newIndex = isFirstSlide ? user.slides.length - 1 : currentIndex - 1;
-    setCurrentIndex(newIndex);
+  const nextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % user.slides.length);
   };
 
-  const nextSlide = () => {
-    const isLastSlide = currentIndex === user.slides.length - 1;
-    const newIndex = isLastSlide ? 0 : currentIndex + 1;
-    setCurrentIndex(newIndex);
+  const prevImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + user.slides.length) % user.slides.length);
   };
 
-  const goToSlide = (slideIndex) => {
-    setCurrentIndex(slideIndex);
-  };
   return (
     <>
       <div className="relative pt-20 mb-10 min-h-screen bg-base-200 dark:bg-dark text-text dark:text-light-dark">
@@ -202,8 +188,13 @@ function Profile() {
           </aside>
 
           <main className="grow ml-0 lg:pb-10 lg:ml-8">
-            <div className="max-w-[1400px] h-[780px] dark:bg-main-dark w-full m-auto py-16 px-4 relative group">
-              <a href="#updateProjectPhoto" className="flex gap-2">
+            
+            
+            
+            
+            
+            <div className=" dark:bg-main-dark w-full m-auto  px-4 relative group">
+              <a href="#updateProjectPhoto" className="flex gap-2 w-full text-center m-10">
                 <Plus
                   className="
                    text-xl cursor-pointer  mr-1  text-main dark:text-accent "
@@ -211,28 +202,33 @@ function Profile() {
                 />
                 <span>Add Before And after</span>
               </a>
-              <div
-                style={{
-                  backgroundImage: `url(${user.slides[currentIndex].url})`,
-                }}
-                className="w-full h-full rounded-2xl bg-center bg-cover duration-500"
-              ></div>
-              <div className="hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
-                <ChevronLeft onClick={prevSlide} size={30} />
-              </div>
-              <div className="hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
-                <ChevronRight onClick={nextSlide} size={30} />
-              </div>
-              <div className="flex top-4 justify-center py-2">
-                {user.slides.map((slide, slideIndex) => (
-                  <div
-                    key={slideIndex}
-                    onClick={() => goToSlide(slideIndex)}
-                    className="text-2xl cursor-pointer"
-                  ></div>
-                ))}
-              </div>
+              <div className="relative flex items-center justify-center mb-6">
+              <button
+                onClick={prevImage}
+                className="absolute left-2 bg-main text-white p-2 rounded-full hover:bg-opacity-75 transition duration-300 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+                aria-label="Previous image"
+              >
+                <ChevronLeft size={24} />
+              </button>
+              <img
+                src={user.slides[currentImageIndex]}
+                alt="Job"
+                className="w-full h-64 object-cover max-w-[80%] border rounded"
+              />
+              <button
+                onClick={nextImage}
+                className="absolute right-2 bg-main text-white p-2 rounded-full hover:bg-opacity-75 transition duration-300 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+                aria-label="Next image"
+              >
+                <ChevronRight size={24} />
+              </button>
             </div>
+            </div>
+           
+
+
+
+
 
             <div className="experience dark:bg-main-dark mt-10">
               <h1 className="text-main dark:text-accent text-center text-4xl m-3">
@@ -247,7 +243,7 @@ function Profile() {
                 <span> Add job</span>
               </a>
               <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
-                {user.jobExperience.map((job,index) => (
+                {user.jobExperience.map((job, index) => (
                   <li key={job}>
                     <div className="timeline-middle">
                       <svg
@@ -263,7 +259,11 @@ function Profile() {
                         />
                       </svg>
                     </div>
-                    <div className={`${index%2 !== 0?"timeline-end":"timeline-start"} mb-10 md:text-end`}>
+                    <div
+                      className={`${
+                        index % 2 !== 0 ? "timeline-end" : "timeline-start"
+                      } mb-10 md:text-end`}
+                    >
                       <time className="font-mono italic">{job.date}</time>
                       <div className="text-lg font-black">{job.title}</div>
                       {job.description}
@@ -271,9 +271,7 @@ function Profile() {
                     <hr />
                   </li>
                 ))}
-              
-
-            </ul>
+              </ul>
             </div>
 
             <section className="education text-center flex  mt-10 bg-white  dark:bg-main-dark p-6 rounded-lg shadow-md ">
@@ -294,11 +292,15 @@ function Profile() {
                     Graduation from {user.education.graduationFrom}
                   </p>
                   <p>Civil Engineering</p>
-                  <p className="italic">Graduation Date: {user.education.graduationYear}</p>
+                  <p className="italic">
+                    Graduation Date: {user.education.graduationYear}
+                  </p>
                   <p>Grade: {user.education.grade}</p>
                   <p>
                     Final Project:
-                    <span className="font-semibold">{user.education.finalProject}</span>
+                    <span className="font-semibold">
+                      {user.education.finalProject}
+                    </span>
                   </p>
                   <p>
                     Project Grade:
