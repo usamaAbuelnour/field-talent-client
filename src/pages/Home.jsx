@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 /* eslint-disable react/prop-types */
 import {
   Building2,
@@ -51,20 +52,26 @@ const services = [
   },
 ];
 
-function Home({isDarkMode,handleRedirectingUrl}) {
-  handleRedirectingUrl("/")
+function Home({ isDarkMode, handleRedirectingUrl }) {
+  useEffect(() => {
+    if (typeof handleRedirectingUrl === 'function') {
+      handleRedirectingUrl("/");
+    } else {
+      console.error('handleRedirectingUrl is not a function');
+    }
+  }, [handleRedirectingUrl]); 
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    
   }, []);
   return (
     <main
       className={`
  container mx-auto my-12 px-6 py-14 `}
     >
+ 
       <div className="hero flex flex-col  md:flex-row justify-between items-center mb-12">
-        <div className="about text-center md:text-left p-6 md:p-14 flex flex-col justify-center">
+        <div className="about  text-center md:text-left p-6 md:p-14 flex flex-col justify-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-main dark:text-accent ">
             Field Talent
           </h1>
@@ -74,20 +81,24 @@ function Home({isDarkMode,handleRedirectingUrl}) {
             advice or looking to hire a skilled engineer, Field Talent makes the
             process seamless and efficient.
           </p>
-          <div className="card-actions justify-center md:justify-start">
+          <div className="card-actions relative justify-center md:justify-start">
             <Button to="/showjobs" text="Show Jobs" variant="fill" size="lg" />
+
           </div>
         </div>
-        {isDarkMode? <img
-          src="feildtalentlogodark.png"
-          alt="Field Talent Logo"
-          className="img-fluid w-full md:w-1/2 mt-8 md:mt-0 rounded-lg shadow-lg"
-        />:
-        <img
-          src="feildtalentlogo.png"
-          alt="Field Talent Logo"
-          className="img-fluid w-full md:w-1/2 mt-8 md:mt-0 rounded-lg shadow-lg"
-        />}
+        {isDarkMode ? (
+          <img
+            src="feildtalentlogodark.png"
+            alt="Field Talent Logo"
+            className="img-fluid w-full md:w-1/2 mt-8 md:mt-0 rounded-lg shadow-lg"
+          />
+        ) : (
+          <img
+            src="feildtalentlogo.png"
+            alt="Field Talent Logo"
+            className="img-fluid w-full md:w-1/2 mt-8 md:mt-0 rounded-lg shadow-lg"
+          />
+        )}
       </div>
       <hr className="my-12 border-gray-200" />
       <Section title="Our Categories" items={categories} />

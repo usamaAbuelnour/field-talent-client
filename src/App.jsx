@@ -13,7 +13,7 @@ import Profile from "./pages/Profile";
 import FreelancerProposals from "./pages/FreelancerProposals";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
 import JobDetailsForApply from "./pages/JobDetailsForApply";
-import Verification from "./pages/Verification"
+import Verification from "./pages/Verification";
 import "./App.css";
 import { useState, useEffect } from "react";
 
@@ -111,11 +111,6 @@ function App() {
             }
           />
 
-
-
-
-
-
           <Route
             path="/showjobs"
             element={
@@ -146,7 +141,7 @@ function App() {
               />
             }
           />
-              <Route
+          <Route
             path="/verification"
             element={
               <PrivateRoute
@@ -178,9 +173,10 @@ function App() {
             }
           />
 
-          <Route path="/job-details-for-apply" 
-          
-          element={<JobDetailsForApply />} />
+          <Route
+            path="/job-details-for-apply"
+            element={<JobDetailsForApply />}
+          />
 
           <Route
             path="*"

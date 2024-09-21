@@ -9,7 +9,7 @@ const Button = ({
   size = "md",
   disabled = false,
   className = "",
-  onClick=""
+  onClick=null
 }) => {
   const baseClasses =
     "btn font-semibold rounded focus:outline-none focus:ring-2 focus:ring-opacity-50";
