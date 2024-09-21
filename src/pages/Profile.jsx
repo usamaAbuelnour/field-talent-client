@@ -33,16 +33,7 @@ function Profile() {
       "Site Supervision",
       "Construction Safety",
     ],
-    portfolioImages: {
-      before: [
-        "https://example.com/before-image1.jpg",
-        "https://example.com/before-image2.jpg",
-      ],
-      after: [
-        "https://example.com/after-image1.jpg",
-        "https://example.com/after-image2.jpg",
-      ],
-    },
+   
     jobExperience: [
       {
         date: "Jan 2021 - Dec 2021",

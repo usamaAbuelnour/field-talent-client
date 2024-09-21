@@ -1,6 +1,4 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +6,8 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Button from "../components/uiComponents/Button";
 import apiService from '../Api/AxiosServiceConfiguration';
+import PropTypes from 'prop-types';
+
 const schema = yup.object({
   email: yup
     .string()
@@ -35,12 +35,19 @@ export default function Login({ handleLogin, isUserLoggedIn, redirectingUrl}) {
   });
 
   useEffect(() => {
-    window.scrollTo(0,0)
-
+    console.log('handleLogin type:', typeof handleLogin);
+    console.log('redirectingUrl:', redirectingUrl);
+    console.log('isUserLoggedIn:', isUserLoggedIn);
+  
+    window.scrollTo(0, 0);
+  
     if (isUserLoggedIn) {
+      console.log('User is logged in, navigating to:', redirectingUrl);
       navigate(redirectingUrl, { replace: true });
-    }``
-  }, [isUserLoggedIn, navigate,redirectingUrl]);
+    }
+  }, [isUserLoggedIn, navigate, redirectingUrl, handleLogin]);
+  
+  
 
   const onSubmit = async (data) => {
     if(isLoading) return;
@@ -49,7 +56,12 @@ export default function Login({ handleLogin, isUserLoggedIn, redirectingUrl}) {
 
       const response = await apiService.loginUser(data);
 
-      handleLogin(response.data.token, response.data.name, response.data.email);
+      if (typeof handleLogin === 'function') {
+        handleLogin(response.data.token, response.data.name, response.data.email);
+      } else {
+        console.error('handleLogin is not a function');
+      } 
+      
       navigate(redirectingUrl, { replace: true });
     } catch (error) {
       setError(error.response.data)
@@ -98,7 +110,6 @@ export default function Login({ handleLogin, isUserLoggedIn, redirectingUrl}) {
                   errors.password ? "border-red-500" : "border-gray-300"
                 }`}
               />
-             
             </div>
 
             {dataError && (
@@ -110,12 +121,11 @@ export default function Login({ handleLogin, isUserLoggedIn, redirectingUrl}) {
                 variant="fill"
                 text={isLoading ? "Logging in..." : "Login"}
                 className=" text-xl dark:text-white "
+
                 disabled={isLoading}
 
               />
             </div>
-
-
             <p className="text-center text-sm mt-4 dark:text-white">
               Create new account?
               <Link to="/registration" className="text-blue-600 dark:text-accent">
@@ -128,3 +138,8 @@ export default function Login({ handleLogin, isUserLoggedIn, redirectingUrl}) {
     </div>
   );
 }
+Login.propTypes = {
+  isUserLoggedIn: PropTypes.bool,
+  handleLogin: PropTypes.func.isRequired,
+  redirectingUrl: PropTypes.string.isRequired
+};
