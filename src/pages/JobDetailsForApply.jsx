@@ -1,7 +1,7 @@
-import React from 'react';
 import { useLocation } from 'react-router-dom';
 import JobDetails from '../components/JobDetailsForApplyComponents/JobDetails';
 import ClientDetails from '../components/JobDetailsForApplyComponents/ClientDetails';
+import { Navigate } from "react-router-dom";
 
 const JobDetailsForApply = () => {
   const location = useLocation();
@@ -17,9 +17,8 @@ const JobDetailsForApply = () => {
           <div className="md:flex-1 w-full lg:w-4/5 order-1 lg:order-2">
             {job ? (
               <JobDetails job={job} />
-            ) : (
-              <div>No job data available. Please go back and try again.</div>
-            )}
+            ) : 
+            <Navigate to="/NotFound"/>}
           </div>
         </div>
       </div>

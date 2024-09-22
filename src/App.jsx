@@ -22,7 +22,9 @@ function App() {
     name: "",
     email: "",
     token: "",
+    userType: "",
     isUserLoggedIn: false,
+    isVerified:false
   };
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem("darkMode");
@@ -46,12 +48,14 @@ function App() {
     localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
   }, [isDarkMode, redirectingUrl]);
 
-  const handleLogin = (token, name, email) => {
+  const handleLogin = (token, name, email, userType,isVerified) => {
     const newUser = {
       ...userSchema,
       email: email,
       name: name,
       token: token,
+      userType: userType,
+      isVerified:isVerified,
       isUserLoggedIn: true,
     };
     setUser(newUser);
@@ -70,6 +74,7 @@ function App() {
   const handleRedirectingUrl = (lastRedirectingUrl) => {
     setRedirectingUrl(lastRedirectingUrl);
   };
+  console.log(user);
 
   return (
     <>
@@ -87,9 +92,11 @@ function App() {
               <Home
                 isDarkMode={isDarkMode}
                 handleRedirectingUrl={handleRedirectingUrl}
+                userType={user.userType}
               />
             }
           />
+
           <Route
             path="login"
             element={
@@ -104,6 +111,7 @@ function App() {
             path="registration"
             element={
               <Registration
+              isVerified={user.isVerified}
                 redirectingUrl={redirectingUrl}
                 handleLogin={handleLogin}
                 isUserLoggedIn={user.isUserLoggedIn}
@@ -118,46 +126,8 @@ function App() {
                 element={<ShowJobs isDarkMode={isDarkMode} />}
                 handleRedirectingUrl={handleRedirectingUrl}
                 isUserLoggedIn={user.isUserLoggedIn}
-              />
-            }
-          />
-          <Route
-            path="/add-job"
-            element={
-              <PrivateRoute
-                element={<Addjob token={user.token} />}
-                handleRedirectingUrl={handleRedirectingUrl}
-                isUserLoggedIn={user.isUserLoggedIn}
-              />
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <PrivateRoute
-                element={<Profile user={user} />}
-                isUserLoggedIn={user.isUserLoggedIn}
-                handleRedirectingUrl={handleRedirectingUrl}
-              />
-            }
-          />
-          <Route
-            path="/verification"
-            element={
-              <PrivateRoute
-                element={<Verification />}
-                isUserLoggedIn={user.isUserLoggedIn}
-                handleRedirectingUrl={handleRedirectingUrl}
-              />
-            }
-          />
-          <Route
-            path="/showproposal"
-            element={
-              <PrivateRoute
-                element={<ShowProposal />}
-                isUserLoggedIn={user.isUserLoggedIn}
-                handleRedirectingUrl={handleRedirectingUrl}
+                pageAllowFor={"engineer"}
+                userType={user.userType}
               />
             }
           />
@@ -169,13 +139,74 @@ function App() {
                 element={<FreelancerProposals />}
                 isUserLoggedIn={user.isUserLoggedIn}
                 handleRedirectingUrl={handleRedirectingUrl}
+                pageAllowFor={"engineer"}
+                userType={user.userType}
               />
             }
           />
 
           <Route
             path="/job-details-for-apply"
-            element={<JobDetailsForApply />}
+            element={
+              <PrivateRoute
+                element={<JobDetailsForApply />}
+                isUserLoggedIn={user.isUserLoggedIn}
+                handleRedirectingUrl={handleRedirectingUrl}
+                pageAllowFor={"engineer"}
+                userType={user.userType}
+              />
+            }
+          />
+
+          <Route
+            path="/add-job"
+            element={
+              <PrivateRoute
+                element={<Addjob token={user.token} />}
+                handleRedirectingUrl={handleRedirectingUrl}
+                isUserLoggedIn={user.isUserLoggedIn}
+                pageAllowFor={"client"}
+                userType={user.userType}
+              />
+            }
+          />
+
+          <Route
+            path="/showproposal"
+            element={
+              <PrivateRoute
+                element={<ShowProposal />}
+                isUserLoggedIn={user.isUserLoggedIn}
+                handleRedirectingUrl={handleRedirectingUrl}
+                pageAllowFor={"client"}
+                userType={user.userType}
+              />
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute
+                element={<Profile user={user} />}
+                isUserLoggedIn={user.isUserLoggedIn}
+                handleRedirectingUrl={handleRedirectingUrl}
+              />
+            }
+          />
+
+          <Route
+            path="/verification"
+            element={
+              <PrivateRoute
+                element={<Verification userType={user.userType}
+                isVerified={user.isVerified} />}
+                isUserLoggedIn={user.isUserLoggedIn}
+                handleRedirectingUrl={handleRedirectingUrl}
+                pageAllowFor={user.userType}
+                userType={user.userType}
+              />
+            }
           />
 
           <Route

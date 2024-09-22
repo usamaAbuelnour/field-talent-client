@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
+import  { useState } from 'react';
 
 const ApplyPopup = ({ closePopup }) => {
   const [applicationText, setApplicationText] = useState('');
