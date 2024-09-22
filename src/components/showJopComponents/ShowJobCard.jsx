@@ -1,12 +1,13 @@
+/* eslint-disable react/prop-types */
 
 import { useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { MapPin } from 'lucide-react';
 
 const ShowJobCard = ({ job }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const navigate = useNavigate();
-z
+
   const toggleShowMore = (e) => {
     e.stopPropagation();   
      setIsExpanded(!isExpanded);
@@ -42,12 +43,12 @@ z
       <p className="dark:text-white mb-2 sm:mb-4 p-2 sm:p-4 rounded-md text-xs sm:text-sm md:text-base break-words">
         {displayedText}
         {job.description.length > maxLength && (
-          <h6
+          <span
             onClick={toggleShowMore}
-            className="dark:text-white text-main cursor-pointer mt-2  font-semibold text-decoration-line: underline"
+            className="dark:text-white block text-main cursor-pointer mt-2  font-semibold text-decoration-line: underline"
           >
             {isExpanded ? 'Show Less' : 'Show More'}
-          </h6>
+          </span>
         )}
       </p>
      
