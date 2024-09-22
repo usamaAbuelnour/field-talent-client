@@ -78,7 +78,6 @@ const Addjob = () => {
     setIsSubmitting(true);
     try {
       const response = await apiService.addJob(formData);
-      navigate("/showjobs");
     } catch (error) {
       console.error("Error adding job:", error);
       setErrors({ submit: "Failed to submit the job. Please try again." });

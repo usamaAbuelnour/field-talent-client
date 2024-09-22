@@ -17,10 +17,10 @@ const SocialIcon = ({ Icon, href }) => (
 function Footer() {
   return (
     <div className='relative'>
-      <svg width="100%" height="100%" id="svg" viewBox="0 0 1440 390" xmlns="http://www.w3.org/2000/svg" className="transition duration-300 ease-in-out delay-150">
+      <svg width="100%" height="100%" id="svg" viewBox="0 0 1440 390" xmlns="http://www.w3.org/2000/svg" className="transition duration-300 ease-in-out delay-150 mt-0 pt-0">
         <path d="M 0,400 L 0,150 C 238.5,165.5 477,181 717,181 C 957,181 1198.5,165.5 1440,150 L 1440,400 L 0,400 Z" stroke="none" strokeWidth="0" fill="#115e59" fillOpacity="1" className="transition-all duration-300 ease-in-out delay-150 path-0 "></path>
         </svg> 
-      <footer className="bg-main absolute md:top-52 top-24 w-full text-white">
+      <footer className="bg-main absolute md:top-52 top-24 w-full text-white mt-0">
 
         <div className="container mx-auto px-4 ">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">

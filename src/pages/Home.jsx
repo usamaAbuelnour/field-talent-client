@@ -52,13 +52,11 @@ const services = [
   },
 ];
 
-function Home({ isDarkMode, handleRedirectingUrl }) {
+function Home({ isDarkMode, handleRedirectingUrl,userType }) {
   useEffect(() => {
-    if (typeof handleRedirectingUrl === 'function') {
-      handleRedirectingUrl("/");
-    } else {
-      console.error('handleRedirectingUrl is not a function');
-    }
+   
+   handleRedirectingUrl("/");
+   
   }, [handleRedirectingUrl]); 
 
   useEffect(() => {
@@ -81,10 +79,15 @@ function Home({ isDarkMode, handleRedirectingUrl }) {
             advice or looking to hire a skilled engineer, Field Talent makes the
             process seamless and efficient.
           </p>
-          <div className="card-actions relative justify-center md:justify-start">
-            <Button to="/showjobs" text="Show Jobs" variant="fill" size="lg" />
-
+          { userType ?
+           <div className="card-actions relative justify-center md:justify-start">
+            <Button to={userType==="engineer"?"/showjobs":"/add-job"} text={userType==="engineer"?"Show Jobs":"Add job"} variant="fill" size="lg" />
           </div>
+          : <div className="card-actions relative justify-center md:justify-start">
+          <Button to="/login" text="join us now"  variant="fill" size="lg" />
+        </div>
+          }
+         
         </div>
         {isDarkMode ? (
           <img

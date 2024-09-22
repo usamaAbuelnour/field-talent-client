@@ -7,7 +7,7 @@ import { DarkModeSwitch } from "react-toggle-dark-mode";
 
 import {
   UserPen ,
-  PlusCircle,
+  BriefcaseBusiness,
   LogIn,
   LogOut,
   Menu,
@@ -15,6 +15,9 @@ import {
   ChevronDown,
 } from "lucide-react";
 import NavLink from "../uiComponents/NavLink";
+
+
+
 export default function NavBar({
   handleLogout,
   user,
@@ -27,7 +30,7 @@ export default function NavBar({
   const [inLogin, setInLogin] = useState(false);
   let location = useLocation();
 
-  const { isUserLoggedIn, name, email } = user;
+  const { isUserLoggedIn, name, email,userType } = user;
   useEffect(() => {
     setInLogin(
       location.pathname === "/login" || location.pathname === "/registration"
@@ -72,14 +75,19 @@ export default function NavBar({
               label="Field Talent"
               isfrommob={true}
             />
-            <div className=" md:ml-6 flex ">
+            {userType&&
+            
+             <div className=" md:ml-6 flex ">
               <NavLink
-                to="/add-job"
-                icon={PlusCircle}
-                label="Add Job"
+                to={userType==="engineer"?"/FreelancerProposals":"/showproposal"}
+                icon={BriefcaseBusiness}
+                label={userType==="engineer"?"show my proposals":"my jobs"}
                 isfrommob={true}
               />
             </div>
+            
+            }
+           
           </div>
  
 

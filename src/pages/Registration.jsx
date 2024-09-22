@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -25,10 +26,15 @@ const schema = yup
       .min(8, "Password must be at least 8 characters")
       .max(20, "Password can be at most 20 characters")
       .required("Password is a required field"),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref("password"), null], "Passwords must match")
+      .required("Confirm Password is a required field"),
   })
   .required();
 
 export default function Registration({
+  isVerified,
   isUserLoggedIn,
   handleLogin,
   redirectingUrl,
@@ -38,13 +44,14 @@ export default function Registration({
   const [isLoading, setIsLoading] = useState(false);
   const [selectedType, setSelectedType] = useState("");
   const [currentStage, setCurrentStage] = useState(1);
+
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    if (isUserLoggedIn) {
+    if (isUserLoggedIn && isVerified) {
       navigate(redirectingUrl, { replace: true });
     }
-  }, [isUserLoggedIn, navigate, redirectingUrl]);
+  }, [isUserLoggedIn, navigate, redirectingUrl, isVerified]);
 
   const {
     register,
@@ -58,12 +65,32 @@ export default function Registration({
     if (isLoading) return;
 
     data.type = selectedType;
-    console.log("type", data);
+
     try {
       setIsLoading(true);
       const response = await apiService.registerUser(data);
-      handleLogin(response.data.token, response.data.name, response.data.email);
-      navigate(redirectingUrl, { replace: true });
+
+      let userType = "";
+      let isVerified = false;
+
+      if (response.data.hasOwnProperty("engineerId")) {
+        userType = "engineer";
+        isVerified = response.data.engineerId !== null;
+      } else if (response.data.hasOwnProperty("clientId")) {
+        userType = "client";
+        isVerified = response.data.clientId !== null;
+      } handleLogin(
+        response.data.token,
+        response.data.name,
+        response.data.email,
+        userType,
+        isVerified
+      );
+
+      navigate("/verification", { replace: true });
+
+     
+
     } catch (error) {
       setError(error.response.data);
     } finally {
@@ -75,12 +102,10 @@ export default function Registration({
     if (selectedType) {
       setCurrentStage(2);
     }
-    console.log("work");
   };
-  console.log(selectedType, currentStage);
 
   return (
-    <div className="hero max-h-fit min-w-fit container p-10">
+    <div className="hero max-h-fit min-w-fit container pt-10">
       {currentStage === 1 && (
         <div className="stageOne min-h-screen p-6 lg:p-14">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center mb-8 sm:mb-10 text-main dark:text-accent font-bold">
@@ -168,61 +193,65 @@ export default function Registration({
       )}
 
       {currentStage === 2 && (
-        <div className="hero-content stageTwo min-w-full flex-row-reverse mt-10">
-          <div className="hidden md:block md:w-full mx-5 text-center relative">
+        <div className="hero-content stageTwo min-w-full flex-row-reverse mt-0">
+          <div className="hidden md:block md:w-full  mx-5 text-center relative">
             <img
               src="Registraion.svg"
               alt="Register illustration"
               className="mb-0"
             />
           </div>
-          <div className="card w-full bg-s-light shadow-2xl dark:bg-main-dark dark:bg-opacity-10">
-            <form
-              className="card-body space-y-1"
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <h1 className="text-main text-center text-3xl md:text-5xl font-bold dark:text-white">
+          <div className="card w-full bg-s-light shadow-2xl  dark:bg-main-dark dark:bg-opacity-10">
+            <form className="card-body " onSubmit={handleSubmit(onSubmit)}>
+              <h1 className="text-main text-center text-3xl   md:text-4xl font-bold dark:text-white">
                 Register Now
               </h1>
+              <div className="flex justify-between gap-2">
+                <div className="form-control w-full">
+                  <label htmlFor="firstName" className="label">
+                    <span className="label-text dark:text-white">
+                      First Name
+                    </span>
+                  </label>
+                  <input
+                    id="firstName"
+                    type="text"
+                    placeholder="Enter your first name"
+                    autoComplete="given-name"
+                    {...register("firstName")}
+                    className={`input input-bordered w-full ${
+                      errors.firstName ? "border-red-500" : "border-gray-300"
+                    }`}
+                  />
+                  {errors.firstName && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.firstName.message}
+                    </p>
+                  )}
+                </div>
 
-              <div className="form-control">
-                <label htmlFor="firstName" className="label">
-                  <span className="label-text dark:text-white">First Name</span>
-                </label>
-                <input
-                  id="firstName"
-                  type="text"
-                  placeholder="Enter your first name"
-                  {...register("firstName")}
-                  className={`input input-bordered w-full ${
-                    errors.firstName ? "border-red-500" : "border-gray-300"
-                  }`}
-                />
-                {errors.firstName && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {errors.firstName.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="form-control">
-                <label htmlFor="lastName" className="label">
-                  <span className="label-text dark:text-white">Last Name</span>
-                </label>
-                <input
-                  id="lastName"
-                  type="text"
-                  placeholder="Enter your last name"
-                  {...register("lastName")}
-                  className={`input input-bordered w-full ${
-                    errors.lastName ? "border-red-500" : "border-gray-300"
-                  }`}
-                />
-                {errors.lastName && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {errors.lastName.message}
-                  </p>
-                )}
+                <div className="form-control w-full">
+                  <label htmlFor="lastName" className="label">
+                    <span className="label-text dark:text-white">
+                      Last Name
+                    </span>
+                  </label>
+                  <input
+                    id="lastName"
+                    type="text"
+                    placeholder="Enter your last name"
+                    autoComplete="family-name"
+                    {...register("lastName")}
+                    className={`input input-bordered w-full ${
+                      errors.lastName ? "border-red-500" : "border-gray-300"
+                    }`}
+                  />
+                  {errors.lastName && (
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.lastName.message}
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div className="form-control">
@@ -231,8 +260,8 @@ export default function Registration({
                 </label>
                 <input
                   id="email"
-                  type="email"
-                  placeholder="Enter your email"
+                  placeholder="Email"
+                  autoComplete="email"
                   {...register("email")}
                   className={`input input-bordered w-full ${
                     errors.email ? "border-red-500" : "border-gray-300"
@@ -252,7 +281,8 @@ export default function Registration({
                 <input
                   id="password"
                   type="password"
-                  placeholder="Enter your password"
+                  placeholder="Enter a strong password"
+                  autoComplete="new-password"
                   {...register("password")}
                   className={`input input-bordered w-full ${
                     errors.password ? "border-red-500" : "border-gray-300"
@@ -265,21 +295,46 @@ export default function Registration({
                 )}
               </div>
 
-              <div className="form-control mt-6">
-                <Button
-                  type="submit"
-                  variant="fill"
-                  size="lg"
-                  text={isLoading ? "Registering..." : "Register"}
-                  disabled={isLoading}
+              <div className="form-control">
+                <label htmlFor="confirmPassword" className="label">
+                  <span className="label-text dark:text-white">
+                    Confirm Password
+                  </span>
+                </label>
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="Confirm your password"
+                  autoComplete="new-password"
+                  {...register("confirmPassword")}
+                  className={`input input-bordered w-full ${
+                    errors.confirmPassword
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  }`}
                 />
+                {errors.confirmPassword && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
               </div>
 
               {dataError && (
-                <p className="mt-2 text-sm text-red-600 text-center">
+                <p className="mt-1 text-sm text-red-600 text-center">
                   {dataError}
                 </p>
               )}
+
+              <div className="form-control mt-6">
+                <Button
+                  variant="fill"
+                  size="lg"
+                  text={isLoading ? "Registering..." : "Register"}
+                  type="submit"
+                  disabled={isLoading}
+                />
+              </div>
             </form>
           </div>
         </div>

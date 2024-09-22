@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
-import  { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Button from "../components/uiComponents/Button";
 import axios from "axios";
 import { Stepper } from "react-form-stepper";
+import { useNavigate } from "react-router-dom"; 
 
 const STEPS = {
   client: ["Contact", "Identity Authentication"],
@@ -23,7 +24,8 @@ const LOCATIONS = [
   "Nasr City",
 ];
 
-function Verification({ userType = "engineer" }) {
+function Verification({ userType  }) {
+  const navigate = useNavigate(); 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -75,8 +77,8 @@ function Verification({ userType = "engineer" }) {
 
   const handleInputChange = useCallback((e) => {
     const { name, value, files } = e.target;
-    if (name === 'phoneNumber' || name === 'whatsAppNumber') {
-      const numericValue = value.replace(/\D/g, '').slice(0, 11);
+    if (name === "phoneNumber" || name === "whatsAppNumber") {
+      const numericValue = value.replace(/\D/g, "").slice(0, 11);
       setFormData((prev) => ({
         ...prev,
         [name]: numericValue,
@@ -89,10 +91,8 @@ function Verification({ userType = "engineer" }) {
     }
   }, []);
 
-
   const handleSubmit = async () => {
     if (!validateForm()) return;
-    console.log(formData)
     setIsSubmitting(true);
     try {
       const response = await axios.post("https://your-backend-api.com/submit", {
@@ -202,9 +202,13 @@ function Verification({ userType = "engineer" }) {
     setCurrentStep((prev) => prev - 1);
   };
 
+  const handleSkip = () => {
+    navigate("/"); 
+  };
+
   return (
-    <div className="max-w-2xl min-h-screen flex flex-col mx-auto pt-8 px-10">
-      <div className="mb-8">
+    <div className="max-w-2xl min-h-screen flex flex-col mx-auto py-10 px-10">
+      <div className="">
         <Stepper
           activeStep={currentStep - 1}
           steps={steps.map((label) => ({ label }))}
@@ -217,12 +221,19 @@ function Verification({ userType = "engineer" }) {
         />
       </div>
 
-      <div className="bg-white  shadow-main min-h-fit dark:bg-gray-800 rounded-lg shadow-sm p-6 flex-grow">
+      <div className="bg-white shadow-main min-h-fit dark:bg-gray-800 py-1 rounded-lg shadow-sm px-6 flex-grow">
         <form className="space-y-6">{renderStepContent()}</form>
       </div>
 
-      <div className="flex justify-between mt-8 sticky -bottom-5 bg-white dark:bg-gray-800 p-4">
-        <Button
+      <div className="flex justify-between mt-8 sticky  bg-white dark:bg-gray-800 ">
+      <Button
+          onClick={handleSkip} 
+          text="Skip"
+          variant="outline"
+        />
+        <div className="flex gap-3">
+
+     <Button
           onClick={handlePrevious}
           text="Previous"
           disabled={currentStep === 1}
@@ -234,6 +245,10 @@ function Verification({ userType = "engineer" }) {
           className="btn btn-primary"
           disabled={isSubmitting}
         />
+      
+
+        </div>
+   
       </div>
     </div>
   );
@@ -268,11 +283,12 @@ function FormField({ label, name, type, value, onChange, error, options }) {
           className={`input input-bordered w-full ${
             type === "file" ? "file-input" : ""
           }`}
-          value={type !== "file" ? value : undefined}
+          value={value}
           onChange={onChange}
+          accept={type === "file" ? "image/*" : undefined}
         />
       )}
-      {error && <span className="text-error text-sm">{error}</span>}
+      {error && <span className="text-error">{error}</span>}
     </div>
   );
 }
