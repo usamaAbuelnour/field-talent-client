@@ -46,8 +46,7 @@ const ShowJobs = ({ isDarkMode }) => {
         setNoAvailableMassage(jobsData);
       }
     } catch (error) {
-      navigate('/not-found', { replace: true });
-    } finally {
+zz    } finally {
       setIsLoading(false);
     }
   };

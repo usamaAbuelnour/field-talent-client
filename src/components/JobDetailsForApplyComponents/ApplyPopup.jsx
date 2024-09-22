@@ -1,104 +1,97 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 const ApplyPopup = ({ closePopup }) => {
   const [applicationText, setApplicationText] = useState('');
   const [expectedSalary, setExpectedSalary] = useState('EGP ');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isTextValid, setIsTextValid] = useState(true); 
-  const [isSalaryValid, setIsSalaryValid] = useState(true); 
-  const popupRef = useRef(null);
+  const [descriptionError, setDescriptionError] = useState('');
+  const [salaryError, setSalaryError] = useState('');
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (popupRef.current && !popupRef.current.contains(event.target)) {
-        closePopup();
-      }
-    };
+  const validateDescription = () => {
+    const charCount = applicationText.trim().length;
+    if (charCount === 0) {
+      setDescriptionError('Please enter a cover letter');
+      return false;
+    } else if (charCount < 150) {
+      setDescriptionError('Cover letter must be at least 150 characters.');
+      return false;
+    }
+    setDescriptionError('');
+    return true;
+  };
 
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [closePopup]);
+  const validateSalary = () => {
+    if (expectedSalary.trim() === 'EGP' || expectedSalary.trim() === 'EGP ') {
+      setSalaryError('Please enter your expected salary.');
+      return false;
+    }
+    setSalaryError('');
+    return true;
+  };
 
   const handleSendApproval = () => {
-    const charCount = applicationText.trim().length;
-    const isTextValid = charCount >= 200;
-    const isSalaryValid = expectedSalary.trim() !== 'EGP ' && expectedSalary.trim() !== ''; // التحقق المحدث
+    const isDescriptionValid = validateDescription();
+    const isSalaryValid = validateSalary();
 
-    setIsTextValid(isTextValid);
-    setIsSalaryValid(isSalaryValid);
-
-    if (!isTextValid || !isSalaryValid) {
-      setErrorMessage('Please fill out all fields correctly.');
-      return;
+    if (isDescriptionValid && isSalaryValid) {
+      closePopup();
     }
-
-    closePopup();
   };
 
   const handleSalaryChange = (e) => {
     const inputValue = e.target.value;
-    if (/^EGP \d*$/.test(inputValue) || inputValue === '') { // السماح بالقيمة الفارغة
+    if (/^\d*$/.test(inputValue.replace('EGP ', ''))) {
       setExpectedSalary(inputValue);
     }
   };
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div
-        ref={popupRef}
-        className="bg-white p-6 rounded-lg shadow-lg w-11/12 md:w-1/3"
-      >
-        <h2 className="text-xl font-bold mb-4">Apply for Job</h2>
+  const handleKeyPress = (e) => {
+    if (!/^[0-9]*$/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete') {
+      e.preventDefault();
+    }
+  };
 
-        {/* حقل الوصف */}
+  return (
+    <div className="fixed inset-0  flex items-center justify-center  ">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-9/12 dark:bg-main-dark ">
+        <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-4 dark:text-accent">Apply for Job</h2>
+
         <textarea
-          placeholder="Write your Cover letter (at least 200 characters) ..."
+          placeholder="Write your Cover letter (at least 150 characters) ..."
           value={applicationText}
           onChange={(e) => setApplicationText(e.target.value)}
-          className={`w-full h-32 mb-4 p-2 border rounded overflow-y-scroll resize-none ${
-            !isTextValid ? 'border-red-500' : ''
-          }`} 
-          style={{ height: '150px', width: '100%', maxHeight: '150px' }}
+          className={`w-full h-32 mb-2 p-2 border rounded overflow-y-auto resize-none dark:text-white dark:bg-main-dark ${
+            descriptionError ? 'border-red-500' : ''
+          }`}
+          style={{ minHeight: '150px', maxHeight: '300px' }}
         />
-        {!isTextValid && (
-          <p className="text-red-500">Cover letter must be at least 200 characters.</p>
-        )}
+        {descriptionError && <p className="text-red-500 mb-4">{descriptionError}</p>}
 
-        {/* حقل الراتب المتوقع */}
         <input
           type="text"
           placeholder="Expected Salary"
           value={expectedSalary}
           onChange={handleSalaryChange}
-          className={`w-full mb-4 p-2 border rounded ${
-            !isSalaryValid ? 'border-red-500' : ''
-          }`} 
+          onKeyPress={handleKeyPress}
+          className={`w-full mb-2 p-2 border rounded   dark:bg-main-dark${
+            salaryError ? 'border-red-500' : ''
+          }`}
         />
-        {!isSalaryValid && (
-          <p className="text-red-500">Please enter your expected salary.</p>
-        )}
+        {salaryError && <p className="text-red-500 mb-4 ">{salaryError}</p>}
 
-        {/* الأزرار */}
-        <div className="flex justify-between">
+        <div className="flex flex-col justify-between mt-4">
           <button
             onClick={handleSendApproval}
-            className="bg-main text-white px-4 py-2 rounded hover:bg-teal-700"
+            className="bg-main text-white px-4 py-2 rounded hover:bg-teal-700 mb-2"
           >
             Send Approval
           </button>
           <button
-            onClick={closePopup} 
-            className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
+            onClick={closePopup}
+            className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 dark:text-white  dark:bg-gray-600"
           >
             Cancel
           </button>
         </div>
-
-        {/* رسالة الخطأ العامة */}
-        {errorMessage && <p className="text-red-500 mt-4">{errorMessage}</p>}
       </div>
     </div>
   );
