@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 
 import { useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { MapPin } from 'lucide-react';
 
 const ShowJobCard = ({ job }) => {
