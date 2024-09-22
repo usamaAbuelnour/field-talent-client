@@ -72,7 +72,7 @@ const ApplyPopup = ({ closePopup }) => {
           value={expectedSalary}
           onChange={handleSalaryChange}
           onKeyPress={handleKeyPress}
-          className={`w-full mb-2 p-2 border rounded dark:text-white  dark:bg-main-dark${
+          className={`w-full mb-2 p-2 border rounded   dark:bg-main-dark${
             salaryError ? 'border-red-500' : ''
           }`}
         />

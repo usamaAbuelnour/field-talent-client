@@ -6,7 +6,7 @@ import { MapPin } from 'lucide-react';
 const ShowJobCard = ({ job }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const navigate = useNavigate();
-
+z
   const toggleShowMore = (e) => {
     e.stopPropagation();   
      setIsExpanded(!isExpanded);
