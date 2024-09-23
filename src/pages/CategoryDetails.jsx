@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ChevronRight, NotebookPen, PaintRoller, HardHat, Flag } from 'lucide-react';
 import data from '../../public/jobs.json';
