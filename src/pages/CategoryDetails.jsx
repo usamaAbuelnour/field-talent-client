@@ -11,7 +11,7 @@ const CategoryDetails = () => {
     const [showServices, setShowServices] = useState(false);
 
     useEffect(() => {
-        window.scroll(0, 0);
+        window.scrollTo(0, 0);
 
         const foundCategory = data.categories.find(cat => cat.id === parseInt(categoryId));
         setCategory(foundCategory);
