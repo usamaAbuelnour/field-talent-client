@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Button from "../components/uiComponents/Button";
 import Loading from '../components/uiComponents/Loading'; 
 import apiService from '../Api/AxiosServiceConfiguration';
@@ -24,7 +23,6 @@ const Addjob = () => {
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
    
@@ -78,8 +76,9 @@ const Addjob = () => {
     setIsSubmitting(true);
     try {
       const response = await apiService.addJob(formData);
+      console.log("Error adding job:", response.data.error);
+
     } catch (error) {
-      console.error("Error adding job:", error);
       setErrors({ submit: "Failed to submit the job. Please try again." });
     } finally {
       setIsSubmitting(false);
@@ -340,7 +339,6 @@ const Addjob = () => {
             <Button
               className="w-2/5 rounded-md"
               disabled={isSubmitting}
-              to="/showjobs"
               text={isSubmitting ? "Submitting..." : "Add Job"}
               type="submit"
               variant="fill"

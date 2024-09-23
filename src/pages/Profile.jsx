@@ -54,7 +54,7 @@ function Profile() {
           "Worked with React and Angular to create responsive and dynamic user interfaces for web applications.",
       },
     ],
-    slides: [
+    jobExperienceImage: [
       
         "https://scontent.fcai22-1.fna.fbcdn.net/v/t1.6435-9/136825801_3749030028537769_6572915212363177294_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=13d280&_nc_ohc=7G-m0I6P6_MQ7kNvgFRq_ZI&_nc_ht=scontent.fcai22-1.fna&_nc_gid=AsxMnhnpIM1rWG8MKN1Y09G&oh=00_AYAI4JlDMo8ZDKcX7S3wv-d1fX3PbE4WSqT4kVxyXkUZcw&oe=6712C0BF"
       ,
@@ -82,11 +82,11 @@ function Profile() {
   ];
 
   const nextImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % user.slides.length);
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % user.jobExperienceImage.length);
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + user.slides.length) % user.slides.length);
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + user.jobExperienceImage.length) % user.jobExperienceImage.length);
   };
 
   return (
@@ -202,7 +202,7 @@ function Profile() {
                 <ChevronLeft size={24} />
               </button>
               <img
-                src={user.slides[currentImageIndex]}
+                src={user.jobExperienceImage[currentImageIndex]}
                 alt="Job"
                 className="w-full h-64 object-cover max-w-[80%] border rounded"
               />

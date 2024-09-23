@@ -53,13 +53,23 @@ export default function Login({ handleLogin, isUserLoggedIn, redirectingUrl }) {
     try {
       setIsLoading(true);
       const response = await apiService.loginUser(data);
-      let userType
+      let userType = "";
+      let isVerified = false;
 
-      response.data.hasOwnProperty('engineerId') ? userType = "engineer" : userType = "client"
-
-
-      console.log(response.data.hasOwnProperty('engineerId'), userType)
-      handleLogin(response.data.token, response.data.name, response.data.email, userType);
+      if (response.data.hasOwnProperty("engineerId")) {
+        userType = "engineer";
+        isVerified = response.data.engineerId !== null;
+      } else if (response.data.hasOwnProperty("clientId")) {
+        userType = "client";
+        isVerified = response.data.clientId !== null;
+      }
+       handleLogin(
+        response.data.token,
+        response.data.name,
+        response.data.email,
+        userType,
+        isVerified
+      );
       navigate(redirectingUrl, { replace: true });
     } catch (error) {
       setError(error.response?.data || "An error occurred. Please try again.");
