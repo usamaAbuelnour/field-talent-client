@@ -14,6 +14,7 @@ import FreelancerProposals from "./pages/FreelancerProposals";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
 import JobDetailsForApply from "./pages/JobDetailsForApply";
 import Verification from "./pages/Verification";
+import CategoryDetails from "./pages/CategoryDetails";
 import "./App.css";
 import { useState, useEffect } from "react";
 
@@ -24,7 +25,7 @@ function App() {
     token: "",
     userType: "",
     isUserLoggedIn: false,
-    isVerified:false
+    isVerified: false
   };
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem("darkMode");
@@ -48,14 +49,14 @@ function App() {
     localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
   }, [isDarkMode, redirectingUrl]);
 
-  const handleLogin = (token, name, email, userType,isVerified) => {
+  const handleLogin = (token, name, email, userType, isVerified) => {
     const newUser = {
       ...userSchema,
       email: email,
       name: name,
       token: token,
       userType: userType,
-      isVerified:isVerified,
+      isVerified: isVerified,
       isUserLoggedIn: true,
     };
     setUser(newUser);
@@ -111,7 +112,7 @@ function App() {
             path="registration"
             element={
               <Registration
-              isVerified={user.isVerified}
+                isVerified={user.isVerified}
                 redirectingUrl={redirectingUrl}
                 handleLogin={handleLogin}
                 isUserLoggedIn={user.isUserLoggedIn}
@@ -200,7 +201,7 @@ function App() {
             element={
               <PrivateRoute
                 element={<Verification userType={user.userType}
-                isVerified={user.isVerified} />}
+                  isVerified={user.isVerified} />}
                 isUserLoggedIn={user.isUserLoggedIn}
                 handleRedirectingUrl={handleRedirectingUrl}
                 pageAllowFor={user.userType}
@@ -208,6 +209,10 @@ function App() {
               />
             }
           />
+          <Route
+  path="/CategoryDetails/:categoryId" 
+  element={<CategoryDetails />}
+/>
 
           <Route
             path="*"

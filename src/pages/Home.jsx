@@ -12,19 +12,27 @@ import Button from "../components/uiComponents/Button";
 import Section from "../components/HomePageCommpenet/Section";
 import AboutUsSection from "../components/HomePageCommpenet/AboutUsSection";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+
 
 const categories = [
   {
+    id: 3,
     title: "Finishing Works",
     description: "Expert solutions for all finishing needs.",
     icon: PaintBucket,
   },
   {
+    id: 2,
+
     title: "Concrete Construction",
     description: "Quality concrete services for every project.",
     icon: Building2,
   },
   {
+    id:1,
+
     title: "Consultation",
     description: "Professional advice and project guidance.",
     icon: Lightbulb,
@@ -53,6 +61,8 @@ const services = [
 ];
 
 function Home({ isDarkMode, handleRedirectingUrl,userType }) {
+  const navigate = useNavigate();
+
   useEffect(() => {
    
    handleRedirectingUrl("/");
@@ -62,6 +72,11 @@ function Home({ isDarkMode, handleRedirectingUrl,userType }) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleCategoryClick = (category) => {
+    navigate(`/CategoryDetails/${category.id}`); 
+  };
+
   return (
     <main
       className={`
@@ -104,7 +119,7 @@ function Home({ isDarkMode, handleRedirectingUrl,userType }) {
         )}
       </div>
       <hr className="my-12 border-gray-200" />
-      <Section title="Our Categories" items={categories} />
+      <Section title="Our Categories" items={categories} onClick={handleCategoryClick} />
       <hr className="my-12 border-gray-200" />
       <Section title="Our Services" items={services} />
       <hr className="my-12 border-gray-200" />

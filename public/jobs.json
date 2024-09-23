@@ -1,65 +1,94 @@
-[
-  {
-    "title": "Villa - Plastering Works",
-    "description": "Specialist in applying plaster and finishing to walls and ceilings in villas. Includes improving surface quality and preparing it for painting or final finishes.",
-    "category": "Finishing Works",
-    "service": ["Plastering","Plumbing"], 
-    "location": "Cairo, Egypt"
-  },
-  {
-    "title": "Ground Floor - Concrete Works",
-    "description": "Specialist in concrete work for ground floors. Includes overseeing concrete pouring and applying appropriate design techniques.",
-    "category": "Concrete Works",
-    "service": ["Ground Floor Concrete"], 
-    "location": "Cairo, Egypt"
-  },
-  {
-    "title": "Apartment - Plumbing Works",
-    "description": "Expert in installing and maintaining plumbing systems in apartments. Includes working on pipe installations, water connections, and sewage systems.",
-    "category": "Finishing Works",
-    "service": ["Plumbing"], 
-    "location": "Giza, Egypt"
-  },
-  {
-    "title": "Repeated Floors - Concrete Works",
-    "description": "Responsible for concrete work on repeated floors. Includes designing and executing concrete layers for multiple floors according to engineering specifications.",
-    "category": "Concrete Works",
-    "service": ["Repeated Floor Concrete"], 
-    "location": "Giza, Egypt"
-  },
-  {
-    "title": "House - Masonry Works",
-    "description": "Expert in working with bricks, stones, and blocks in houses. Includes building walls, arches, and other masonry structures using various materials.",
-    "category": "Finishing Works",
-    "service": ["Masonry"], 
-    "location": "Alexandria, Egypt"
-  },
-  {
-    "title": "Tank - Concrete Works",
-    "description": "Specialist in designing and executing concrete for tanks. Includes ensuring tanks are resistant to leakage and wear using specialized concrete techniques.",
-    "category": "Concrete Works",
-    "service": ["Tank Concrete"], 
-    "location": "Alexandria, Egypt"
-  },
-  {
-    "title": "Property Sale Consultant",
-    "description": "Provides consulting for clients looking to sell properties. Includes offering advice on property valuation and sales procedures.",
-    "category": "Consulting",
-    "service": ["Sale Consulting"], 
-    "location": "Cairo, Egypt"
-  },
-  {
-    "title": "Property Purchase Consultant",
-    "description": "Offers consulting for potential buyers. Includes assisting clients in finding suitable properties and providing advice on purchase processes.",
-    "category": "Consulting",
-    "service": ["Purchase Consulting"], 
-    "location": "Giza, Egypt"
-  },
-  {
-    "title": "Construction and Renovation Consultant",
-    "description": "Provides consulting for construction and renovation projects. Includes offering recommendations on design, project planning, and construction management.",
-    "category": "Consulting",
-    "service": ["Construction and Renovation Consulting","Purchase Consulting"], 
-    "location": "Alexandria, Egypt"
-  }
-]
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Civil Engineering Consultations",
+      "img categories": [
+        "https://blog.novatr.com/hubfs/An%20image%20depicting%20the%20basic%20procedure%20of%20structural%20design.png",
+        "https://img.freepik.com/premium-photo/future-building-construction-engineering-project_31965-4197.jpg",
+        "https://www.invensislearning.com/blog/wp-content/uploads/2020/07/main-banner-1068x552-1.jpg"
+      ],
+      "description": "Civil engineering involves the design and construction of structures and infrastructure, covering everything from buildings to roads, bridges, and dams. We use the latest technologies and engineering standards to ensure the safety and sustainability of these projects. We offer comprehensive consultations, including structural analysis, feasibility studies, and project planning. If you're considering a construction project, we can assist you every step of the way.",
+      "services": [
+        {
+          "name": "Concrete Structure Design",
+          "img service": "https://engineeringdiscoveries.com/wp-content/uploads/2021/12/Important-RCC-Information-With-Details.jpg",
+          "description": "We provide concrete structure design services, including load calculations, structural stability analysis, and material selection. If you need to design a residential or commercial building, we calculate all necessary loads and ensure that the structure will be stable and safe. We also ensure the best material selection to enhance quality and safety. Our concrete designs are not only safe but also cost-effective without compromising on quality.",
+          "additional_info": "You can rely on our professional engineers to design your concrete structure according to your project's requirements. We help you in every step, from load studies to design implementation."
+        },
+        {
+          "name": "Infrastructure Consultation",
+          "img service":"https://tl.bayarea.gladeo.org/sites/bayarea.gladeo.org/files/2018-12/CivilEngineer_feed.jpg" ,
+          "description": "Infrastructure consultations include the design and construction of roads, bridges, and sewage systems. If you are thinking of building a road, bridge, or sewage network, we design the infrastructure with great precision. We analyze the soil and determine the engineering requirements to ensure the project will remain in good condition for decades. Our services go beyond planning, as we monitor execution to ensure that engineering standards are applied perfectly.",
+          "additional_info": "If you're working on an infrastructure project, we provide all the technical and engineering consultations to ensure that the project will be effective and sustainable. Contact us for help with road, bridge, or sewage design."
+        },
+        {
+          "name": "Construction Project Management",
+          "img service": "https://visilean.com/wp-content/uploads/2022/10/Blog-image--1024x576.jpg",
+          "description": "We manage construction projects from planning to execution, coordinating between different teams and ensuring adherence to schedules. If you need effective project management, we provide services that ensure the project is completed on time and within budget. We handle all aspects of the project, from material procurement to coordination between workers and contractors, ensuring every step is executed optimally.",
+          "additional_info": "If you have a construction project and need comprehensive management, our team can help you organize and execute the project efficiently, whether in planning, execution, or progress tracking."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Concrete Works",
+      "img categories": [
+        "https://www.reinforcementproductsonline.co.uk/wp/wp-content/uploads/2021/12/reinforced-concrete-hero-opt.jpg",
+        "https://www.atlasfoundationinc.com/wp-content/uploads/2022/08/Concrete-Leveling-DFW-Texas.jpeg",
+        "https://i.ytimg.com/vi/pmyIreIZItQ/maxresdefault.jpg"
+      ],
+      "description": "Concrete works involve pouring and constructing concrete structures. We use advanced techniques to ensure high quality and structural safety. Our services include designing and pouring concrete for all types of structures, focusing on precision execution and quality control. If you need concrete services for your project, you can rely on us.",
+      "services": [
+        {
+          "name": "Reinforced Concrete Pouring",
+          "img service": "https://www.mrojsa.com/wp-content/uploads/2023/06/construction-site.jpg",
+          "description": "We pour reinforced concrete using advanced equipment and modern techniques to ensure it is free from cracks and defects. We can meet your needs for concrete pouring in any project, whether it's foundations or concrete walls. Our goal is to ensure that the structure we build is strong and safe for the long term.",
+          "additional_info": "If you need concrete pouring for any project, we can provide the necessary workforce and equipment to carry out the task with precision and high professionalism. We strive to offer the best solutions to ensure construction quality and safety."
+        },
+        {
+          "name": "Concrete Leveling",
+          "img service": "https://hiking-gcc.com/wp-content/uploads/2020/09/CONCRETE-TRUSS-SCREED-MACHINE-1.jpg",
+          "description": "After pouring concrete, the leveling phase ensures that the final surface is completely flat. This step is crucial to ensure the quality of the finished work, whether it's for building floors or external surfaces. We use advanced equipment to ensure precise concrete leveling, making it ready for the next phase of construction without the need for further adjustments.",
+          "additional_info": "You can rely on our team for perfect concrete leveling, ensuring the quality of the final surface, whether for building foundations or entrances."
+        },
+        {
+          "name": "Concrete Structure Repairs",
+          "img service": "https://fmpconstruction.com/wp-content/uploads/2022/09/unnamed-9.jpg",
+          "description": "If you have a concrete structure experiencing any issues or deterioration, we offer comprehensive repair services using the latest technologies. We restore damaged structures and bring them back to their original condition while enhancing safety. Whether corrosion or cracks have appeared on the structure, we can repair them and ensure that the building will remain strong and safe for many years.",
+          "additional_info": "If your concrete structures need repairs, we can offer you the best solutions to restore the structure to its original state, ensuring safety and sustainability in the long run."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Finishing Works",
+      "img categories": [
+        "https://plumberskuwait.com/wp-content/uploads/2022/08/%D8%B3%D8%A8%D8%A7%D9%83%D8%A9-%D9%85%D9%86%D8%B2%D9%84%D9%8A%D8%A9.webp",
+        "https://shattb.com/wp-content/uploads/2020/07/%D8%A7%D9%84%D9%81%D8%B1%D9%82-%D8%A8%D9%8A%D9%86-%D8%A7%D9%86%D9%88%D8%A7%D8%B9-%D8%A7%D9%84%D8%AA%D8%B4%D8%B7%D9%8A%D8%A8%D8%A7%D8%AA-%D8%A7%D9%84%D8%AD%D8%AF%D9%8A%D8%AB%D8%A9-%D8%A7%D9%84%D8%AF%D8%A7%D8%AE%D9%84%D9%8A%D8%A9-%D9%88%D8%A7%D9%84%D8%AE%D8%A7%D8%B1%D8%AC%D9%8A%D8%A9-%D8%B9%D8%A8%D8%B1-%D8%B4%D8%B1%D9%83%D8%A9-%D8%B4%D8%B7%D8%A8.jpg",
+        "https://emacps.com/wp-content/uploads/2023/09/pexels-robert-so-12243107_83_86_1_91_1_94_1_94_1_97-scaled.webp"
+      ],
+      "description": "Finishing works include all final building elements such as paint and decorations, both interior and exterior. We focus on using the best materials and techniques to achieve aesthetic and functional results. Our services cover everything a building needs to be ready for use and to have a distinguished appearance.",
+      "services": [
+        {
+          "name": "Interior and Exterior Finishing Services",
+          "img service":"https://blogger.googleusercontent.com/img/a/AVvXsEjk8D4Mg00tDljnwfh3MroL68yD2WvUZ7CeqyqFIn50mnkHmxOYE2tAymNvfrW8B-bkgz7x0gKdboSfkuqwUOjBnU8IR10Qk11bCquQSN3VxyGVmGLCLvSXnrLAgZQZUDGuMXVKE2rZbuHLEfbAkPj0ujdfy0i4dXtx7oNtY6XP1cLMR2KqsiW7WdkERA=w640-h426-rw",
+          "description": "We offer finishing services for both indoor and outdoor spaces. These services include flooring installation, painting, sanitary fittings, and insulation. We ensure the use of high-quality materials to guarantee the beauty and durability of the structure. Whether you need simple or complex finishes, we will work to achieve your vision with precision and professionalism.",
+          "additional_info": "We can provide our professional engineers to complete your interior and exterior finishing works, from painting and flooring installation to external insulation, ensuring high quality and aesthetic design."
+        },
+        {
+          "name": "Plumbing Services",
+          "img service": "https://homeservices-sa.com/wp-content/uploads/2023/04/%D8%B4%D8%B1%D9%83%D8%A9-%D8%AA%D8%A7%D8%B3%D9%8A%D8%B3-%D8%A7%D8%B9%D9%85%D8%A7%D9%84-%D8%A7%D9%84%D8%B3%D8%A8%D8%A7%D9%83%D8%A9-2000x1130.jpeg.webp",
+          "description": "We offer comprehensive plumbing services, including the installation of pipes and sanitary fittings, to ensure the efficiency and reliability of plumbing systems in residential and commercial buildings. Our experienced plumbers are equipped to handle everything from routine maintenance to complex installations. We guarantee that all work will be carried out according to the highest industry standards to prevent any future issues such as leaks, clogs, or water damage.",
+          "additional_info": "If you're finishing your home or office and need new plumbing installations or repairs, we can assist you in ensuring the correct installation of pipes and sanitary fittings for optimal efficiency and safety. Our team is dedicated to providing prompt and professional service, ensuring your plumbing system functions flawlessly."
+      },
+        {
+          "name": "Masonry Services",
+          "img service": "https://lafayettenj.com/wp-content/uploads/2021/03/masonry-contractors-TH3000.jpg",
+          "description": "We provide masonry services, which involve constructing structures using various materials such as bricks, stones, and concrete blocks. Our masonry services can help you create durable and aesthetically pleasing walls, patios, and other structures for your construction projects. We focus on delivering high-quality workmanship and adhere to strict timelines and budgets.",
+          "additional_info": "Whether you're planning a residential or commercial project, our skilled masonry team is equipped to handle all aspects of masonry work, ensuring both structural integrity and visual appeal."
+      }
+      ]
+    }
+  ]
+}
