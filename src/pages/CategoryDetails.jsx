@@ -18,7 +18,6 @@ const CategoryDetails = () => {
     }, [categoryId]);
 
     useEffect(() => {
-        window.scroll(0, 0);
 
         if (category) {
             const imageInterval = setInterval(() => {
