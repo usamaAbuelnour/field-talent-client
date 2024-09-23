@@ -3,14 +3,12 @@ import { useParams } from 'react-router-dom';
 import { ChevronRight, NotebookPen, PaintRoller, HardHat, Flag } from 'lucide-react';
 import data from '../../public/jobs.json';
 import Loading from '../components/uiComponents/Loading';
-import { useInView } from 'react-intersection-observer';
 
 const CategoryDetails = () => {
   const { categoryId } = useParams();
   const [category, setCategory] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showServices, setShowServices] = useState(false);
-  const { ref, inView } = useInView({ threshold: 0.1 });
 
   useEffect(() => {
     const foundCategory = data.categories.find(cat => cat.id === parseInt(categoryId));
@@ -29,11 +27,20 @@ const CategoryDetails = () => {
     }
   }, [category]);
 
-  useEffect(() => {
-    if (inView) {
+  const handleScroll = () => {
+    const servicesElement = document.getElementById('services');
+    const rect = servicesElement.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
       setShowServices(true);
+    } else {
+      setShowServices(false);
     }
-  }, [inView]);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   if (!category) {
     return <Loading />;
@@ -46,7 +53,7 @@ const CategoryDetails = () => {
       case 'Concrete Works':
         return <HardHat className="w-8 h-8 text-main dark:text-accent " />;
       case 'Finishing Works':
-        return <PaintRoller  className="w-8 h-8 text-main dark:text-accent" />;
+        return <PaintRoller className="w-8 h-8 text-main dark:text-accent" />;
       default:
         return <HardHat className="w-8 h-8 text-main dark:text-accent" />;
     }
@@ -79,7 +86,7 @@ const CategoryDetails = () => {
         Available Services
       </h2>
       
-      <div ref={ref} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      <div id="services" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {category.services.map((service, index) => (
           <div 
             key={index} 
