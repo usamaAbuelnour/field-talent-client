@@ -15,6 +15,7 @@ import PrivateRoute from "./components/privateRoute/PrivateRoute";
 import JobDetailsForApply from "./pages/JobDetailsForApply";
 import Verification from "./pages/Verification";
 import CategoryDetails from "./pages/CategoryDetails";
+import ClientProfile from "./pages/ClientProfile";
 import "./App.css";
 import { useState, useEffect } from "react";
 
@@ -196,6 +197,16 @@ function App() {
             }
           />
 
+<Route
+            path="/ClientProfile"
+            element={
+              <PrivateRoute
+                element={<ClientProfile user={user} />}
+                isUserLoggedIn={user.isUserLoggedIn}
+                handleRedirectingUrl={handleRedirectingUrl}
+              />
+            }
+          />
           <Route
             path="/verification"
             element={
