@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pencil, Briefcase, Calendar, Clock, DollarSign, TrendingUp } from 'lucide-react';
+import { Pencil, Briefcase, Calendar, Clock, PhoneCall, MapPin } from 'lucide-react'; // استيراد أيقونة الموقع
 
 const ClientProfile = () => {
   const client = {
@@ -9,12 +9,13 @@ const ClientProfile = () => {
     joinedDate: '2022-01-10',
     lastJob: '2024-09-18',
     imageUrl: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
-    totalSpent: '$5,000',
-    avgPaymentPerJob: '$416.67'
+    mobile1: '+20 *** *** ****', 
+    mobile2: '+20 *** *** ****', 
+    location: 'Cairo, Egypt' 
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen mt-8 md:px-6 sm:px-2">
+    <div className="flex items-center justify-center min-h-screen mt-20 md:mt-7 md:px-6 sm:px-2">
       <div className="p-2 w-full mx-auto">
         <div className="text-center">
           <div className="flex flex-col items-center">
@@ -28,21 +29,22 @@ const ClientProfile = () => {
                 alt="Client"
               />
             </div>
-            <h2 className="md:text-4xl sm:text-xl font-bold text-main mb-2 flex items-center  dark:text-accent">
+            <h2 className="md:text-4xl sm:text-xl font-bold text-main mb-2 flex items-center dark:text-accent">
               {client.name}
               <div className="ml-2 bg-main rounded-full p-1 cursor-pointer">
                 <Pencil className="text-white" size={16} />
               </div>
             </h2>
-            <p className="text-lg md:text-xl text-main  dark:text-slate-100">{client.email}</p>
+            <p className="text-lg md:text-xl text-main dark:text-slate-100">{client.email}</p>
           </div>
         </div>
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
           <InfoItem label="Job Count" value={client.jobCount} icon={<Briefcase />} labelSize="text-sm sm:text-lg md:text-xl "/>
-          <InfoItem label="Joined" value={client.joinedDate} icon={<Calendar />} labelSize="text-sm sm:text-lg md:text-xl " />
+          <InfoItem label="Location" value={client.location} icon={<MapPin />} labelSize="text-sm sm:text-lg md:text-xl " /> 
+          <InfoItem label="Mobile 1" value={client.mobile1} icon={<PhoneCall />} labelSize="text-sm sm:text-lg md:text-xl "/>
+          <InfoItem label="Mobile 2" value={client.mobile2} icon={<PhoneCall />} labelSize="text-sm sm:text-lg md:text-xl "/> 
           <InfoItem label="Last Job" value={client.lastJob} icon={<Clock />} labelSize="text-sm sm:text-lg md:text-xl " />
-          <InfoItem label="Total Spent" value={client.totalSpent} icon={<DollarSign />} labelSize="text-sm sm:text-lg md:text-xl "/>
-          <InfoItem label="Avg Payment/Job" value={client.avgPaymentPerJob} icon={<TrendingUp />} className="col-span-1 md:col-span-2" labelSize="text-sm sm:text-lg md:text-xl "/>
+          <InfoItem label="Joined" value={client.joinedDate} icon={<Calendar />} labelSize="text-sm sm:text-lg md:text-xl " />
         </div>
       </div>
     </div>
