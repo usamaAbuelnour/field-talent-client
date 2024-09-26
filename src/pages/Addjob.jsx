@@ -81,7 +81,7 @@ const Addjob = () => {
 
       setShowSuccess(true);
       setFormData(initialFormState);
-    } catch (e) {
+    } catch (error) {
       setErrorMessage("Oh, sorry! Something went wrong. You can try again.");
       console.log(error)
     } finally {
