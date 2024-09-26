@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import Button from "../components/uiComponents/Button";
 import Loading from '../components/uiComponents/Loading';
 import apiService from '../Api/AxiosServiceConfiguration';
@@ -80,6 +80,7 @@ const Addjob = () => {
       setFormData(initialFormState);
     } catch (error) {
       setErrors({ submit: "Failed to submit the job. Please try again." });
+      console.log(error)
     } finally {
       setIsSubmitting(false);
     }

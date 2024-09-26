@@ -16,6 +16,8 @@ import JobDetailsForApply from "./pages/JobDetailsForApply";
 import Verification from "./pages/Verification";
 import CategoryDetails from "./pages/CategoryDetails";
 import ClientProfile from "./pages/ClientProfile";
+import AddProfileData from "./pages/AddProfileData";
+
 import "./App.css";
 import { useState, useEffect } from "react";
 
@@ -26,7 +28,7 @@ function App() {
     token: "",
     userType: "",
     isUserLoggedIn: false,
-    isVerified: false
+    isVerified: false,
   };
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem("darkMode");
@@ -193,17 +195,21 @@ function App() {
                 element={<Profile user={user} />}
                 isUserLoggedIn={user.isUserLoggedIn}
                 handleRedirectingUrl={handleRedirectingUrl}
+                pageAllowFor={"engineer"}
+                userType={user.userType}
               />
             }
           />
 
-<Route
+          <Route
             path="/ClientProfile"
             element={
               <PrivateRoute
                 element={<ClientProfile user={user} />}
                 isUserLoggedIn={user.isUserLoggedIn}
                 handleRedirectingUrl={handleRedirectingUrl}
+                pageAllowFor={"client"}
+                userType={user.userType}
               />
             }
           />
@@ -211,8 +217,12 @@ function App() {
             path="/verification"
             element={
               <PrivateRoute
-                element={<Verification userType={user.userType}
-                  isVerified={user.isVerified} />}
+                element={
+                  <Verification
+                    userType={user.userType}
+                    isVerified={user.isVerified}
+                  />
+                }
                 isUserLoggedIn={user.isUserLoggedIn}
                 handleRedirectingUrl={handleRedirectingUrl}
                 pageAllowFor={user.userType}
@@ -220,10 +230,28 @@ function App() {
               />
             }
           />
+           <Route
+            path="/AddProfileData"
+            element={
+              <PrivateRoute
+                element={
+                  <AddProfileData
+                    userType={user.userType}
+                    isVerified={user.isVerified}
+                  />
+                }
+                isUserLoggedIn={user.isUserLoggedIn}
+                handleRedirectingUrl={handleRedirectingUrl}
+                pageAllowFor={user.userType}
+                userType={user.userType}
+              />
+            }
+          />
+
           <Route
-  path="/CategoryDetails/:categoryId" 
-  element={<CategoryDetails />}
-/>
+            path="/CategoryDetails/:categoryId"
+            element={<CategoryDetails />}
+          />
 
           <Route
             path="*"

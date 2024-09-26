@@ -1,164 +1,78 @@
 /* eslint-disable react/prop-types */
 import { useState, useCallback, useEffect } from "react";
-import Button from "../components/uiComponents/Button";
 import axios from "axios";
-import { Stepper } from "react-form-stepper";
 import { useNavigate } from "react-router-dom";
+import FormField from "../components/AddProfileDataComponent/FormField";
+import FormStepper from "../components/AddProfileDataComponent/FormStepper";
+import FormButtonGroup from "../components/AddProfileDataComponent/FormButtonGroup";
 
 const STEPS = {
   client: ["Personal Data"],
-  engineer: [
-    "Personal Data",
-    "Work Experience 1",
-    "Work Experience 2",
-    "Engineer Education",
-  ],
+  engineer: ["Personal Data", "Work Experience", "Engineer Education"],
 };
 
 const skills = [
-  "cad",
-  "revet",
-  "sap",
-  "fishing work",
+  "CAD",
+  "Revit",
+  "SAP",
+  "Fishing Work",
   "Structural Design",
   "AutoCAD",
   "Project Management",
   "Site Supervision",
   "Construction Safety",
 ];
-const LOCATIONS = [
-  "Port Fouad",
-  "Port Said",
-  "Ismailia",
-  "Suez",
-  "10th of Ramadan",
-  "El Shorouk",
-  "El Obour",
-  "New Capital",
-  "Badr",
-  "5th Settlement",
-  "Nasr City",
-  "Cairo",
-  "Alexandria",
-  "Giza",
-  "Aswan",
-  "Luxor",
-  "Asyut",
-  "Minya",
-  "Fayoum",
-  "Beni Suef",
-  "Qena",
-  "Sohag",
-  "Damanhur",
-  "Zagazig",
-  "Mansoura",
-  "Tanta",
-  "Mahalla",
-  "Damietta",
-  "Sharqia",
-  "Kafr El Sheikh",
-  "Beheira",
-  "Monufia",
-  "Matruh",
-  "North Sinai",
-  "South Sinai",
-  "Red Sea",
-  "New Valley",
+
+const governorate = ["Port Fouad", "Port Said", "Ismailia", "Suez"];
+const SPECIALIZATIONS = [
+  "Civil Engineering",
+  "Electrical Engineering",
+  "Architectural Engineering",
 ];
 
-function AddProfileData({ userType = "client" }) {
+const GRADES = ["Acceptable", "Good", "Very Good", "Excellent"];
+
+function AddProfileData({ userType }) {
   const navigate = useNavigate();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const steps = STEPS[userType] || [];
-
-  const [formData, setFormData] = useState(() => ({
+  const initialState = {
     location: "",
     phoneNumber: "",
     whatsAppNumber: "",
-    profilePreview: "",
-    personalImage: null,
-    ...(userType === "engineer" && {
-      engineersUnionCard: null,
-      militaryServiceStatus: null,
-      graduationCertificate: null,
-    }),
-  }));
+    profileOverview: "",
+    skills: [],
+    startJobDates: Array(3).fill(""),
+    endJobDates: Array(3).fill(""),
+    jobTitles: Array(3).fill(""),
+    jobDescriptions: Array(3).fill(""),
+  };
 
-  const [errors, setErrors] = useState({});
+  const [formData, setFormData] = useState(initialState);
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const validateForm = useCallback(() => {
-    const newErrors = {};
-    if (!formData.location) newErrors.location = "Location is required";
-    if (!formData.phoneNumber || !/^\d{11}$/.test(formData.phoneNumber))
-      newErrors.phoneNumber = "Phone number must be 11 digits";
-    if (!formData.whatsAppNumber || !/^\d{11}$/.test(formData.whatsAppNumber))
-      newErrors.whatsAppNumber = "WhatsApp number must be 11 digits";
-    if (!formData.personalImage) newErrors.personalImage = " image is required";
-
-    if (currentStep === 2) {
-      if (!formData.skills) newErrors.skills = "skills is required";
-
-      if (!formData.experienceImageNumber1)
-        newErrors.experienceImageNumber1 =
-          "experience Image Number 1  is required";
-
-      if (!formData.experienceImageNumber2)
-        newErrors.experienceImageNumber2 =
-          "experience Image Number 2 is required";
-
-      if (!formData.experienceImageNumber3)
-        newErrors.experienceImageNumber3 =
-          "experience Image Number 3 is required";
-    }
-    if (currentStep === 3 && userType === "engineer") {
-      if (!formData.engineersUnionCard)
-        newErrors.engineersUnionCard = "Engineers Union Card image is required";
-      if (!formData.militaryServiceStatus)
-        newErrors.militaryServiceStatus =
-          "Military Service Status image is required";
-      if (!formData.graduationCertificate)
-        newErrors.graduationCertificate =
-          "Graduation Certificate image is required";
-    }
-
-    if (currentStep === 4 && userType === "engineer") {
-      if (!formData.engineersUnionCard)
-        newErrors.engineersUnionCard = "Engineers Union Card image is required";
-      if (!formData.militaryServiceStatus)
-        newErrors.militaryServiceStatus =
-          "Military Service Status image is required";
-      if (!formData.graduationCertificate)
-        newErrors.graduationCertificate =
-          "Graduation Certificate image is required";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  }, [formData, currentStep, userType]);
-
   const handleInputChange = useCallback((e) => {
-    const { name, value, files } = e.target;
-    if (name === "phoneNumber" || name === "whatsAppNumber") {
-      const numericValue = value.replace(/\D/g, "").slice(0, 11);
-      setFormData((prev) => ({
-        ...prev,
-        [name]: numericValue,
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: files ? files[0] : value,
-      }));
-    }
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value.replace(/\D/g, "").slice(0, 11), 
+    }));
   }, []);
 
+  const handleJobChange = (index, field, value) => {
+    setFormData((prev) => {
+      const newData = { ...prev };
+      newData[field][index] = value;
+      return newData;
+    });
+  };
+
   const handleSubmit = async () => {
-    if (!validateForm()) return;
     setIsSubmitting(true);
     try {
       const response = await axios.post("https://your-backend-api.com/submit", {
@@ -178,41 +92,29 @@ function AddProfileData({ userType = "client" }) {
       case 1:
         return (
           <>
-            <h2 className="text-lg font-semibold mb-4 text-center">
-              personal information
-            </h2>
-            <FormField
-              label="personal image  card image"
-              name="personalImage"
-              type="file"
-              onChange={handleInputChange}
-              error={errors.personalImage}
-            />
+            <h2 className="text-lg font-semibold mb-4 text-center">Personal Information</h2>
             <FormField
               label="Choose your location"
               name="location"
               type="select"
-              options={LOCATIONS}
+              options={governorate}
               value={formData.location}
               onChange={handleInputChange}
-              error={errors.location}
             />
             <div className="flex gap-3">
               <FormField
-                label="Enter phone number"
+                label="Phone Number"
                 name="phoneNumber"
                 type="tel"
                 value={formData.phoneNumber}
                 onChange={handleInputChange}
-                error={errors.phoneNumber}
               />
               <FormField
-                label="Enter WhatsApp number"
+                label="WhatsApp Number"
                 name="whatsAppNumber"
                 type="tel"
                 value={formData.whatsAppNumber}
                 onChange={handleInputChange}
-                error={errors.whatsAppNumber}
               />
             </div>
           </>
@@ -228,107 +130,85 @@ function AddProfileData({ userType = "client" }) {
               options={skills}
               value={formData.skills}
               onChange={handleInputChange}
-              error={errors.skills}
             />
-            <div className="flex gap-2">
-              <FormField
-                label="show your experience images"
-                name="experienceImageNumber1"
-                type="file"
-                onChange={handleInputChange}
-                error={errors.experienceImageNumber1}
-              />
-              <FormField
-                label="show your experience images"
-                name="experienceImageNumber1"
-                type="file"
-                onChange={handleInputChange}
-                error={errors.experienceImageNumber2}
-              />
-              <FormField
-                label="show your experience images"
-                name="experienceImageNumber1"
-                type="file"
-                onChange={handleInputChange}
-                error={errors.experienceImageNumber3}
-              />
-            </div>
+            <h2 className="text-lg font-semibold mb-4">Upload Your Work Experience</h2>
+            {Array.from({ length: 3 }, (_, index) => (
+              <div key={index} className={`exp${index + 1}`}>
+                <FormField
+                  label={`Start Job ${index + 1}`}
+                  name={`startJobDate${index + 1}`}
+                  type="date"
+                  onChange={(e) => handleJobChange(index, 'startJobDates', e.target.value)}
+                />
+                <FormField
+                  label={`End Job ${index + 1}`}
+                  name={`endJobDate${index + 1}`}
+                  type="date"
+                  onChange={(e) => handleJobChange(index, 'endJobDates', e.target.value)}
+                />
+                <FormField
+                  label={`Job Title ${index + 1}`}
+                  name={`jobTitle${index + 1}`}
+                  type="text"
+                  onChange={(e) => handleJobChange(index, 'jobTitles', e.target.value)}
+                />
+                <FormField
+                  label={`Job Description ${index + 1}`}
+                  name={`jobDescription${index + 1}`}
+                  type="textarea"
+                  onChange={(e) => handleJobChange(index, 'jobDescriptions', e.target.value)}
+                />
+              </div>
+            ))}
           </>
         );
       case 3:
         return userType === "engineer" ? (
           <>
-            <h2 className="text-lg font-semibold mb-4">
-              upload your work experience
-            </h2>
-            <div className="exp1">
-              <input type="date" name="start" id="" />
-              <input type="end" name="end" id="" />
-
-              <FormField
-                label="jop title"
-                name="jobExperience"
-                type="text"
-                onChange={handleInputChange}
-                error={errors.jobExperience}
-              />
-              <FormField
-                label="job description"
-                name="jobExperience"
-                type="textarea"
-                onChange={handleInputChange}
-                error={errors.jobExperience}
-              />
-            </div>
-            <div className="exp2">
-              <input type="date" name="start" id="" />
-              <input type="end" name="end" id="" />
-
-              <FormField
-                label="jop title"
-                name="jobExperience"
-                type="text"
-                onChange={handleInputChange}
-                error={errors.jobExperience}
-              />
-              <FormField
-                label="job description"
-                name="jobExperience"
-                type="textarea"
-                onChange={handleInputChange}
-                error={errors.jobExperience}
-              />
-            </div>
-            <div className="exp3">
-              <input type="date" name="start" id="" />
-              <input type="end" name="end" id="" />
-
-              <FormField
-                label="jop title"
-                name="jobExperience"
-                type="text"
-                onChange={handleInputChange}
-                error={errors.jobExperience}
-              />
-              <FormField
-                label="job description"
-                name="jobExperience"
-                type="textarea"
-                onChange={handleInputChange}
-                error={errors.jobExperience}
-              />
-            </div>
+            <h1>Engineer Education</h1>
+            <FormField
+              label="Graduation From"
+              name="graduationFrom"
+              type="text"
+              onChange={handleInputChange}
+            />
+            <FormField
+              label="Graduation Year"
+              name="graduationYear"
+              type="date"
+              onChange={handleInputChange}
+            />
+            <FormField
+              label="Specialization"
+              name="specialization"
+              type="select"
+              options={SPECIALIZATIONS}
+              value={formData.specialization}
+              onChange={handleInputChange}
+            />
+            <FormField
+              label="Grade"
+              name="grade"
+              type="select"
+              options={GRADES}
+              value={formData.grade}
+              onChange={handleInputChange}
+            />
+            <FormField
+              label="Final Project"
+              name="finalProject"
+              type="text"
+              onChange={handleInputChange}
+            />
+            <FormField
+              label="Project Grade"
+              name="projectGrade"
+              type="select"
+              options={GRADES}
+              value={formData.projectGrade}
+              onChange={handleInputChange}
+            />
           </>
-        ) : null;
-      case 4:
-        return userType === "engineer" ? (
-
-<>
-<h1></h1>
-
-</>
-         
-
         ) : null;
       default:
         return null;
@@ -336,9 +216,7 @@ function AddProfileData({ userType = "client" }) {
   };
 
   const handleNext = () => {
-    if (validateForm()) {
-      setCurrentStep((prev) => prev + 1);
-    }
+    setCurrentStep((prev) => prev + 1);
   };
 
   const handlePrevious = () => {
@@ -351,79 +229,19 @@ function AddProfileData({ userType = "client" }) {
 
   return (
     <div className="max-w-2xl min-h-screen flex flex-col mx-auto py-10 px-10">
-      <div className="">
-        <Stepper
-          activeStep={currentStep - 1}
-          steps={steps.map((label) => ({ label }))}
-          styleConfig={{
-            activeBgColor: "#115e59",
-            completedBgColor: "#10b981",
-            inactiveBgColor: "#6b7280",
-            activeColor: "#115e59",
-          }}
-        />
-      </div>
-
+      <FormStepper currentStep={currentStep} steps={steps} />
       <div className="bg-white shadow-main min-h-fit dark:bg-gray-800 py-1 rounded-lg shadow-sm px-6 flex-grow">
         <form className="space-y-6">{renderStepContent()}</form>
       </div>
-
-      <div className="flex justify-between mt-8 sticky  bg-white dark:bg-gray-800 ">
-        <Button onClick={handleSkip} text="Skip" variant="outline" />
-        <div className="flex gap-3">
-          <Button
-            onClick={handlePrevious}
-            text="Previous"
-            disabled={currentStep === 1}
-            className="btn btn-secondary"
-          />
-          <Button
-            onClick={currentStep === steps.length ? handleSubmit : handleNext}
-            text={currentStep === steps.length ? "Finish" : "Next"}
-            className="btn btn-primary"
-            disabled={isSubmitting}
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function FormField({ label, name, type, value, onChange, error, options }) {
-  return (
-    <div className="form-control">
-      <label className="label">
-        <span className="label-text">{label}</span>
-      </label>
-      {type === "select" ? (
-        <select
-          name={name}
-          className="select select-bordered w-full"
-          value={value}
-          onChange={onChange}
-        >
-          <option disabled value="">
-            Choose your location
-          </option>
-          {options.map((option, index) => (
-            <option key={index} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      ) : (
-        <input
-          type={type}
-          name={name}
-          className={`input input-bordered w-full ${
-            type === "file" ? "file-input" : ""
-          }`}
-          value={value}
-          onChange={onChange}
-          accept={type === "file" ? "image/*" : undefined}
-        />
-      )}
-      {error && <span className="text-error">{error}</span>}
+      <FormButtonGroup
+        currentStep={currentStep}
+        totalSteps={steps.length}
+        handleNext={handleNext}
+        handlePrevious={handlePrevious}
+        handleSubmit={handleSubmit}
+        handleSkip={handleSkip}
+        isSubmitting={isSubmitting}
+      />
     </div>
   );
 }
