@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import FilterJobs from '../components/showJopComponents/FilterJobs';
@@ -25,10 +24,10 @@ const ShowJobs = ({ isDarkMode }) => {
   const location = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0);
     const searchParams = new URLSearchParams(location.search);
     fetchJobs(searchParams);
-  }, [location.search, currentPage]);
+  }, [location.search]);
 
   const fetchJobs = async (params) => {
     setIsLoading(true);
@@ -39,26 +38,23 @@ const ShowJobs = ({ isDarkMode }) => {
         page: currentPage
       });
       const jobsData = response.data;
+ 
       if (jobsData.jobs && Array.isArray(jobsData.jobs)) {
         setJobs(jobsData.jobs);
         setTotalPages(jobsData.pagesCount);
-        updateFilterOptions(jobsData.jobs);
+        
+        updateFilterOptions(jobsData.locations, jobsData.categories, jobsData.services);
       } else if (typeof jobsData === 'string') {
         setNoAvailableMassage(jobsData);
       }
     } catch (error) {
-      console.log(error)
-
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const updateFilterOptions = (jobsData) => {
-    const locations = [...new Set(jobsData.map(job => job.location))];
-    const categories = [...new Set(jobsData.map(job => job.category))];
-    const services = [...new Set(jobsData.flatMap(job => job.service))];
-
+  const updateFilterOptions = (locations, categories, services) => {
     setLocationOptions(locations.map(location => ({ value: location, label: location })));
     setCategoryOptions(categories.map(category => ({ value: category, label: category })));
     setServiceOptions(services.map(service => ({ value: service, label: service })));
@@ -68,15 +64,9 @@ const ShowJobs = ({ isDarkMode }) => {
     const categoryParam = searchParams.get('category');
     const servicesParam = searchParams.getAll('service');
 
-    if (locationParam) {
-      setSelectedLocation({ value: locationParam, label: locationParam });
-    }
-    if (categoryParam) {
-      setSelectedCategory({ value: categoryParam, label: categoryParam });
-    }
-    if (servicesParam.length) {
-      setSelectedServices(servicesParam.map(service => ({ value: service, label: service })));
-    }
+    setSelectedLocation(locationParam ? { value: locationParam, label: locationParam } : null);
+    setSelectedCategory(categoryParam ? { value: categoryParam, label: categoryParam } : null);
+    setSelectedServices(servicesParam.map(service => ({ value: service, label: service })));
   };
 
   const updateFilters = (newParams) => {
@@ -91,22 +81,23 @@ const ShowJobs = ({ isDarkMode }) => {
         searchParams.set(key, value);
       }
     });
+    setCurrentPage(1);
     navigate(`?${searchParams.toString()}`, { replace: true });
   };
 
   const handleLocationChange = (selectedOption) => {
     setSelectedLocation(selectedOption);
-    updateFilters({ location: selectedOption ? selectedOption.value : null });
+    updateFilters({ location: selectedOption ? selectedOption.value : null, page: 1 });
   };
 
   const handleCategoryChange = (selectedOption) => {
     setSelectedCategory(selectedOption);
-    updateFilters({ category: selectedOption ? selectedOption.value : null });
+    updateFilters({ category: selectedOption ? selectedOption.value : null, page: 1 });
   };
 
   const handleServiceChange = (selectedOptions) => {
     setSelectedServices(selectedOptions);
-    updateFilters({ service: selectedOptions.map(option => option.value) });
+    updateFilters({ service: selectedOptions.map(option => option.value), page: 1 });
   };
 
   const handlePageChange = (page) => {
@@ -161,20 +152,19 @@ const ShowJobs = ({ isDarkMode }) => {
       </div>
 
       {totalPages > 1 && (
-  <div className="flex flex-wrap justify-center gap-2 mt-4 sm:gap-4 md:mr-8">
-    {pageNumbers.map(number => (
-      <button
-        key={number}
-        onClick={() => handlePageChange(number)}
-        className={`px-3 py-1.5 text-sm sm:px-4 sm:py-2 sm:text-base md:px-5 md:py-2.5 md:text-lg lg:px-6 lg:py-3 lg:text-xl border rounded ${currentPage === number ? 'bg-main text-white' : 'text-main'}`}
-        disabled={currentPage === number}
-      >
-        {number}
-      </button>
-    ))}
-  </div>
+        <div className="flex flex-wrap justify-center gap-2 mt-4 sm:gap-4 md:mr-8">
+          {pageNumbers.map(number => (
+            <button
+              key={number}
+              onClick={() => handlePageChange(number)}
+              className={`px-3 py-1.5 text-sm sm:px-4 sm:py-2 sm:text-base md:px-5 md:py-2.5 md:text-lg lg:px-6 lg:py-3 lg:text-xl border rounded ${currentPage === number ? 'bg-main text-white' : 'text-main'}`}
+              disabled={currentPage === number}
+            >
+              {number}
+            </button>
+          ))}
+        </div>
       )}
-
     </div>
   );
 };
