@@ -112,7 +112,8 @@ const InfoItem = ({ label, value, className = "", icon, labelSize }) => (
       {icon ? React.cloneElement(icon, { size: 24 }) : <div className="text-gray-400">No Icon</div>}
     </div>
     <div>
-      <p className={`font-semibold ${labelSize} text-main dark:text-accent`}>{label}</p>
+      <p className={`font-semibold text-sm sm:text-lg md:text-xl 
+    ${labelSize} text-main dark:text-accent`}>{label}</p>
       <p className="text-xl mt-1 dark:text-slate-100 text-gray-700">{value}</p>
     </div>
   </div>
