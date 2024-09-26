@@ -54,21 +54,18 @@ export default function Login({ handleLogin, isUserLoggedIn, redirectingUrl }) {
       setIsLoading(true);
       const response = await apiService.loginUser(data);
       let userType = "";
-      let isVerified = false;
 
       if (response.data.hasOwnProperty("engineerId")) {
         userType = "engineer";
-        isVerified = response.data.engineerId !== null;
       } else if (response.data.hasOwnProperty("clientId")) {
         userType = "client";
-        isVerified = response.data.clientId !== null;
       }
        handleLogin(
         response.data.token,
         response.data.name,
         response.data.email,
         userType,
-        isVerified
+        response.data.isVerified
       );
       navigate(redirectingUrl, { replace: true });
     } catch (error) {

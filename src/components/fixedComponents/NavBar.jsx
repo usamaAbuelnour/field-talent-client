@@ -31,6 +31,7 @@ export default function NavBar({
   let location = useLocation();
 
   const { isUserLoggedIn, name, email,userType } = user;
+  console.log(userType)
   useEffect(() => {
     setInLogin(
       location.pathname === "/login" || location.pathname === "/registration"
@@ -128,12 +129,12 @@ export default function NavBar({
                       aria-labelledby="user-menu"
                     >
                       <Link
-                        to="/profile"
+                        to={userType ==="engineer" ?"/profile": "/ClientProfile"}
                         className="flex gap-1 px-4 py-2 text-sm text-text   dark:text-text-dark hover:bg-s-light dark:hover:bg-slate-600 transition-colors duration-150"
                         role="menuitem"
                       >
                         <UserPen size={15} />
-                         <span> Profile </span>
+                         <span> my Profile </span>
                       </Link>
                       <button
                         className="block w-full text-left px-4 py-2 text-sm text-text  dark:text-text-dark hover:bg-s-light dark:hover:bg-slate-600 transition-colors duration-150"
