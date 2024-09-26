@@ -87,63 +87,74 @@ const Addjob = () => {
 
   const renderCheckboxes = () => {
     if (!formData.category) {
-      return (
-        <p className="text-gray-500 italic">
-          Please select a category to view available services.
-        </p>
-      );
+        return (
+            <p className="text-gray-500 italic">
+                Please select a category to view available services.
+            </p>
+        );
     }
 
     const categoryServices = {
-      "Concrete Construction": ["Concrete1", "Concrete2", "Concrete3"],
-      "Consultation": ["Consultation1", "Consultation2", "Consultation3"],
-      "Finishing Works": ["Finishing1", "Finishing2", "Finishing3"],
+        "Concrete Construction": [
+            "Reinforced Concrete Pouring",
+            "Concrete Leveling",
+            "Concrete Structure Repairs",
+            
+        ],
+        "Consultation": [
+            "Infrastructure Consultation",
+            "Construction Project Management",
+            "Concrete Structure Design"
+        ],
+        "Finishing Works": [
+            "Interior and Exterior Finishing Services",
+            "Plumbing Services",
+            "Masonry Services"
+        ]
     };
 
     const services = categoryServices[formData.category.value] || [];
 
     return services.length > 0 ? (
-      services.map((service) => (
-        <label key={service} className="block">
-          <input
-            type="checkbox"
-            value={service}
-            checked={formData.service.includes(service)}
-            onChange={handleCheckboxChange}
-            className="mr-2"
-            style={{
-              accentColor: '#115e59',
-            }}
-          />
-          {service}
-        </label>
-      ))
+        services.map((service) => (
+            <label key={service} className="block">
+                <input
+                    type="checkbox"
+                    value={service}
+                    checked={formData.service.includes(service)}
+                    onChange={handleCheckboxChange}
+                    className="mr-2"
+                    style={{
+                        accentColor: '#115e59',
+                    }}
+                />
+                {service}
+            </label>
+        ))
     ) : (
-      <p className="text-gray-500">
-        No services available for this category.
-      </p>
+        <p className="text-gray-500">No services available for this category.</p>
     );
-  };
+};
 
 
   const locationOptions = [
-    { value: "portfouad", label: "Port Fouad" },
-    { value: "portsaid", label: "Port Said" },
-    { value: "suez", label: "Suez" },
-    { value: "nasr city", label: "Nasr City" },
-    { value: "new capital", label: "New Capital" },
-    { value: "badr", label: "Badr" },
-    { value: "el obour", label: "El Obour" },
-    { value: "5th settlement", label: "5th Settlement" },
-    { value: "10th of ramadan", label: "10th of Ramadan" },
-    { value: "el shrok", label: "El Shrok" },
-  ]
+    { value: "portfouad", label: "portfouad" },
+    { value: "portsaid", label: "portsaid" },
+    { value: "suez", label: "suez" },
+    { value: "nasr city", label: "nasr city" },
+    { value: "new capital", label: "new capital" },
+    { value: "badr", label: "badr" },
+    { value: "el obour", label: "el obour" },
+    { value: "5th settlement", label: "5th settlement" },
+    { value: "10th of ramadan", label: "10th of ramadan" },
+    { value: "el shrok", label: "el shrok" },
+];
 
-  const categoryOptions = [
+const categoryOptions = [
     { value: "Concrete Construction", label: "Concrete Construction" },
     { value: "Consultation", label: "Consultation" },
     { value: "Finishing Works", label: "Finishing Works" },
-  ];
+];
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
