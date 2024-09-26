@@ -3,8 +3,8 @@ import Button from "../components/uiComponents/Button";
 import Loading from '../components/uiComponents/Loading';
 import apiService from '../Api/AxiosServiceConfiguration';
 import Select from 'react-select';
-import { PartyPopper } from 'lucide-react';
-
+import AlertSuccess from '../components/uiComponents/AlertSuccess.JSX';
+import AlertError from '../components/uiComponents/AlertError.JSX';
 const Addjob = () => {
   const initialFormState = {
     title: "",
@@ -18,6 +18,7 @@ const Addjob = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -70,71 +71,73 @@ const Addjob = () => {
     if (!validateForm()) return;
     setIsSubmitting(true);
     try {
+      
       const response = await apiService.addJob({
         ...formData,
         location: formData.location.value,
         category: formData.category.value,
       });
-      console.log("Job added successfully:", response.data);
+
       setShowSuccess(true);
       setFormData(initialFormState);
-    } catch (error) {
-      setErrors({ submit: "Failed to submit the job. Please try again." });
+    } catch (e) {
+      setErrorMessage("Oh, sorry! Something went wrong. You can try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
+
   const renderCheckboxes = () => {
     if (!formData.category) {
-        return (
-            <p className="text-gray-500 italic">
-                Please select a category to view available services.
-            </p>
-        );
+      return (
+        <p className="text-gray-500 italic">
+          Please select a category to view available services.
+        </p>
+      );
     }
 
     const categoryServices = {
-        "Concrete Construction": [
-            "Reinforced Concrete Pouring",
-            "Concrete Leveling",
-            "Concrete Structure Repairs",
-            
-        ],
-        "Consultation": [
-            "Infrastructure Consultation",
-            "Construction Project Management",
-            "Concrete Structure Design"
-        ],
-        "Finishing Works": [
-            "Interior and Exterior Finishing Services",
-            "Plumbing Services",
-            "Masonry Services"
-        ]
+      "Concrete Construction": [
+        "Reinforced Concrete Pouring",
+        "Concrete Leveling",
+        "Concrete Structure Repairs",
+
+      ],
+      "Consultation": [
+        "Infrastructure Consultation",
+        "Construction Project Management",
+        "Concrete Structure Design"
+      ],
+      "Finishing Works": [
+        "Interior and Exterior Finishing Services",
+        "Plumbing Services",
+        "Masonry Services"
+      ]
     };
 
     const services = categoryServices[formData.category.value] || [];
 
     return services.length > 0 ? (
-        services.map((service) => (
-            <label key={service} className="block">
-                <input
-                    type="checkbox"
-                    value={service}
-                    checked={formData.service.includes(service)}
-                    onChange={handleCheckboxChange}
-                    className="mr-2"
-                    style={{
-                        accentColor: '#115e59',
-                    }}
-                />
-                {service}
-            </label>
-        ))
+      services.map((service) => (
+        <label key={service} className="block">
+          <input
+            type="checkbox"
+            value={service}
+            checked={formData.service.includes(service)}
+            onChange={handleCheckboxChange}
+            className="mr-2"
+            style={{
+              accentColor: '#115e59',
+            }}
+          />
+          {service}
+        </label>
+      ))
     ) : (
-        <p className="text-gray-500">No services available for this category.</p>
+      <p className="text-gray-500">No services available for this category.</p>
     );
-};
+  };
 
 
   const locationOptions = [
@@ -148,13 +151,13 @@ const Addjob = () => {
     { value: "5th settlement", label: "5th settlement" },
     { value: "10th of ramadan", label: "10th of ramadan" },
     { value: "el shrok", label: "el shrok" },
-];
+  ];
 
-const categoryOptions = [
+  const categoryOptions = [
     { value: "Concrete Construction", label: "Concrete Construction" },
     { value: "Consultation", label: "Consultation" },
     { value: "Finishing Works", label: "Finishing Works" },
-];
+  ];
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -182,13 +185,11 @@ const categoryOptions = [
   return (
     <div className="min-h-screen flex items-center justify-center pt-4 px-4 sm:px-6 lg:px-8 dark:bg-transparent">
       <div className="w-full max-w-2xl p-6 sm:p-8 lg:p-10 border-main border-opacity-30 my-10 dark:bg-main-dark dark:bg-opacity-20 relative">
-        {showSuccess && (
-          <div className=" bg-gradient-to-r from-accent to-accent-dark text-gray-100 mb-3 p-4 rounded-xl font-mono text-center  opacity-100">
-            <p className="text-lg md:text-xl  text-center ">
-             
-              Job added successfully <PartyPopper className="inline-block text-pink-700 animate-pulse" /> <PartyPopper className="inline-block text-pink-700 animate-pulse" />  Top engineers will apply soon you can choose one . and you can add another job.
-            </p>
-          </div>
+
+        {showSuccess ? (
+          <AlertSuccess message="Job Added Successfully" />
+        ) : errorMessage && (
+          <AlertError message={errorMessage} />
         )}
         <h2 className="dark:text-accent text-xl sm:text-2xl lg:text-3xl font-bold mb-6 text-main text-center">
           Add New Job

@@ -1,5 +1,4 @@
-import React from 'react';
-import { Pencil, Briefcase, Calendar, Clock, PhoneCall, MapPin } from 'lucide-react'; // استيراد أيقونة الموقع
+import { Pencil, Briefcase, Calendar, Clock, PhoneCall, MapPin } from 'lucide-react';
 
 const ClientProfile = () => {
   const client = {
@@ -9,9 +8,9 @@ const ClientProfile = () => {
     joinedDate: '2022-01-10',
     lastJob: '2024-09-18',
     imageUrl: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
-    mobile1: '+20 *** *** ****', 
-    mobile2: '+20 *** *** ****', 
-    location: 'Cairo, Egypt' 
+    mobile1: '+20 *** *** ****',
+    mobile2: '+20 *** *** ****',
+    location: 'Cairo, Egypt'
   };
 
   return (
@@ -39,12 +38,12 @@ const ClientProfile = () => {
           </div>
         </div>
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <InfoItem label="Job Count" value={client.jobCount} icon={<Briefcase />} labelSize="text-sm sm:text-lg md:text-xl "/>
-          <InfoItem label="Location" value={client.location} icon={<MapPin />} labelSize="text-sm sm:text-lg md:text-xl " /> 
-          <InfoItem label="Mobile 1" value={client.mobile1} icon={<PhoneCall />} labelSize="text-sm sm:text-lg md:text-xl "/>
-          <InfoItem label="Mobile 2" value={client.mobile2} icon={<PhoneCall />} labelSize="text-sm sm:text-lg md:text-xl "/> 
-          <InfoItem label="Last Job" value={client.lastJob} icon={<Clock />} labelSize="text-sm sm:text-lg md:text-xl " />
-          <InfoItem label="Joined" value={client.joinedDate} icon={<Calendar />} labelSize="text-sm sm:text-lg md:text-xl " />
+          <InfoItem label="Job Count" value={client.jobCount} icon={<Briefcase />} labelSize="" />
+          <InfoItem label="Location" value={client.location} icon={<MapPin />} labelSize="" />
+          <InfoItem label="Mobile 1" value={client.mobile1} icon={<PhoneCall />} labelSize="" />
+          <InfoItem label="Mobile 2" value={client.mobile2} icon={<PhoneCall />} labelSize="" />
+          <InfoItem label="Last Job" value={client.lastJob} icon={<Clock />} labelSize="" />
+          <InfoItem label="Joined" value={client.joinedDate} icon={<Calendar />} labelSize="" />
         </div>
       </div>
     </div>
@@ -57,7 +56,8 @@ const InfoItem = ({ label, value, className = "", icon, labelSize }) => (
       {React.cloneElement(icon, { size: 24 })}
     </div>
     <div>
-      <p className={`font-semibold ${labelSize} text-main dark:text-accent`}>{label}</p>
+      <p className={`font-semibold text-sm sm:text-lg md:text-xl 
+    ${labelSize} text-main dark:text-accent`}>{label}</p>
       <p className="text-xl mt-1 dark:text-slate-100 text-gray-700">{value}</p>
     </div>
   </div>
