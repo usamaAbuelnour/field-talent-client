@@ -1,15 +1,18 @@
-import { useState } from 'react';
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
 import { User, Mail, MapPin, Pencil, MapPinCheck } from "lucide-react";
-import axios from 'axios';
+import axios from "axios";
 
-function Profile() {
+function Profile({ token }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [personalIMAGE, setPersonalIMAGE] = useState("personPhoto.jpg");
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const user = {
     personalInfo: {
-      imageUrl: "personPhoto.jpg",
       name: "Mostapha Yasser",
       email: "mostaphyasser18@gmail.com",
       location: "Cairo, Egypt",
@@ -17,7 +20,7 @@ function Profile() {
     },
     skills: [
       "cad", "revet", "sap", "fishing work", "Structural Design",
-      "AutoCAD", "Project Management", "Site Supervision", "Construction Safety",
+      "AutoCAD", "Project Management", "Site Supervision", "Construction Safety"
     ],
     jobExperience: [
       {
@@ -41,6 +44,25 @@ function Profile() {
     },
   };
 
+  useEffect(() => {
+    const getPersonalImage = async () => {
+      try {
+        const response = await axios.get('https://field-talent.vercel.app/clients/personalImage', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+        });
+        setPersonalIMAGE(response.data);
+      } catch (error) {
+        setErrorMessage("Error fetching image. Please try again.");
+        console.error(error);
+
+      }
+    };
+
+    getPersonalImage();
+  }, [token]);
+
   const handleImageChange = (event) => {
     setSelectedImage(event.target.files[0]);
   };
@@ -49,17 +71,23 @@ function Profile() {
     if (!selectedImage) return;
 
     const formData = new FormData();
-    formData.append('personalImage', selectedImage);
+    formData.append("personalImage", selectedImage);
 
     setIsUploading(true);
     try {
-      await axios.post('https://field-talent.vercel.app/engineers/personalImage', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      const response= await axios.post('https://field-talent.vercel.app/engineers/personalImage', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`
+        },
+
       });
-      console.log('Image uploaded successfully');
-      handleClose(); 
+      
+      setPersonalIMAGE(response.data);
+
+      handleClose();
     } catch (error) {
-      console.error('Error uploading image:', error);
+      setErrorMessage("Error uploading image. Please try again.");
     } finally {
       setIsUploading(false);
     }
@@ -77,10 +105,13 @@ function Profile() {
           <div className="flex items-center space-x-6 lg:space-x-8">
             <div className="relative avatar">
               <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                <img src={user.personalInfo.imageUrl} alt="User Avatar" />
+                <img src={personalIMAGE} alt="User Avatar" />
               </div>
               <a onClick={() => setShowModal(true)}>
-                <Pencil className="absolute top-0 -right-5 cursor-pointer mr-1 text-main dark:text-accent" size={16} />
+                <Pencil
+                  className="absolute top-0 -right-5 cursor-pointer mr-1 text-main dark:text-accent"
+                  size={16}
+                />
               </a>
             </div>
             <div>
@@ -103,36 +134,64 @@ function Profile() {
         <div className="flex flex-col lg:flex-row mt-8 px-5">
           <aside className="w-full lg:sticky top-10 right-10 lg:min-w-32 mb-8 lg:mb-0 p-6 bg-base-100 dark:bg-dark shadow-lg rounded-lg">
             <section className="mb-10">
-              <h4 className="text-lg font-bold text-main dark:text-accent">Profile Overview</h4>
-              <p className="text-sm w-32 text-text dark:text-light-dark">{user.personalInfo.profileOverview}</p>
+              <h4 className="text-lg font-bold text-main dark:text-accent">
+                Profile Overview
+              </h4>
+              <p className="text-sm w-32 text-text dark:text-light-dark">
+                {user.personalInfo.profileOverview}
+              </p>
             </section>
             <section className="mb-10">
-              <h4 className="mb-2 text-lg font-bold text-main dark:text-accent">Location</h4>
+              <h4 className="mb-2 text-lg font-bold text-main dark:text-accent">
+                Location
+              </h4>
               <div className="flex items-center">
-                <MapPinCheck size={18} className="mr-2 text-main dark:text-accent" />
+                <MapPinCheck
+                  size={18}
+                  className="mr-2 text-main dark:text-accent"
+                />
                 <p className="text-lg">{user.personalInfo.location}</p>
               </div>
             </section>
             <section>
-              <h4 className="text-lg mb-5 font-bold flex gap-2 text-main dark:text-accent">Skills</h4>
+              <h4 className="text-lg mb-5 font-bold flex gap-2 text-main dark:text-accent">
+                Skills
+              </h4>
               <ul className="list-disc list-inside flex flex-col gap-3 text-sm text-text dark:text-light-dark">
-                {user.skills.map((skill) => <li key={skill}>{skill}</li>)}
+                {user.skills.map((skill) => (
+                  <li key={skill}>{skill}</li>
+                ))}
               </ul>
             </section>
           </aside>
 
           <main className="grow ml-0 lg:pb-10 lg:ml-8">
             <div className="experience dark:bg-main-dark mt-10">
-              <h1 className="text-main dark:text-accent text-center text-4xl m-3">Experience</h1>
+              <h1 className="text-main dark:text-accent text-center text-4xl m-3">
+                Experience
+              </h1>
               <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
                 {user.jobExperience.map((job, index) => (
                   <li key={job.title}>
                     <div className="timeline-middle">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        className="h-5 w-5"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                          clipRule="evenodd"
+                        />
                       </svg>
                     </div>
-                    <div className={`${index % 2 !== 0 ? "timeline-end" : "timeline-start"} mb-10 md:text-end`}>
+                    <div
+                      className={`${
+                        index % 2 !== 0 ? "timeline-end" : "timeline-start"
+                      } mb-10 md:text-end`}
+                    >
                       <time className="font-mono italic">{job.date}</time>
                       <div className="text-lg font-black">{job.title}</div>
                       {job.description}
@@ -145,23 +204,37 @@ function Profile() {
 
             <section className="education text-center flex mt-10 bg-white dark:bg-main-dark p-6 rounded-lg shadow-md">
               <div className="w-full lg:w-4/6">
-                <h1 className="text-center text-3xl font-bold text-main dark:text-accent">Education</h1>
+                <h1 className="text-center text-3xl font-bold text-main dark:text-accent">
+                  Education
+                </h1>
                 <div className="mt-5 space-y-4 text-lg text-text dark:text-light-dark leading-relaxed">
-                  <p className="font-medium">Graduation from {user.education.graduationFrom}</p>
+                  <p className="font-medium">
+                    Graduation from {user.education.graduationFrom}
+                  </p>
                   <p>{user.education.specialization}</p>
-                  <p className="italic">Graduation Date: {user.education.graduationYear}</p>
+                  <p className="italic">
+                    Graduation Date: {user.education.graduationYear}
+                  </p>
                   <p>Grade: {user.education.grade}</p>
                   <p>
                     Final Project:
-                    <span className="font-semibold">{user.education.finalProject}</span>
+                    <span className="font-semibold">
+                      {user.education.finalProject}
+                    </span>
                   </p>
                   <p>
                     Project Grade:
-                    <span className="text-main dark:text-accent font-bold">{user.education.projectGrade}</span>
+                    <span className="text-main dark:text-accent font-bold">
+                      {user.education.projectGrade}
+                    </span>
                   </p>
                 </div>
               </div>
-              <img src="Learning-cuate.svg" className="hidden lg:block lg:w-2/6" alt="Learning illustration" />
+              <img
+                src="Learning-cuate.svg"
+                className="hidden lg:block lg:w-2/6"
+                alt="Learning illustration"
+              />
             </section>
           </main>
         </div>
@@ -172,12 +245,23 @@ function Profile() {
         <dialog className="modal" open>
           <div className="modal-box">
             <h2 className="font-bold text-lg">Upload Personal Image</h2>
-            <input type="file" accept="image/*" onChange={handleImageChange} className="my-4" />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="my-4"
+            />
             <div className="modal-action">
-              <button className="btn" onClick={handleUpload} disabled={isUploading}>
-                {isUploading ? 'Uploading...' : 'Upload'}
+              <button
+                className="btn"
+                onClick={handleUpload}
+                disabled={isUploading}
+              >
+                {isUploading ? "Uploading..." : "Upload"}
               </button>
-              <button className="btn" onClick={handleClose}>Close</button>
+              <button className="btn" onClick={handleClose}>
+                Close
+              </button>
             </div>
           </div>
         </dialog>

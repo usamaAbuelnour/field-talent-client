@@ -8,10 +8,10 @@ import FormButtonGroup from "../components/AddProfileDataComponent/FormButtonGro
 
 const STEPS = {
   client: ["Personal Data"],
-  engineer: ["Personal Data", "Work Experience", "Engineer Education"],
+  engineer: ["Personal Data", "Work Experience"],
 };
 
-const skills = [
+const SKILLS = [
   "CAD",
   "Revit",
   "SAP",
@@ -24,15 +24,8 @@ const skills = [
 ];
 
 const governorate = ["Port Fouad", "Port Said", "Ismailia", "Suez"];
-const SPECIALIZATIONS = [
-  "Civil Engineering",
-  "Electrical Engineering",
-  "Architectural Engineering",
-];
 
-const GRADES = ["Acceptable", "Good", "Very Good", "Excellent"];
-
-function AddProfileData({ userType }) {
+function AddProfileData({ userType, token }) {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,47 +34,100 @@ function AddProfileData({ userType }) {
 
   const steps = STEPS[userType] || [];
   const initialState = {
-    location: "",
-    phoneNumber: "",
-    whatsAppNumber: "",
-    profileOverview: "",
-    skills: [],
-    startJobDates: Array(3).fill(""),
-    endJobDates: Array(3).fill(""),
-    jobTitles: Array(3).fill(""),
-    jobDescriptions: Array(3).fill(""),
+    governorate: null,
+    phoneNumbers: [null],
+    whatsAppPhoneNumbers: [null],
+    profileOverview: null,
+    ...(userType === "engineer" && {
+      skills: [null],
+      workExperience: Array(3).fill({
+        startDate: null,
+        finishDate: null,
+        name: null,
+        description: null,
+      }),
+    }),
   };
 
   const [formData, setFormData] = useState(initialState);
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value.replace(/\D/g, "").slice(0, 11), 
-    }));
+
+    if (
+      name.startsWith("phoneNumbers") ||
+      name.startsWith("whatsAppPhoneNumbers")
+    ) {
+      const index = name.match(/\d+/)[0];
+      const arrayName = name.includes("phoneNumbers")
+        ? "phoneNumbers"
+        : "whatsAppPhoneNumbers";
+
+      setFormData((prev) => ({
+        ...prev,
+        [arrayName]: prev[arrayName].map((item, i) =>
+          i === parseInt(index)
+            ? value
+              ? value.replace(/\D/g, "").slice(0, 11)
+              : null
+            : item
+        ),
+      }));
+    } else if (name === "skills") {
+      const selectedSkills = Array.isArray(value) ? value.slice(0, 6) : [];
+      setFormData((prev) => ({
+        ...prev,
+        [name]: selectedSkills,
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value || null,
+      }));
+    }
   }, []);
 
   const handleJobChange = (index, field, value) => {
     setFormData((prev) => {
-      const newData = { ...prev };
-      newData[field][index] = value;
-      return newData;
+      const newWorkExperience = [...prev.workExperience];
+      newWorkExperience[index] = {
+        ...newWorkExperience[index],
+        [field]: value || null,
+      };
+      return { ...prev, workExperience: newWorkExperience };
     });
   };
-
   const handleSubmit = async () => {
     setIsSubmitting(true);
+    setError(null);
     try {
-      const response = await axios.post("https://your-backend-api.com/submit", {
-        ...formData,
-        userType,
-      });
+      const endpoint =
+        userType === "engineer"
+          ? "https://field-talent.vercel.app/engineers"
+          : "https://field-talent.vercel.app/clients";
+
+      const response = await axios.patch(
+        endpoint,
+        {
+          ...formData,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log("Data sent successfully:", response.data);
+      navigate("/");
     } catch (error) {
-      console.error("Error sending data:", error);
+      console.log("Error sending data:", error.response.data);
+      console.log(formData, token);
+      setError(
+        "An error occurred while submitting the form. Please try again."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -92,135 +138,112 @@ function AddProfileData({ userType }) {
       case 1:
         return (
           <>
-            <h2 className="text-lg font-semibold mb-4 text-center">Personal Information</h2>
+            <h2 className="text-lg font-semibold mb-4 text-center">
+              Personal Information
+            </h2>
             <FormField
-              label="Choose your location"
-              name="location"
+              label="Choose your governorate"
+              name="governorate"
               type="select"
               options={governorate}
-              value={formData.location}
+              value={formData.governorate}
               onChange={handleInputChange}
             />
             <div className="flex gap-3">
               <FormField
                 label="Phone Number"
-                name="phoneNumber"
+                name="phoneNumbers[0]"
                 type="tel"
-                value={formData.phoneNumber}
+                value={formData.phoneNumbers[0]}
                 onChange={handleInputChange}
               />
               <FormField
                 label="WhatsApp Number"
-                name="whatsAppNumber"
+                name="whatsAppPhoneNumbers[0]"
                 type="tel"
-                value={formData.whatsAppNumber}
+                value={formData.whatsAppPhoneNumbers[0]}
                 onChange={handleInputChange}
               />
             </div>
+            <FormField
+              label={`profileOverview `}
+              name={`profileOverview`}
+              type="textarea"
+              value={formData.profileOverview}
+              onChange={handleInputChange}
+            />
           </>
         );
       case 2:
         return (
           <>
+          
             <h2 className="text-lg font-semibold mb-4">Work Experience</h2>
             <FormField
               label="Choose your top 6 skills"
               name="skills"
-              type="select"
-              options={skills}
+              type="multiselect"
+              options={SKILLS}
               value={formData.skills}
               onChange={handleInputChange}
+              maxSelections={6}
             />
-            <h2 className="text-lg font-semibold mb-4">Upload Your Work Experience</h2>
-            {Array.from({ length: 3 }, (_, index) => (
+            <h2 className="text-lg font-semibold mb-4">
+              Upload Your Work Experience
+            </h2>
+            {formData.workExperience.map((exp, index) => (
               <div key={index} className={`exp${index + 1}`}>
                 <FormField
                   label={`Start Job ${index + 1}`}
-                  name={`startJobDate${index + 1}`}
+                  name={`startDate`}
                   type="date"
-                  onChange={(e) => handleJobChange(index, 'startJobDates', e.target.value)}
+                  value={exp.startDate}
+                  onChange={(e) =>
+                    handleJobChange(index, "startDate", e.target.value)
+                  }
                 />
                 <FormField
                   label={`End Job ${index + 1}`}
-                  name={`endJobDate${index + 1}`}
+                  name={`finishDate`}
                   type="date"
-                  onChange={(e) => handleJobChange(index, 'endJobDates', e.target.value)}
+                  value={exp.finishDate}
+                  onChange={(e) =>
+                    handleJobChange(index, "finishDate", e.target.value)
+                  }
                 />
                 <FormField
                   label={`Job Title ${index + 1}`}
-                  name={`jobTitle${index + 1}`}
+                  name={`name`}
                   type="text"
-                  onChange={(e) => handleJobChange(index, 'jobTitles', e.target.value)}
+                  value={exp.name}
+                  onChange={(e) =>
+                    handleJobChange(index, "name", e.target.value)
+                  }
                 />
                 <FormField
                   label={`Job Description ${index + 1}`}
-                  name={`jobDescription${index + 1}`}
+                  name={`description`}
                   type="textarea"
-                  onChange={(e) => handleJobChange(index, 'jobDescriptions', e.target.value)}
+                  value={exp.description}
+                  onChange={(e) =>
+                    handleJobChange(index, "description", e.target.value)
+                  }
                 />
               </div>
             ))}
           </>
         );
-      case 3:
-        return userType === "engineer" ? (
-          <>
-            <h1>Engineer Education</h1>
-            <FormField
-              label="Graduation From"
-              name="graduationFrom"
-              type="text"
-              onChange={handleInputChange}
-            />
-            <FormField
-              label="Graduation Year"
-              name="graduationYear"
-              type="date"
-              onChange={handleInputChange}
-            />
-            <FormField
-              label="Specialization"
-              name="specialization"
-              type="select"
-              options={SPECIALIZATIONS}
-              value={formData.specialization}
-              onChange={handleInputChange}
-            />
-            <FormField
-              label="Grade"
-              name="grade"
-              type="select"
-              options={GRADES}
-              value={formData.grade}
-              onChange={handleInputChange}
-            />
-            <FormField
-              label="Final Project"
-              name="finalProject"
-              type="text"
-              onChange={handleInputChange}
-            />
-            <FormField
-              label="Project Grade"
-              name="projectGrade"
-              type="select"
-              options={GRADES}
-              value={formData.projectGrade}
-              onChange={handleInputChange}
-            />
-          </>
-        ) : null;
       default:
         return null;
     }
   };
 
   const handleNext = () => {
-    setCurrentStep((prev) => prev + 1);
+    setCurrentStep((prev) => Math.min(prev + 1, steps.length));
   };
 
   const handlePrevious = () => {
-    setCurrentStep((prev) => prev - 1);
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
   const handleSkip = () => {
@@ -232,6 +255,7 @@ function AddProfileData({ userType }) {
       <FormStepper currentStep={currentStep} steps={steps} />
       <div className="bg-white shadow-main min-h-fit dark:bg-gray-800 py-1 rounded-lg shadow-sm px-6 flex-grow">
         <form className="space-y-6">{renderStepContent()}</form>
+        {error && <div className="text-red-500 mt-4">{error}</div>}
       </div>
       <FormButtonGroup
         currentStep={currentStep}

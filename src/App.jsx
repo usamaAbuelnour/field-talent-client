@@ -192,7 +192,7 @@ function App() {
             path="/profile"
             element={
               <PrivateRoute
-                element={<Profile user={user} />}
+                element={<Profile token={user.token} />}
                 isUserLoggedIn={user.isUserLoggedIn}
                 handleRedirectingUrl={handleRedirectingUrl}
                 pageAllowFor={"engineer"}
@@ -205,7 +205,7 @@ function App() {
             path="/ClientProfile"
             element={
               <PrivateRoute
-                element={<ClientProfile user={user} />}
+                element={<ClientProfile token={user.token} />}
                 isUserLoggedIn={user.isUserLoggedIn}
                 handleRedirectingUrl={handleRedirectingUrl}
                 pageAllowFor={"client"}
@@ -237,7 +237,7 @@ function App() {
                 element={
                   <AddProfileData
                     userType={user.userType}
-                    isVerified={user.isVerified}
+                    token={user.token}
                   />
                 }
                 isUserLoggedIn={user.isUserLoggedIn}

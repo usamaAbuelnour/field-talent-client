@@ -80,15 +80,21 @@ function Home({ isDarkMode, handleRedirectingUrl,userType }) {
   return (
     <main
       className={`
- container mx-auto my-12 px-6 py-14 `}
+  `}
     >
- 
-      <div className="hero flex flex-col  md:flex-row justify-between items-center mb-12">
-        <div className="about  text-center md:text-left p-6 md:p-14 flex flex-col justify-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-main dark:text-accent ">
+
+ <div className=" bg-gradient-to-r from-main to-accent dark:to-main-dark ">
+   <img src="curve.svg" alt=""  className="w-full    dark:hidden"/>
+   <img src="curvedark.svg" alt=""  className="w-full hidden dark:block"/>
+
+
+
+ <div className="container mx-auto lg:relative -top-16   px-6 py-0  hero flex flex-col pb-10  md:flex-row justify-between items-center  ">
+        <div className="about  text-center md:text-left mb-20 md:mb-0 flex flex-col justify-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-accent ">
             Field Talent
           </h1>
-          <p className="mb-6 text-lg text-black leading-relaxed dark:text-text-dark">
+          <p className="mb-6 text-lg  leading-relaxed text-text-dark">
             Welcome to Field Talent! Your one-stop platform to connect quickly
             with professional finishing engineers. Whether you need expert
             advice or looking to hire a skilled engineer, Field Talent makes the
@@ -108,16 +114,19 @@ function Home({ isDarkMode, handleRedirectingUrl,userType }) {
           <img
             src="feildtalentlogodark.png"
             alt="Field Talent Logo"
-            className="img-fluid w-full md:w-1/2 mt-8 md:mt-0 rounded-lg shadow-lg"
+            className="img-fluid w-full md:w-1/2  rounded-lg shadow-lg"
           />
         ) : (
           <img
             src="feildtalentlogo.png"
             alt="Field Talent Logo"
-            className="img-fluid w-full md:w-1/2 mt-8 md:mt-0 rounded-lg shadow-lg"
+            className="img-fluid w-full md:w-1/2  rounded-lg shadow-lg"
           />
         )}
       </div>
+
+ </div>
+     
       <hr className="my-12 border-gray-200" />
       <Section title="Our Categories" items={categories} onClick={handleCategoryClick} />
       <hr className="my-12 border-gray-200" />
