@@ -69,22 +69,19 @@ export default function Registration({
     try {
       setIsLoading(true);
       const response = await apiService.registerUser(data);
-
       let userType = "";
-      let isVerified = false;
 
       if (response.data.hasOwnProperty("engineerId")) {
         userType = "engineer";
-        isVerified = response.data.engineerId !== null;
       } else if (response.data.hasOwnProperty("clientId")) {
         userType = "client";
-        isVerified = response.data.clientId !== null;
-      } handleLogin(
+      }
+       handleLogin(
         response.data.token,
         response.data.name,
         response.data.email,
         userType,
-        isVerified
+        response.data.isVerified
       );
 
       navigate("/verification", { replace: true });

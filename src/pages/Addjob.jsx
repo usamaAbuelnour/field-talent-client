@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable no-unused-vars */
+import  { useState, useEffect } from 'react';
 import Button from "../components/uiComponents/Button";
 import Loading from '../components/uiComponents/Loading';
 import apiService from '../Api/AxiosServiceConfiguration';
@@ -80,8 +81,9 @@ const Addjob = () => {
 
       setShowSuccess(true);
       setFormData(initialFormState);
-    } catch (e) {
+    } catch (error) {
       setErrorMessage("Oh, sorry! Something went wrong. You can try again.");
+      console.log(error)
     } finally {
       setIsSubmitting(false);
     }
