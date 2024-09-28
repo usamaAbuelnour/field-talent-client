@@ -10,6 +10,8 @@ const FieldLoader = () => (
 const JobDetails = ({ job }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+ 
+  
 
   const handleApplyNowClick = () => {
     setIsPopupOpen(true);
@@ -91,7 +93,7 @@ const JobDetails = ({ job }) => {
         </button>
       </div>
 
-      {isPopupOpen && <ApplyPopup closePopup={closePopup} />}
+      {isPopupOpen && <ApplyPopup closePopup={closePopup} jobId={job._id}/>}
     </div>
   );
 };
