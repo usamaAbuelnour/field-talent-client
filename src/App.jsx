@@ -6,7 +6,7 @@ import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import NotFound from "./pages/NotFound";
 import ShowJobs from "./pages/ShowJobs";
-import ShowProposal from "./pages/ShowProposal";
+import MyJobForClient from "./pages/MyJobForClient";
 import Footer from "./components/fixedComponents/Footer";
 import Addjob from "./pages/Addjob";
 import Profile from "./pages/Profile";
@@ -17,7 +17,7 @@ import Verification from "./pages/Verification";
 import CategoryDetails from "./pages/CategoryDetails";
 import ClientProfile from "./pages/ClientProfile";
 import AddProfileData from "./pages/AddProfileData";
-
+import ShowProposal from './pages/ShowProposal';
 import "./App.css";
 import { useState, useEffect } from "react";
 
@@ -176,10 +176,10 @@ function App() {
           />
 
           <Route
-            path="/showproposal"
+            path="/My-Job"
             element={
               <PrivateRoute
-                element={<ShowProposal />}
+                element={<MyJobForClient />}
                 isUserLoggedIn={user.isUserLoggedIn}
                 handleRedirectingUrl={handleRedirectingUrl}
                 pageAllowFor={"client"}
@@ -230,7 +230,7 @@ function App() {
               />
             }
           />
-           <Route
+          <Route
             path="/AddProfileData"
             element={
               <PrivateRoute
@@ -252,6 +252,9 @@ function App() {
             path="/CategoryDetails/:categoryId"
             element={<CategoryDetails />}
           />
+
+          <Route path="/showProposal"
+                 element={<ShowProposal />} />
 
           <Route
             path="*"

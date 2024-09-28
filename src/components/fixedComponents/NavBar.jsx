@@ -80,7 +80,7 @@ export default function NavBar({
             
              <div className=" md:ml-6 flex ">
               <NavLink
-                to={userType==="engineer"?"/FreelancerProposals":"/showproposal"}
+                to={userType==="engineer"?"/FreelancerProposals":"/My-Job"}
                 icon={BriefcaseBusiness}
                 label={userType==="engineer"?"show my proposals":"my jobs"}
                 isfrommob={true}
