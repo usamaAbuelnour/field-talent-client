@@ -5,5 +5,5 @@
     @apply transition-colors duration-300;
 }
 body{
-    @apply dark:bg-dark-light
+    @apply dark:bg-dark-light bg-gray-100
 }

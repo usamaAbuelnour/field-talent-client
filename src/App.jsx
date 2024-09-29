@@ -10,7 +10,7 @@ import MyJobForClient from "./pages/MyJobForClient";
 import Footer from "./components/fixedComponents/Footer";
 import Addjob from "./pages/Addjob";
 import Profile from "./pages/Profile";
-import FreelancerProposals from "./pages/FreelancerProposals";
+import EngineerProposals from "./pages/EngineerProposals";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
 import JobDetailsForApply from "./pages/JobDetailsForApply";
 import Verification from "./pages/Verification";
@@ -137,11 +137,12 @@ function App() {
           />
 
           <Route
-            path="/freelancerproposals"
+            path="/engineerProposals"
             element={
               <PrivateRoute
-                element={<FreelancerProposals />}
+                element={<EngineerProposals     token={user.token}/>}
                 isUserLoggedIn={user.isUserLoggedIn}
+
                 handleRedirectingUrl={handleRedirectingUrl}
                 pageAllowFor={"engineer"}
                 userType={user.userType}

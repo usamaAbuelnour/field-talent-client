@@ -1,17 +1,24 @@
 /* eslint-disable react/prop-types */
+
 function FormField({ label, name, type, value, onChange, options, error, maxSelections }) {
-  const handleMultiselectChange = (e) => {
-    const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
-    if (maxSelections && selectedOptions.length > maxSelections) {
-      onChange({
-        target: {
-          name,
-          value: selectedOptions.slice(0, maxSelections)
-        }
-      });
+  const handleMultiselectChange = (selectedOption) => {
+    let newValue;
+    if (Array.isArray(value)) {
+      if (value.includes(selectedOption)) {
+        newValue = value.filter(item => item !== selectedOption);
+      } else {
+        newValue = [...value, selectedOption].slice(0, maxSelections);
+      }
     } else {
-      onChange(e);
+      newValue = [selectedOption];
     }
+    
+    onChange({
+      target: {
+        name,
+        value: newValue,
+      },
+    });
   };
 
   const renderInput = () => {
@@ -21,11 +28,11 @@ function FormField({ label, name, type, value, onChange, options, error, maxSele
           <select
             name={name}
             className="select select-bordered w-full"
-            value={value}
+            value={value || ""}
             onChange={onChange}
           >
             <option disabled value="">
-              Choose your {label.toLowerCase()}
+               {label}
             </option>
             {options.map((option, index) => (
               <option key={index} value={option}>
@@ -36,26 +43,30 @@ function FormField({ label, name, type, value, onChange, options, error, maxSele
         );
       case "multiselect":
         return (
-          <select
-            name={name}
-            className="select select-bordered w-full"
-            multiple
-            value={value}
-            onChange={handleMultiselectChange}
-          >
+          <div className="flex flex-wrap gap-3">
             {options.map((option, index) => (
-              <option key={index} value={option}>
+              <button
+                key={index}
+                type="button"
+                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                  Array.isArray(value) && value.includes(option)
+                    ? 'bg-main text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+                onClick={() => handleMultiselectChange(option)}
+                disabled={Array.isArray(value) && value.length >= maxSelections && !value.includes(option)}
+              >
                 {option}
-              </option>
+              </button>
             ))}
-          </select>
+          </div>
         );
       case "textarea":
         return (
           <textarea
             name={name}
             className="textarea textarea-bordered w-full"
-            value={value}
+            value={value || ""}
             onChange={onChange}
           />
         );
@@ -75,7 +86,7 @@ function FormField({ label, name, type, value, onChange, options, error, maxSele
             type={type}
             name={name}
             className="input input-bordered w-full"
-            value={value}
+            value={value || ""}
             onChange={onChange}
           />
         );
@@ -90,14 +101,12 @@ function FormField({ label, name, type, value, onChange, options, error, maxSele
       {renderInput()}
       {error && <span className="text-red-500 text-sm mt-1">{error}</span>}
       {type === "multiselect" && maxSelections && (
-        <span className="text-sm mt-1">
-          Select up to {maxSelections} option{maxSelections !== 1 ? 's' : ''}
+        <span className="text-sm mt-1 text-gray-600">
+          اختر حتى {maxSelections} {maxSelections !== 1 ? 'خيارات' : 'خيار'}
         </span>
       )}
     </div>
   );
 }
 
-export default FormField;
-
-
+export default FormField

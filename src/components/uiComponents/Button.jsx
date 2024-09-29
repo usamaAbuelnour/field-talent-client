@@ -20,7 +20,7 @@ const Button = ({
   };
   const variantClasses = {
     fill: "bg-main text-white hover:bg-teal-700",
-    outline: " border border-main text-main  ",
+    outline: " border  border-main text-main  ",
   };
 
   const disabledClasses = disabled
