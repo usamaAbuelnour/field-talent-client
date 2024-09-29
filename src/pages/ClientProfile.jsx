@@ -1,45 +1,92 @@
+/* eslint-disable no-constant-binary-expression */
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
-import { Pencil, Briefcase, Calendar, Clock, PhoneCall, MapPin } from 'lucide-react';
-import axios from 'axios';
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  Pencil,
+  Briefcase,
+  Calendar,
+  Clock,
+  PhoneCall,
+  MapPin,
+  Check,
+} from "lucide-react";
+import Button from "../components/uiComponents/Button";
+import axios from "axios";
+
+const API_URL = "https://field-talent.vercel.app";
 
 const ClientProfile = ({ token }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
-
   const [client, setClient] = useState({
-    name: 'Mostapha Yasser',
-    email: 'fatma@gmail.com',
-    jobCount: 12,
-    joinedDate: '2022-01-10',
-    lastJob: '2024-09-18',
-    personalIMAGE: "https://ik.imagekit.io/usamaAbuelnour/Client-mostaphayassser256_gmail-com/personal-image/personalImage__mn5LykTa",
-    mobile1: '+20 *** *** ****',
-    mobile2: '+20 *** *** ****',
-    location: 'Cairo, Egypt',
+    name: "loading.....",
+    email: "loading.....",
+    jobCount: 0,
+    joinedDate: "loading.....",
+    lastJob: "loading.....",
+    personalIMAGE: "https://via.placeholder.com/150",
+    mobile: "loading.....",
+    whatsAppPhoneNumbers: "loading.....",
+    location: "loading.....",
+    isVerified: false,
   });
+
+  const fetchClientData = useCallback(async () => {
+    try {
+      const response = await axios.get(`${API_URL}/clients`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const myData = response.data;
+
+      setClient({
+        name: `${myData.firstName} ${myData.lastName}` || "your name",
+        email: myData.email || "example@example.com",
+        jobCount: myData.jobCount || 0,
+        joinedDate: new Date(myData.createdAt).toLocaleDateString('ar-EG') || "not available",
+        lastJob: myData.lastJob ? new Date(myData.lastJob).toLocaleDateString('ar-EG') : "not fond",
+        personalIMAGE: myData.clientId.personalImage || "https://via.placeholder.com/150",
+        mobile: myData.clientId.phoneNumbers?.[0] || "not available",
+        whatsAppPhoneNumbers: myData.clientId.whatsAppPhoneNumbers?.[0] || "not available",
+        location: myData.clientId.governorate || "egypt",
+        isVerified: myData.isVerified,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    fetchClientData();
+  }, [fetchClientData]);
 
   const handleUpload = async () => {
     if (!selectedImage) return;
 
     const formData = new FormData();
-    formData.append('personalImage', selectedImage);
+    formData.append("personalImage", selectedImage);
 
     setIsUploading(true);
     try {
-      const response = await axios.post('https://field-talent.vercel.app/clients/personalImage', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}`
-        },
-      });
+      const response = await axios.post(
+        `${API_URL}/clients/personalImage`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-      setClient(prevClient => ({ ...prevClient, personalIMAGE: response.data }));
+      setClient((prevClient) => ({
+        ...prevClient,
+        personalIMAGE: response.data,
+      }));
 
       handleClose();
     } catch (error) {
-      console.error('Error uploading image:', error);
+      console.error(error);
     } finally {
       setIsUploading(false);
     }
@@ -60,44 +107,113 @@ const ClientProfile = ({ token }) => {
         <div className="text-center">
           <div className="flex flex-col items-center">
             <div className="relative inline-block mb-2">
-              <div className="absolute -top-2 -right-2 bg-main rounded-full p-1 cursor-pointer" onClick={() => setShowModal(true)}>
-                <Pencil className="text-white" size={16} />
+              <div
+                className="absolute bottom-1 -right-2 bg-main rounded-full p-1 cursor-pointer"
+                
+              >
+                <Pencil className="text-white" size={16} onClick={() => setShowModal(true)} />
               </div>
-              <img
-                className="w-36 h-36 rounded-full border-4 border-main shadow-lg object-cover"
-                src={client.personalIMAGE}
-                alt="Client"
-              />
+              <div className="relative">
+                <img
+                  className="w-36 h-36 rounded-full border-4 border-main shadow-lg object-cover"
+                  src={client.personalIMAGE}
+                  alt="client image"
+                />
+                {client.isVerified && (
+                  <div className="flex gap-1 absolute top-0 right-0 ">
+                    <Check
+                      className="bg-accent text-white rounded-full "
+                      size={20}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
             <h2 className="md:text-4xl sm:text-xl font-bold text-main mb-2 flex items-center dark:text-accent">
               {client.name}
-              <div className="ml-2 bg-main rounded-full p-1 cursor-pointer" onClick={() => setShowModal(true)}>
-                <Pencil className="text-white" size={16} />
-              </div>
             </h2>
-            <p className="text-lg md:text-xl text-main dark:text-slate-100">{client.email}</p>
+            <p className="text-lg md:text-xl text-main dark:text-slate-100">
+              {client.email}
+            </p>
+          </div>
+          <div className="flex justify-center my-5 gap-4">
+            {!client.isVerified && (
+              <Button
+                to="/verification"
+                text="Verify your account"
+                variant="fill"
+                size="sm"
+              />
+            )}
+            <Button
+              to="/AddProfileData"
+              text="update your profile"
+              variant={client.isVerified ? "fill" : "outline"}
+              size="sm"
+            />
           </div>
         </div>
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <InfoItem label="Job Count" value={client.jobCount} icon={<Briefcase />} labelSize="text-sm sm:text-lg md:text-xl" />
-          <InfoItem label="Location" value={client.location} icon={<MapPin />} labelSize="text-sm sm:text-lg md:text-xl" />
-          <InfoItem label="Mobile 1" value={client.mobile1} icon={<PhoneCall />} labelSize="text-sm sm:text-lg md:text-xl" />
-          <InfoItem label="Mobile 2" value={client.mobile2} icon={<PhoneCall />} labelSize="text-sm sm:text-lg md:text-xl" />
-          <InfoItem label="Last Job" value={client.lastJob} icon={<Clock />} labelSize="text-sm sm:text-lg md:text-xl" />
-          <InfoItem label="Joined" value={client.joinedDate} icon={<Calendar />} labelSize="text-sm sm:text-lg md:text-xl" />
+          <InfoItem
+            label="number of jobs"
+            value={client.jobCount}
+            icon={<Briefcase />}
+            labelSize="text-sm sm:text-lg md:text-xl"
+          />
+          <InfoItem
+            label="location"
+            value={client.location}
+            icon={<MapPin />}
+            labelSize="text-sm sm:text-lg md:text-xl"
+          />
+          <InfoItem
+            label="mobile"
+            value={client.mobile}
+            icon={<PhoneCall />}
+            labelSize="text-sm sm:text-lg md:text-xl"
+          />
+          <InfoItem
+            label="whatsAppPhoneNumbers"
+            value={client.whatsAppPhoneNumbers}
+            icon={<PhoneCall />}
+            labelSize="text-sm sm:text-lg md:text-xl"
+          />
+          <InfoItem
+            label="last job"
+            value={client.lastJob}
+            icon={<Clock />}
+            labelSize="text-sm sm:text-lg md:text-xl"
+          />
+          <InfoItem
+            label="joinedDate"
+            value={client.joinedDate}
+            icon={<Calendar />}
+            labelSize="text-sm sm:text-lg md:text-xl"
+          />
         </div>
       </div>
 
       {showModal && (
         <dialog className="modal" open>
           <div className="modal-box">
-            <h2 className="font-bold text-lg">Upload Personal Image</h2>
-            <input type="file" accept="image/*" onChange={handleImageChange} className="my-4" />
+            <h2 className="font-bold text-lg"> upload your image </h2>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="my-4"
+            />
             <div className="modal-action">
-              <button className="btn" onClick={handleUpload} disabled={isUploading}>
-                {isUploading ? 'Uploading...' : 'Upload'}
+              <button
+                className="btn"
+                onClick={handleUpload}
+                disabled={isUploading}
+              >
+                {isUploading ? "upload..." : "done"}
               </button>
-              <button className="btn" onClick={handleClose}>Close</button>
+              <button className="btn" onClick={handleClose}>
+                close
+              </button>
             </div>
           </div>
         </dialog>
@@ -109,11 +225,19 @@ const ClientProfile = ({ token }) => {
 const InfoItem = ({ label, value, className = "", icon, labelSize }) => (
   <div className={`px-4 py-1 rounded-lg shadow flex items-center ${className}`}>
     <div className="mr-4 text-main dark:text-accent">
-      {icon ? React.cloneElement(icon, { size: 24 }) : <div className="text-gray-400">No Icon</div>}
+      {icon ? (
+        React.cloneElement(icon, { size: 24 })
+      ) : (
+        <div className="text-gray-400">not fond  </div>
+      )}
     </div>
     <div>
-      <p className={`font-semibold text-sm sm:text-lg md:text-xl 
-    ${labelSize} text-main dark:text-accent`}>{label}</p>
+      <p
+        className={`font-semibold text-sm sm:text-lg md:text-xl 
+    ${labelSize} text-main dark:text-accent`}
+      >
+        {label}
+      </p>
       <p className="text-xl mt-1 dark:text-slate-100 text-gray-700">{value}</p>
     </div>
   </div>
