@@ -1,7 +1,6 @@
-/* eslint-disable react/prop-types */
 import { MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
 import ApplyPopup from './ApplyPopup';
-import  { useState } from 'react';
+import { useState } from 'react';
 
 const FieldLoader = () => (
   <div className="inline-block w-4 h-4 border-t-2 border-main rounded-full animate-spin ml-2"></div>
@@ -10,8 +9,6 @@ const FieldLoader = () => (
 const JobDetails = ({ job }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
- 
-  
 
   const handleApplyNowClick = () => {
     setIsPopupOpen(true);
@@ -63,15 +60,21 @@ const JobDetails = ({ job }) => {
         </button>
       </div>
 
-      <div className="mb-4 flex justify-between items-center mx-4">
-        <div className="text-lg sm:text-xl md:text-2xl text-main mb-2 dark:text-white">
-          Date: {job.date || <FieldLoader />}
-        </div>
-        <div className="text-main mb-2 flex items-center gap-2 dark:text-white">
-          <MapPin />
-          <span className="text-lg sm:text-xl md:text-2xl">{job.location}</span>
-        </div>
-      </div>
+      <div className="mb-4 flex flex-col sm:flex-col md:flex-row justify-between items-start md:items-center mx-4  gap-2">
+  <div className="order-1 md:order-none text-lg sm:text-xl md:text-2xl text-main dark:text-white">
+    Created: {job.createdAt ? new Date(job.createdAt).toLocaleDateString() : <FieldLoader />}
+  </div>
+  <div className="order-3 md:order-none text-main flex items-center gap-2 dark:text-white">
+    <MapPin />
+    <span className="text-lg sm:text-xl md:text-2xl">{job.location}</span>
+  </div>
+  <div className="order-2 md:order-none text-lg sm:text-xl md:text-2xl text-main dark:text-white">
+    Updated: {job.updatedAt ? new Date(job.updatedAt).toLocaleDateString() : <FieldLoader />}
+  </div>
+</div>
+
+
+     
 
       <p className="text-gray-700 mb-4 dark:text-white text-base sm:text-lg md:text-xl mx-4 break-words">
         Description: {job.description || <FieldLoader />}
@@ -93,7 +96,7 @@ const JobDetails = ({ job }) => {
         </button>
       </div>
 
-      {isPopupOpen && <ApplyPopup closePopup={closePopup} jobId={job._id}/>}
+      {isPopupOpen && <ApplyPopup closePopup={closePopup} jobId={job._id} />}
     </div>
   );
 };

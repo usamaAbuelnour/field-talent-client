@@ -37,7 +37,6 @@ const apiService = {
     loginUser: (credentials) => api.post('/login', credentials),
   registerUser: (userData) => api.post('/register', userData),
   PostProposals: (data) => api.post('/proposals', data),
-  PostProposals: (data) => api.post('/proposals', data),
   getProposals: (data) => api.get('/proposals', data),
  clientJobs :(data) => api.get('/jobs', data),
 };

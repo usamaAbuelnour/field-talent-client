@@ -63,7 +63,7 @@ const CategoryDetails = () => {
     };
 
     return (
-        <div className="max-w-6xl mx-auto p-4 sm:p-6 rounded-lg shadow-lg mt-16">
+        <div className="max-w-6xl mx-auto p-4 sm:p-6 mt-16">
             <div className="items-center mb-6 flex justify-center">
                 {getCategoryIcon(category.name)}
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold ml-4 text-main dark:text-accent">{category.name}</h1>
@@ -81,14 +81,16 @@ const CategoryDetails = () => {
                 ))}
             </div>
 
-            <p className="text-sm sm:text-base lg:text-lg text-gray-700 mb-8 dark:text-white">{category.description}</p>
+            <p className="text-sm sm:text-base lg:text-lg text-gray-700  dark:text-white mb-24">{category.description}</p>
 
+            <hr className="border-t-4 border-main w-full mb-6" />
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold mb-4 text-main flex justify-center items-center dark:text-accent">
                 <Flag className="mr-2" size={24} />
                 Available Services
             </h2>
+            <hr className="border-t-4 border-main w-full  mt-6" />
 
-            <div id="services" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <div id="services" className="grid grid-cols-1  gap-8  mt-11">
                 {category.services.map((service, index) => (
                     <div
                         key={index}
@@ -105,12 +107,12 @@ const CategoryDetails = () => {
                                 />
                             )}
                         </div>
-                        <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 text-main flex items-start dark:text-accent">
+                        <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 text-main flex  items-start dark:text-accent mx-auto my-4">
                             <ChevronRight className="mr-2 flex-shrink-0 mt-1" size={20} />
                             <span>{service.name}</span>
                         </h3>
-                        <p className="text-xs sm:text-sm lg:text-base text-gray-600 mb-2 flex-grow dark:text-white">{service.description}</p>
-                        <p className="text-xs sm:text-sm italic text-gray-500 mt-2 dark:text-white">{service.additional_info}</p>
+                        <p className="text-xs sm:text-sm lg:text-base text-gray-600 mb-5 flex-grow dark:text-white mt-5 ">{service.description}</p>
+                        <p className="text-xs sm:text-sm italic text-gray-500 mt-2 dark:text-white mb-5">{service.additional_info}</p>
                     </div>
                 ))}
             </div>
