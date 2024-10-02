@@ -17,12 +17,10 @@ function Footer() {
   return (
     <div className="relative">
       <div className="absolute inset-x-0 top-0 -z-10">
-        <svg width="100%" height="200" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#115e59" fillOpacity="1" d="M0,320L0,160L240,186.7C480,213,960,267,1440,240L1440,320L0,320Z"></path>
-        </svg>
+        
       </div>
 
-      <footer className="bg-main w-full text-white pt-32 relative">
+      <footer className="bg-main dark:bg-main-dark w-full text-white pt-32 relative">
         <div className="container mx-auto px-4 ">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
