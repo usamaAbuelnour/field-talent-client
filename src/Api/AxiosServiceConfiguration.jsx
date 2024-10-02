@@ -39,6 +39,7 @@ const apiService = {
   PostProposals: (data) => api.post('/proposals', data),
   getProposals: (data) => api.get('/proposals', data),
  clientJobs :(data) => api.get('/jobs', data),
+ updateProposalStatus: (proposalId, status) => api.patch(`/proposals/${proposalId}`, status),
 };
 
 export default apiService;

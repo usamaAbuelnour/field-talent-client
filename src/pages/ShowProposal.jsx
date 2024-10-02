@@ -1,50 +1,46 @@
-import { useState } from "react";
-import { Maximize2 } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Maximize2, MapPin } from 'lucide-react';
+import apiService from '../Api/AxiosServiceConfiguration';
+import Loading from '../components/uiComponents/Loading';
 
 const ShowProposal = () => {
-  const proposals = [
-    {
-      avatar:
-        "https://askmescript.com/upload/photos/2020/04/pNFDnM5HcX9sozLiqIN4_24_62b73862def5530a11afeb3a88f402de_image.png",
-      freelancerName: "John Doe",
-      proposal: "I can complete this project in 5 days.",
-      salaryOffer: 500,
-    },
-    {
-      avatar:
-        "https://askmescript.com/upload/photos/2020/04/pNFDnM5HcX9sozLiqIN4_24_62b73862def5530a11afeb3a88f402de_image.png",
-      freelancerName: "Jane Smith",
-      proposal:
-        "I have experience with similar projects and can deliver within a week. I have experience with similar projects and can deliver within a week I have experience with similar projects and can deliver within a week. I have experience with similar projects and can deliver within a week I have experience with similar projects and can deliver within a week. I have experience with similar projects and can deliver within a week I have experience with similar projects and can deliver within a week. I have experience with similar projects and can deliver within a week.",
-      salaryOffer: 600,
-    },
-    {
-      avatar:
-        "https://askmescript.com/upload/photos/2020/04/pNFDnM5HcX9sozLiqIN4_24_62b73862def5530a11afeb3a88f402de_image.png",
-      freelancerName: "John Doe",
-      proposal: "I can complete this project in 5 days.",
-      salaryOffer: 500,
-    },
-
-    {
-      avatar:
-        "https://askmescript.com/upload/photos/2020/04/pNFDnM5HcX9sozLiqIN4_24_62b73862def5530a11afeb3a88f402de_image.png",
-      freelancerName: "Jane Smith",
-      proposal:
-        "I have experience with similar projects and can deliver within a week. I have experience with similar projects and can deliver within a week I have experience with similar projects and can deliver within a week. I have experience with similar projects and can deliver within a week I have experience with similar projects and can deliver within a week. I have experience with similar projects and can deliver within a week I have experience with similar projects and can deliver within a week. I have experience with similar projects and can deliver within a week.",
-      salaryOffer: 600,
-    },
-    {
-      avatar:
-        "https://askmescript.com/upload/photos/2020/04/pNFDnM5HcX9sozLiqIN4_24_62b73862def5530a11afeb3a88f402de_image.png",
-      freelancerName: "John Doe",
-      proposal: "I can complete this project in 5 days.",
-      salaryOffer: 500,
-    },
-  ];
-
+  const [job, setJob] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProposal, setSelectedProposal] = useState(null);
+  
+  const location = useLocation();
+  const jobId = new URLSearchParams(location.search).get('jobId');
+
+  useEffect(() => {
+    const fetchJobAndProposals = async () => {
+      if (!jobId) {
+        setError('No job ID provided');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await apiService.clientJobs();
+        const selectedJob = response.data.jobs.find(job => job._id === jobId);
+        
+        if (selectedJob) {
+          setJob(selectedJob);
+        } else {
+          setError('Job not found');
+        }
+      } catch (err) {
+        console.error(err);
+        setError('Failed to fetch job and proposals');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobAndProposals();
+  }, [jobId]);
 
   const openModal = (proposal) => {
     setSelectedProposal(proposal);
@@ -56,15 +52,31 @@ const ShowProposal = () => {
     setSelectedProposal(null);
   };
 
+  if (loading) return <Loading />;
+  if (error) return <div className="text-center text-2xl text-red-600 mt-12">{error}</div>;
+  if (!job) return <div className="text-center text-2xl mt-12">Job not found</div>;
+
   return (
     <div className="mt-20">
       <div className="container mx-auto p-4 px-4 md:px-20 mb-12">
-        <div>
-          <h1 className="text-4xl font-bold text-center text-main mb-12">
-            Job Title
-          </h1>
+        <div className="bg-white shadow-lg rounded-xl mb-10 p-6 md:p-8">
+          <h1 className="text-4xl font-bold text-center text-main mb-6">{job.title}</h1>
+          <p className="mb-4"><span className="font-semibold text-main">Description:</span> {job.description}</p>
+          <div className="flex justify-between mb-4">
+            <p><span className="font-semibold text-main">Category:</span> {job.category}</p>
+            <p><span className="font-semibold text-main">Service:</span> {job.service.join(' | ')}</p>
+          </div>
+          <p className="mb-2">
+            <span className="font-semibold text-main">
+              <MapPin size={17} className="mr-2 text-main inline-block" />Location:
+            </span> {job.location}
+          </p>
+          <p className="text-sm text-gray-600"><span className="font-semibold">Created At:</span> {new Date(job.createdAt).toLocaleString()}</p>
         </div>
-        {proposals.map((proposal, index) => (
+
+        <h2 className="text-3xl font-bold text-main mb-6">Proposals</h2>
+        
+        {job.proposals.map((proposal, index) => (
           <div
             key={index}
             className="bg-white shadow-lg rounded-xl mb-10 p-6 md:p-8 cursor-pointer transform hover:-translate-y-2 transition duration-300 ease-in-out"
@@ -72,16 +84,16 @@ const ShowProposal = () => {
           >
             <div className="flex items-start mb-4">
               <img
-                src={proposal.avatar}
+                src={proposal.freelancerId.profilePicture || "https://via.placeholder.com/150"}
                 alt="Freelancer Avatar"
                 className="w-24 h-24 rounded-full object-cover mr-4 shadow-md"
               />
               <div className="flex-grow me-16">
                 <h3 className="text-2xl font-semibold text-indigo-600">
-                  {proposal.freelancerName}
+                  {`${proposal.freelancerId.firstName} ${proposal.freelancerId.lastName}`}
                 </h3>
                 <p className="text-gray-600 mt-2 line-clamp-3">
-                  {proposal.proposal}
+                  {proposal.coverLetter}
                 </p>
               </div>
               <Maximize2
@@ -94,7 +106,7 @@ const ShowProposal = () => {
               <div className="flex items-center">
                 <span className="text-gray-600 mr-2 ms-10">Budget:</span>
                 <span className="text-xl font-bold text-green-600">
-                  ${proposal.salaryOffer}
+                  ${proposal.bidAmount}
                 </span>
               </div>
               <div className="flex space-x-4">
@@ -128,22 +140,22 @@ const ShowProposal = () => {
               {selectedProposal && (
                 <div>
                   <h3 className="text-2xl font-bold mb-4 text-indigo-600">
-                    {selectedProposal.freelancerName}&apos;s Proposal
+                    {`${selectedProposal.freelancerId.firstName} ${selectedProposal.freelancerId.lastName}'s Proposal`}
                   </h3>
                   <img
-                    src={selectedProposal.avatar}
+                    src={selectedProposal.freelancerId.profilePicture || "https://via.placeholder.com/150"}
                     alt="Freelancer Avatar"
                     className="w-28 h-28 rounded-full mb-6 mx-auto shadow-lg"
                   />
                   <p className="text-gray-700 mb-6">
-                    {selectedProposal.proposal}
+                    {selectedProposal.coverLetter}
                   </p>
 
                   <div className="flex space-x-6 justify-between items-baseline">
                     <div className="flex mb-8">
                       <span className="text-gray-600">Budget:</span>
                       <span className="text-green-600 font-semibold ms-2">
-                        ${selectedProposal.salaryOffer}
+                        ${selectedProposal.bidAmount}
                       </span>
                     </div>
                     <div className="flex space-x-4">

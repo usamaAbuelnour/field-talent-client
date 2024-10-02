@@ -17,7 +17,8 @@ import Verification from "./pages/Verification";
 import CategoryDetails from "./pages/CategoryDetails";
 import ClientProfile from "./pages/ClientProfile";
 import AddProfileData from "./pages/AddProfileData";
-import ShowProposal from "./pages/ShowProposal";
+import ShowProposal from './pages/ShowProposal';
+import JobDetailsForClientToSeeProposal from "./pages/JobDetailsForClientToSeeProposal";
 import "./App.css";
 import { useState, useEffect } from "react";
 
@@ -252,7 +253,11 @@ function App() {
             element={<CategoryDetails />}
           />
 
-          <Route path="/showProposal" element={<ShowProposal />} />
+          <Route path="/showProposal/:jobId"
+            element={<ShowProposal />} />
+
+            <Route path="/job/:jobId" 
+            element={<JobDetailsForClientToSeeProposal />} />
 
           <Route
             path="*"
