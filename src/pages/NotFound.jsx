@@ -3,15 +3,15 @@ import Button from "../components/uiComponents/Button";
 function NotFound() {
   
   return (
-    <div className="flex flex-col lg:flex-row items-center justify-center min-h-screen bg-gradient-to-r from-blue-100 to-purple-100 p-8">
+    <div className="flex flex-col py-24 px-10 lg:flex-row items-center justify-center min-h-screen bg-gradient-to-r from-blue-100 to-purple-100 dark:from-main dark:to-accent  p-8">
       <div className="text-center lg:text-left lg:w-1/2 lg:pr-12">
-        <h1 className="text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-main to-teal-200 ">
+        <h1 className="text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r dark:text-accent  from-main to-teal-200 ">
           404
         </h1>
-        <p className="mt-4 text-2xl lg:text-4xl font-bold text-gray-800">
+        <p className="mt-4 text-2xl lg:text-4xl font-bold text-gray-800 dark:text-white">
           Oops! You have gone off course
         </p>
-        <p className="mt-4 text-xl text-gray-600 max-w-md mx-auto lg:mx-0">
+        <p className="mt-4 text-xl text-gray-600 max-w-md mx-auto lg:mx-0 dark:text-text-dark">
           The page you are looking for has drifted into space. Lets get you back
           to familiar territory.
         </p>

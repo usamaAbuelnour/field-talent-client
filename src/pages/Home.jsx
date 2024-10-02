@@ -14,8 +14,6 @@ import AboutUsSection from "../components/HomePageCommpenet/AboutUsSection";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-
-
 const categories = [
   {
     id: 3,
@@ -31,7 +29,7 @@ const categories = [
     icon: Building2,
   },
   {
-    id:1,
+    id: 1,
 
     title: "Consultation",
     description: "Professional advice and project guidance.",
@@ -60,21 +58,19 @@ const services = [
   },
 ];
 
-function Home({ isDarkMode, handleRedirectingUrl,userType }) {
+function Home({ isDarkMode, handleRedirectingUrl, userType }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-   
-   handleRedirectingUrl("/");
-   
-  }, [handleRedirectingUrl]); 
+    handleRedirectingUrl("/");
+  }, [handleRedirectingUrl]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const handleCategoryClick = (category) => {
-    navigate(`/CategoryDetails/${category.id}`); 
+    navigate(`/CategoryDetails/${category.id}`);
   };
 
   return (
@@ -82,53 +78,63 @@ function Home({ isDarkMode, handleRedirectingUrl,userType }) {
       className={`
   `}
     >
+      <div className=" bg-gradient-to-r from-main to-accent dark:to-main-dark ">
+        <img src="curve.svg" alt="" className="w-full    dark:hidden" />
+        <img src="curvedark.svg" alt="" className="w-full hidden dark:block" />
 
- <div className=" bg-gradient-to-r from-main to-accent dark:to-main-dark ">
-   <img src="curve.svg" alt=""  className="w-full    dark:hidden"/>
-   <img src="curvedark.svg" alt=""  className="w-full hidden dark:block"/>
-
-
-
- <div className="container mx-auto lg:relative -top-16   px-6 py-0  hero flex flex-col pb-10  md:flex-row justify-between items-center  ">
-        <div className="about  text-center md:text-left mb-20 md:mb-0 flex flex-col justify-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-accent ">
-            Field Talent
-          </h1>
-          <p className="mb-6 text-lg  leading-relaxed text-text-dark">
-            Welcome to Field Talent! Your one-stop platform to connect quickly
-            with professional finishing engineers. Whether you need expert
-            advice or looking to hire a skilled engineer, Field Talent makes the
-            process seamless and efficient.
-          </p>
-          { userType ?
-           <div className="card-actions relative justify-center md:justify-start">
-            <Button to={userType==="engineer"?"/showjobs":"/add-job"} text={userType==="engineer"?"Show Jobs":"Add job"} variant="fill" size="lg" />
+        <div className="container mx-auto lg:relative -top-16   px-6 py-0  hero flex flex-col pb-10  md:flex-row justify-between items-center  ">
+          <div className="about  text-center md:text-left mb-20 md:mb-0 flex flex-col justify-center">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-accent ">
+              Field Talent
+            </h1>
+            <p className="mb-6 text-lg  leading-relaxed text-text-dark">
+              Welcome to Field Talent! Your one-stop platform to connect quickly
+              with professional finishing engineers. Whether you need expert
+              advice or looking to hire a skilled engineer, Field Talent makes
+              the process seamless and efficient.
+            </p>
+            {userType ? (
+              <div className="card-actions relative justify-center md:justify-start">
+                <Button
+                  to={userType === "engineer" ? "/showjobs" : "/add-job"}
+                  text={userType === "engineer" ? "Show Jobs" : "Add job"}
+                  variant="fill"
+                  size="lg"
+                />
+              </div>
+            ) : (
+              <div className="card-actions relative justify-center md:justify-start">
+                <Button
+                  to="/registration"
+                  text="join us now"
+                  variant="fill"
+                  size="lg"
+                />
+              </div>
+            )}
           </div>
-          : <div className="card-actions relative justify-center md:justify-start">
-          <Button to="/login" text="join us now"  variant="fill" size="lg" />
+          {isDarkMode ? (
+            <img
+              src="feildtalentlogodark.png"
+              alt="Field Talent Logo"
+              className="img-fluid w-full md:w-1/2  rounded-lg shadow-lg"
+            />
+          ) : (
+            <img
+              src="feildtalentlogo.png"
+              alt="Field Talent Logo"
+              className="img-fluid w-full md:w-1/2  rounded-lg shadow-lg"
+            />
+          )}
         </div>
-          }
-         
-        </div>
-        {isDarkMode ? (
-          <img
-            src="feildtalentlogodark.png"
-            alt="Field Talent Logo"
-            className="img-fluid w-full md:w-1/2  rounded-lg shadow-lg"
-          />
-        ) : (
-          <img
-            src="feildtalentlogo.png"
-            alt="Field Talent Logo"
-            className="img-fluid w-full md:w-1/2  rounded-lg shadow-lg"
-          />
-        )}
       </div>
+      <hr className="my-28 border-gray-200" />
 
- </div>
-     
-      <hr className="my-12 border-gray-200" />
-      <Section title="Our Categories" items={categories} onClick={handleCategoryClick} />
+      <Section
+        title="Our Categories"
+        items={categories}
+        onClick={handleCategoryClick}
+      />
       <hr className="my-12 border-gray-200" />
       <Section title="Our Services" items={services} />
       <hr className="my-12 border-gray-200" />

@@ -25,11 +25,12 @@ const ClientProfile = ({ token }) => {
     jobCount: 0,
     joinedDate: "loading.....",
     lastJob: "loading.....",
-    personalIMAGE: "https://via.placeholder.com/150",
+    personalIMAGE:
+      "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?w=740&t=st=1727728576~exp=1727729176~hmac=dab7ffbb993a0c134e1704edf8d78553ed28f121ea6316e88d273ba620035a48",
     mobile: "loading.....",
     whatsAppPhoneNumbers: "loading.....",
     location: "loading.....",
-    isVerified: false,
+    verificationStatus:null,
   });
 
   const fetchClientData = useCallback(async () => {
@@ -38,21 +39,40 @@ const ClientProfile = ({ token }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const myData = response.data;
-
-      setClient({
-        name: `${myData.firstName} ${myData.lastName}` || "your name",
-        email: myData.email || "example@example.com",
-        jobCount: myData.jobCount || 0,
-        joinedDate: new Date(myData.createdAt).toLocaleDateString('ar-EG') || "not available",
-        lastJob: myData.lastJob ? new Date(myData.lastJob).toLocaleDateString('ar-EG') : "not fond",
-        personalIMAGE: myData.clientId.personalImage || "https://via.placeholder.com/150",
-        mobile: myData.clientId.phoneNumbers?.[0] || "not available",
-        whatsAppPhoneNumbers: myData.clientId.whatsAppPhoneNumbers?.[0] || "not available",
-        location: myData.clientId.governorate || "egypt",
-        isVerified: myData.isVerified,
-      });
+      {
+        myData.clientId
+          ? setClient({
+              name: `${myData.firstName} ${myData.lastName}` || "your name",
+              email: myData.email || "example@example.com",
+              jobCount: myData.clientId.jobsCount || "no job yet",
+              joinedDate: myData.createdAt || "not available",
+              lastJob: myData.lastJob ? myData.lastJob : "not fond",
+              personalIMAGE:
+                myData.clientId.personalImage ||
+                "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?w=740&t=st=1727728576~exp=1727729176~hmac=dab7ffbb993a0c134e1704edf8d78553ed28f121ea6316e88d273ba620035a48",
+              mobile: myData.clientId.phoneNumbers?.[0] || "not available",
+              whatsAppPhoneNumbers:
+                myData.clientId.whatsAppPhoneNumbers?.[0] || "not available",
+              location: myData.clientId.governorate || "egypt",
+              verificationStatus:null,
+            })
+          : setClient({
+              name: `${myData.firstName} ${myData.lastName}` || "your name",
+              email: myData.email || "example@example.com",
+              jobCount: "No Job ",
+              joinedDate: myData.createdAt || "Not Available",
+              lastJob: "Not Found Yet",
+              personalIMAGE:
+                "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?w=740&t=st=1727728576~exp=1727729176~hmac=dab7ffbb993a0c134e1704edf8d78553ed28f121ea6316e88d273ba620035a48",
+              mobile: "Add Your Mobile",
+              whatsAppPhoneNumbers: "Add Your WhatsApp Phone Number",
+              location: "Egypt",
+              verificationStatus:null,
+            });
+        console.log(myData, client);
+      }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   }, [token]);
 
@@ -100,6 +120,7 @@ const ClientProfile = ({ token }) => {
   const handleImageChange = (event) => {
     setSelectedImage(event.target.files[0]);
   };
+  console.log(client);
 
   return (
     <div className="flex items-center justify-center min-h-screen mt-20 md:mt-7 md:px-6 sm:px-2">
@@ -107,19 +128,13 @@ const ClientProfile = ({ token }) => {
         <div className="text-center">
           <div className="flex flex-col items-center">
             <div className="relative inline-block mb-2">
-              <div
-                className="absolute bottom-1 -right-2 bg-main rounded-full p-1 cursor-pointer"
-                
-              >
-                <Pencil className="text-white" size={16} onClick={() => setShowModal(true)} />
-              </div>
               <div className="relative">
                 <img
                   className="w-36 h-36 rounded-full border-4 border-main shadow-lg object-cover"
                   src={client.personalIMAGE}
                   alt="client image"
                 />
-                {client.isVerified && (
+                {client.verificationStatus ==="accepted" && (
                   <div className="flex gap-1 absolute top-0 right-0 ">
                     <Check
                       className="bg-accent text-white rounded-full "
@@ -127,6 +142,11 @@ const ClientProfile = ({ token }) => {
                     />
                   </div>
                 )}
+                <Pencil
+                  className="text-white absolute -right-1 -bottom-1 bg-main rounded-full p-1 cursor-pointer"
+                  size={26}
+                  onClick={() => setShowModal(true)}
+                />
               </div>
             </div>
             <h2 className="md:text-4xl sm:text-xl font-bold text-main mb-2 flex items-center dark:text-accent">
@@ -137,7 +157,7 @@ const ClientProfile = ({ token }) => {
             </p>
           </div>
           <div className="flex justify-center my-5 gap-4">
-            {!client.isVerified && (
+            {client.verificationStatus!=="accepted" && (
               <Button
                 to="/verification"
                 text="Verify your account"
@@ -148,7 +168,7 @@ const ClientProfile = ({ token }) => {
             <Button
               to="/AddProfileData"
               text="update your profile"
-              variant={client.isVerified ? "fill" : "outline"}
+              variant={client.verificationStatus ==="" ? "fill" : "outline"}
               size="sm"
             />
           </div>
@@ -228,7 +248,7 @@ const InfoItem = ({ label, value, className = "", icon, labelSize }) => (
       {icon ? (
         React.cloneElement(icon, { size: 24 })
       ) : (
-        <div className="text-gray-400">not fond  </div>
+        <div className="text-gray-400">not fond </div>
       )}
     </div>
     <div>
