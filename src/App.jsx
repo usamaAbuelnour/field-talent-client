@@ -142,7 +142,6 @@ function App() {
             element={
               <PrivateRoute
                 element={<EngineerProposals token={user.token} />}
-                element={<EngineerProposals token={user.token} />}
                 isUserLoggedIn={user.isUserLoggedIn}
                 handleRedirectingUrl={handleRedirectingUrl}
                 pageAllowFor={"engineer"}
