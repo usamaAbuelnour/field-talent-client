@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import FilterJobs from '../components/showJopComponents/FilterJobs';
-import ShowJobCard from '../components/showJopComponents/ShowJobCard';
-import Loading from '../components/uiComponents/Loading';
-import { Bell } from 'lucide-react';
-import apiService from './../Api/AxiosServiceConfiguration';
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import FilterJobs from "../components/showJopComponents/FilterJobs";
+import ShowJobCard from "../components/showJopComponents/ShowJobCard";
+import Loading from "../components/uiComponents/Loading";
+import { Bell } from "lucide-react";
+import apiService from "./../Api/AxiosServiceConfiguration";
 
 const ShowJobs = ({ isDarkMode }) => {
   const [jobs, setJobs] = useState([]);
@@ -36,16 +36,20 @@ const ShowJobs = ({ isDarkMode }) => {
     try {
       const response = await apiService.getJobs({
         ...Object.fromEntries(params.entries()),
-        page: currentPage
+        page: currentPage,
       });
       const jobsData = response.data;
- 
+
       if (jobsData.jobs && Array.isArray(jobsData.jobs)) {
         setJobs(jobsData.jobs);
         setTotalPages(jobsData.pagesCount);
-        
-        updateFilterOptions(jobsData.locations, jobsData.categories, jobsData.services);
-      } else if (typeof jobsData === 'string') {
+
+        updateFilterOptions(
+          jobsData.locations,
+          jobsData.categories,
+          jobsData.services
+        );
+      } else if (typeof jobsData === "string") {
         setNoAvailableMassage(jobsData);
       }
     } catch (error) {
@@ -56,28 +60,40 @@ const ShowJobs = ({ isDarkMode }) => {
   };
 
   const updateFilterOptions = (locations, categories, services) => {
-    setLocationOptions(locations.map(location => ({ value: location, label: location })));
-    setCategoryOptions(categories.map(category => ({ value: category, label: category })));
-    setServiceOptions(services.map(service => ({ value: service, label: service })));
+    setLocationOptions(
+      locations.map((location) => ({ value: location, label: location }))
+    );
+    setCategoryOptions(
+      categories.map((category) => ({ value: category, label: category }))
+    );
+    setServiceOptions(
+      services.map((service) => ({ value: service, label: service }))
+    );
 
     const searchParams = new URLSearchParams(location.search);
-    const locationParam = searchParams.get('location');
-    const categoryParam = searchParams.get('category');
-    const servicesParam = searchParams.getAll('service');
+    const locationParam = searchParams.get("location");
+    const categoryParam = searchParams.get("category");
+    const servicesParam = searchParams.getAll("service");
 
-    setSelectedLocation(locationParam ? { value: locationParam, label: locationParam } : null);
-    setSelectedCategory(categoryParam ? { value: categoryParam, label: categoryParam } : null);
-    setSelectedServices(servicesParam.map(service => ({ value: service, label: service })));
+    setSelectedLocation(
+      locationParam ? { value: locationParam, label: locationParam } : null
+    );
+    setSelectedCategory(
+      categoryParam ? { value: categoryParam, label: categoryParam } : null
+    );
+    setSelectedServices(
+      servicesParam.map((service) => ({ value: service, label: service }))
+    );
   };
 
   const updateFilters = (newParams) => {
     const searchParams = new URLSearchParams(location.search);
     Object.entries(newParams).forEach(([key, value]) => {
-      if (value === null || value === '') {
+      if (value === null || value === "") {
         searchParams.delete(key);
       } else if (Array.isArray(value)) {
         searchParams.delete(key);
-        value.forEach(v => searchParams.append(key, v));
+        value.forEach((v) => searchParams.append(key, v));
       } else {
         searchParams.set(key, value);
       }
@@ -88,24 +104,33 @@ const ShowJobs = ({ isDarkMode }) => {
 
   const handleLocationChange = (selectedOption) => {
     setSelectedLocation(selectedOption);
-    updateFilters({ location: selectedOption ? selectedOption.value : null, page: 1 });
+    updateFilters({
+      location: selectedOption ? selectedOption.value : null,
+      page: 1,
+    });
   };
 
   const handleCategoryChange = (selectedOption) => {
     setSelectedCategory(selectedOption);
-    updateFilters({ category: selectedOption ? selectedOption.value : null, page: 1 });
+    updateFilters({
+      category: selectedOption ? selectedOption.value : null,
+      page: 1,
+    });
   };
 
   const handleServiceChange = (selectedOptions) => {
     setSelectedServices(selectedOptions);
-    updateFilters({ service: selectedOptions.map(option => option.value), page: 1 });
+    updateFilters({
+      service: selectedOptions.map((option) => option.value),
+      page: 1,
+    });
   };
 
   const handlePageChange = (page) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
     const searchParams = new URLSearchParams(location.search);
-    searchParams.set('page', page);
+    searchParams.set("page", page);
     navigate(`?${searchParams.toString()}`, { replace: true });
   };
 
@@ -122,8 +147,11 @@ const ShowJobs = ({ isDarkMode }) => {
     <div className={`${isDarkMode ? "dark" : ""} container mx-auto p-2 sm:p-5`}>
       <h1 className="font-bold mb-4 sm:mb-8 mt-10 sm:mt-20 text-center">
         <span className="font-serif shadow-lg rounded-lg text-main text-lg sm:text-xl md:text-2xl lg:text-3xl inline-block p-3 sm:p-5 dark:text-accent">
+          <Bell
+            className="inline-block ml-2 text-main text-lg sm:text-xl md:text-2xl lg:text-3xl"
+            size={20}
+          />
           Available Jobs
-          <Bell className="inline-block ml-2 text-main text-lg sm:text-xl md:text-2xl lg:text-3xl" size={20} />
         </span>
       </h1>
 
@@ -141,24 +169,23 @@ const ShowJobs = ({ isDarkMode }) => {
 
       <div className="flex flex-wrap px-2 sm:px-5 md:px-10 lg:px-20">
         {jobs.length > 0 ? (
-          jobs.map((job, index) => (
-            <ShowJobCard
-              key={index}
-              job={job}
-            />
-          ))
+          jobs.map((job, index) => <ShowJobCard key={index} job={job} />)
         ) : (
-          <p className="text-center text-main m-auto text-3xl">{NoAvailableMassage || 'No jobs available'}</p>
+          <p className="text-center text-main m-auto text-3xl">
+            {NoAvailableMassage || "No jobs available"}
+          </p>
         )}
       </div>
 
       {totalPages > 1 && (
         <div className="flex flex-wrap justify-center gap-2 mt-4 sm:gap-4 md:mr-8">
-          {pageNumbers.map(number => (
+          {pageNumbers.map((number) => (
             <button
               key={number}
               onClick={() => handlePageChange(number)}
-              className={`px-3 py-1.5 text-sm sm:px-4 sm:py-2 sm:text-base md:px-5 md:py-2.5 md:text-lg lg:px-6 lg:py-3 lg:text-xl border rounded ${currentPage === number ? 'bg-main text-white' : 'text-main'}`}
+              className={`px-3 py-1.5 text-sm sm:px-4 sm:py-2 sm:text-base md:px-5 md:py-2.5 md:text-lg lg:px-6 lg:py-3 lg:text-xl border rounded ${
+                currentPage === number ? "bg-main text-white" : "text-main"
+              }`}
               disabled={currentPage === number}
             >
               {number}

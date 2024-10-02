@@ -32,11 +32,12 @@ const ShowJobCard = ({ job }) => {
 
   return (
    
-    <div onClick={handleCardClick}  className=" dark:bg-main-dark dark:bg-opacity-20 dark:shadow-2xl cursor-pointer w-full px-2 sm:px-4 md:px-10 py-2 sm:py-11 mb-6 sm:mb-8 mx-auto rounded-lg shadow-md bg-gray-100 border border-main border-opacity-30 lg:px-24">
+    <div onClick={handleCardClick}  className=" dark:bg-gradient-to-r dark:from-main dark:to-main-dark dark:bg-opacity-20 dark:shadow-2xl cursor-pointer w-full px-2 sm:px-4 md:px-10 py-2 sm:py-11 mb-6 sm:mb-8 mx-auto rounded-lg shadow-md bg-gray-100 border border-main border-opacity-30 lg:px-24">
       
-      <h2 className="  dark:text-accent font-bold mb-2 sm:mb-4 text-center p-1 sm:p-2 mx-auto w-full max-w-xs sm:max-w-sm md:max-w-md rounded-lg text-main text-sm sm:text-base md:text-lg lg:text-xl break-words">
+      <h2 className=" border-0 dark:text-accent font-bold mb-2 sm:mb-4 text-center p-1 sm:p-2 mx-auto w-full max-w-xs sm:max-w-sm md:max-w-md rounded-lg text-main text-sm sm:text-base md:text-lg lg:text-xl break-words">
         {job.title}
       </h2>
+      <hr className=' w-1/2 bg-main mx-auto  dark:bg-accent-dark border-1 border-main ' />
       
       <h3 className=" dark:text-white ps-2 sm:ps-4 rounded-md text-xs sm:text-sm md:text-base">Description :</h3>
 
@@ -61,7 +62,8 @@ const ShowJobCard = ({ job }) => {
             {job.service.map((service, index) => (
               <span
                 key={index}
-                className="bg-main text-white p-2 rounded-full text-xs mr-1 mb-1"
+                className="bg-main dark:bg-main-dark
+                 text-white p-2 rounded-full text-xs mr-1 mb-1"
               >
                 {service}
               </span>

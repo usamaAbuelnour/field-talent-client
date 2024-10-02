@@ -72,7 +72,7 @@ const EngineerProposals = ({ token }) => {
           {engineerProposals.proposal.map((proposal) => (
             <div
               key={proposal._id}
-              className=" dark:bg-gradient-to-r from-main to-accent dark:text-white shadow-lg rounded-xl mb-8 p-8 w-full transform hover:-translate-y-2 transition duration-300 ease-in-out"
+              className=" bg-gradient-to-r  bg-slate-100 dark:from-main dark:to-main-dark dark:text-white shadow-lg rounded-xl mb-8 p-8 w-full transform hover:-translate-y-2 transition duration-300 ease-in-out"
             >
               <h2 className="text-2xl font-semibold mb-4 dark:text-white text-main">
                 <span className="text-gray-600 dark:text-accent">
