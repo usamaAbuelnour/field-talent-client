@@ -18,6 +18,7 @@ import CategoryDetails from "./pages/CategoryDetails";
 import ClientProfile from "./pages/ClientProfile";
 import AddProfileData from "./pages/AddProfileData";
 import ShowProposal from './pages/ShowProposal';
+import JobDetailsForClientToSeeProposal from "./pages/JobDetailsForClientToSeeProposal";
 import "./App.css";
 import { useState, useEffect } from "react";
 
@@ -140,7 +141,7 @@ function App() {
             path="/engineerProposals"
             element={
               <PrivateRoute
-                element={<EngineerProposals     token={user.token}/>}
+                element={<EngineerProposals token={user.token} />}
                 isUserLoggedIn={user.isUserLoggedIn}
 
                 handleRedirectingUrl={handleRedirectingUrl}
@@ -254,8 +255,11 @@ function App() {
             element={<CategoryDetails />}
           />
 
-          <Route path="/showProposal"
-                 element={<ShowProposal />} />
+          <Route path="/showProposal/:jobId"
+            element={<ShowProposal />} />
+
+            <Route path="/job/:jobId" 
+            element={<JobDetailsForClientToSeeProposal />} />
 
           <Route
             path="*"
