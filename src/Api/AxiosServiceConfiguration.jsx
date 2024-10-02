@@ -38,7 +38,7 @@ const apiService = {
   registerUser: (userData) => api.post('/register', userData),
   PostProposals: (data) => api.post('/proposals', data),
   getProposals: (data) => api.get('/proposals', data),
- clientJobs :(data) => api.get('/jobs', data),
+  clientJobs: (data) => api.get('/jobs', { params: data }),
  updateProposalStatus: (proposalId, status) => api.patch(`/proposals/${proposalId}`, status),
 };
 

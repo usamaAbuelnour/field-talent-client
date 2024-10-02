@@ -9,6 +9,9 @@ import NoPage from '../components/uiComponents/NoPage';
 
 
 const JobDetailsForClientToSeeProposal = () => {
+
+ 
+  
   const location = useLocation();
   const job = location.state?.job;
   const [proposals, setProposals] = useState(job?.proposals || []);
@@ -23,6 +26,7 @@ const JobDetailsForClientToSeeProposal = () => {
     );
   }
 
+ 
   const handleAccept = async (index) => {
     const proposalId = proposals[index]?._id;
     const status = { status: "accepted" };
@@ -92,16 +96,17 @@ const JobDetailsForClientToSeeProposal = () => {
           </p>
         </div>
       ) : (
-        <div>
-          <h2 className="dark:text-accent-dark text-xlw-fit sm:p-1 md:p-3 rounded-full sm:text-2xl md:text-3xl lg:text-4xl font-bold mt-6 sm:mt-8 md:mt-9 lg:mt-10 mb-4 sm:mb-5 md:mb-6 text-main ">
+        <div className='w-5/6 mx-auto'>
+          <h2 className=" flex flex-col items-center justify-center  dark:text-accent-dark text-xlw-fit sm:p-1 md:p-3 rounded-full sm:text-2xl md:text-3xl lg:text-4xl font-bold mt-6 sm:mt-8 md:mt-9 lg:mt-10 mb-4 sm:mb-5 md:mb-6 text-main ">
             <HardHat /> Proposals
           </h2>
+          
           {proposals.map((proposal, index) => (
             <div
               key={index}
-              className="bg-white dark:bg-main dark:bg-opacity-25 border-l-4 border-stone-900 p-3 sm:p-4 md:p-5 lg:p-6 mb-6 sm:mb-8 md:mb-10 lg:mb-12 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 ease-in-out transform hover:-translate-y-1"
+              className="bg-slate-100 dark:bg-main dark:bg-opacity-25 border-l-4 border-gray-500 p-3 sm:p-4 md:p-5 lg:p-6 mb-6 sm:mb-8 md:mb-10 lg:mb-12 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 ease-in-out transform hover:-translate-y-1"
             >
-              <div className="text-sm sm:text-base md:text-lg lg:text-xl mb-2 sm:mb-3 md:mb-4 flex flex-col">
+              <div className="  text-sm sm:text-base md:text-lg lg:text-xl mb-2 sm:mb-3 md:mb-4 flex flex-col">
                 <div className="flex items-center justify-center mb-4">
                   <FileSpreadsheet className="inline-block mr-1 text-main sm:text-base md:text-xl lg:text-3xl dark:text-accent-dark" />
                   <span className='text-main sm:text-base md:text-xl lg:text-3xl dark:text-accent-dark'>Cover Letter</span>
