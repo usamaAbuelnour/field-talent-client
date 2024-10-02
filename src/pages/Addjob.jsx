@@ -29,7 +29,11 @@ const Addjob = () => {
     let newErrors = {};
 
     if (!formData.title.trim()) newErrors.title = "Title is required";
-    if (!formData.description.trim()) newErrors.description = "Description is required";
+    if (!formData.description.trim()) {
+      newErrors.description = "Description is required";
+    } else if (formData.description.trim().length < 200) {
+      newErrors.description = "Description must be at least 200 characters";
+    }
     if (!formData.location) newErrors.location = "Location is required";
     if (!formData.category) newErrors.category = "Category is required";
     if (formData.service.length === 0) newErrors.service = "At least one service must be selected";

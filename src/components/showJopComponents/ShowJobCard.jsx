@@ -13,7 +13,7 @@ const ShowJobCard = ({ job }) => {
      setIsExpanded(!isExpanded);
   };
 
-  const maxLength = 110;
+  const maxLength = 350;
 
   const truncateText = (text, maxLength) => {
     if (text.length <= maxLength) return text;
