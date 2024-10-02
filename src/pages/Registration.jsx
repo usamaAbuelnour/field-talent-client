@@ -34,7 +34,7 @@ const schema = yup
   .required();
 
 export default function Registration({
-  isVerified,
+  verificationStatus,
   isUserLoggedIn,
   handleLogin,
   redirectingUrl,
@@ -48,10 +48,10 @@ export default function Registration({
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    if (isUserLoggedIn && isVerified) {
+    if (isUserLoggedIn && verificationStatus) {
       navigate(redirectingUrl, { replace: true });
     }
-  }, [isUserLoggedIn, navigate, redirectingUrl, isVerified]);
+  }, [isUserLoggedIn, navigate, redirectingUrl, verificationStatus]);
 
   const {
     register,
@@ -81,7 +81,7 @@ export default function Registration({
         response.data.name,
         response.data.email,
         userType,
-        response.data.isVerified
+        response.data.verificationStatus
       );
 
       navigate("/verification", { replace: true });

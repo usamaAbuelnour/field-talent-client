@@ -3,107 +3,174 @@ import { useState, useCallback, useEffect } from "react";
 import Button from "../components/uiComponents/Button";
 import axios from "axios";
 import { Stepper } from "react-form-stepper";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 const STEPS = {
-  client: ["Contact", "Identity Authentication"],
-  engineer: ["Contact", "Identity Authentication", "Engineer Education"],
+  client: ["Identity Authentication"],
+  engineer: ["Identity Authentication", "Engineer Education"],
 };
 
-const LOCATIONS = [
-  "Port Fouad",
-  "Port Said",
-  "Ismailia",
-  "Suez",
-  "10th of Ramadan",
-  "El Shorouk",
-  "El Obour",
-  "New Capital",
-  "Badr",
-  "5th Settlement",
-  "Nasr City",
-];
+const API_ENDPOINTS = {
+  client: {
+    frontId: "https://field-talent.vercel.app/clients/frontId",
+    backId: "https://field-talent.vercel.app/clients/backId",
+    verificationInfo: "https://field-talent.vercel.app/clients/verificationInfo",
+  },
+  engineer: {
+    frontId: "https://field-talent.vercel.app/engineers/frontId",
+    backId: "https://field-talent.vercel.app/engineers/backId",
+    unionCard: "https://field-talent.vercel.app/engineers/unionCard",
+    militaryCert: "https://field-talent.vercel.app/engineers/militaryCert",
+    graduationCert: "https://field-talent.vercel.app/engineers/graduationCert",
+    verificationInfo: "https://field-talent.vercel.app/engineers/verificationInfo",
+  },
+};
 
-function Verification({ userType  }) {
-  const navigate = useNavigate(); 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  const steps = STEPS[userType] || [];
-
-  const [formData, setFormData] = useState(() => ({
-    location: "",
-    phoneNumber: "",
-    whatsAppNumber: "",
-    frontID: null,
-    backID: null,
+function Verification({ userType, token ,verificationStatus,redirectingUrl}) {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    frontId: null,
+    backId: null,
     ...(userType === "engineer" && {
-      engineersUnionCard: null,
-      militaryServiceStatus: null,
-      graduationCertificate: null,
+      unionCard: null,
+      militaryCert: null,
+      graduationCert: null,
     }),
-  }));
-
+  });
   const [errors, setErrors] = useState({});
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
+
+  console.log('Initial formData:', formData);
+  console.log('User type:', userType);
+  console.log('Token:', token);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (verificationStatus) {
+      navigate(redirectingUrl, { replace: true });
+    }
+  }, [verificationStatus, redirectingUrl, navigate]);
+
+  const steps = STEPS[userType] || [];
 
   const validateForm = useCallback(() => {
     const newErrors = {};
-    if (!formData.location) newErrors.location = "Location is required";
-    if (!formData.phoneNumber || !/^\d{11}$/.test(formData.phoneNumber))
-      newErrors.phoneNumber = "Phone number must be 11 digits";
-    if (!formData.whatsAppNumber || !/^\d{11}$/.test(formData.whatsAppNumber))
-      newErrors.whatsAppNumber = "WhatsApp number must be 11 digits";
+    const MAX_FILE_SIZE = 2 * 1024 * 1024; 
 
-    if (currentStep === 2) {
-      if (!formData.frontID) newErrors.frontID = "Front ID image is required";
-      if (!formData.backID) newErrors.backID = "Back ID image is required";
+    const isValidFile = (file) => file && file.size <= MAX_FILE_SIZE;
+
+    if (currentStep === 1) {
+      if (!formData.frontId || !isValidFile(formData.frontId)) {
+        newErrors.frontId = "Front ID image is required and must be under 2MB";
+      }
+      if (!formData.backId || !isValidFile(formData.backId)) {
+        newErrors.backId = "Back ID image is required and must be under 2MB";
+      }
     }
-
-    if (currentStep === 3 && userType === "engineer") {
-      if (!formData.engineersUnionCard)
-        newErrors.engineersUnionCard = "Engineers Union Card image is required";
-      if (!formData.militaryServiceStatus)
-        newErrors.militaryServiceStatus = "Military Service Status image is required";
-      if (!formData.graduationCertificate)
-        newErrors.graduationCertificate = "Graduation Certificate image is required";
+    if (currentStep === 2 && userType === "engineer") {
+      if (!formData.unionCard || !isValidFile(formData.unionCard)) {
+        newErrors.unionCard = "Engineers Union Card image is required and must be under 2MB";
+      }
+      if (!formData.militaryCert || !isValidFile(formData.militaryCert)) {
+        newErrors.militaryCert = "Military Service Status image is required and must be under 2MB";
+      }
+      if (!formData.graduationCert || !isValidFile(formData.graduationCert)) {
+        newErrors.graduationCert = "Graduation Certificate image is required and must be under 2MB";
+      }
     }
-
     setErrors(newErrors);
+    console.log('Form validation result:', Object.keys(newErrors).length === 0);
+    console.log('Validation errors:', newErrors);
     return Object.keys(newErrors).length === 0;
   }, [formData, currentStep, userType]);
 
   const handleInputChange = useCallback((e) => {
-    const { name, value, files } = e.target;
-    if (name === "phoneNumber" || name === "whatsAppNumber") {
-      const numericValue = value.replace(/\D/g, "").slice(0, 11);
-      setFormData((prev) => ({
+    const { name, files } = e.target;
+    console.log(`File input changed - Name: ${name}, File:`, files[0]);
+    setFormData((prev) => {
+      const newFormData = {
         ...prev,
-        [name]: numericValue,
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: files ? files[0] : value,
-      }));
-    }
+        [name]: files ? files[0] : null,
+      };
+      console.log('Updated formData:', newFormData);
+      return newFormData;
+    });
   }, []);
 
-  const handleSubmit = async () => {
-    if (!validateForm()) return;
-    setIsSubmitting(true);
+  const uploadFile = async (file, endpoint, fieldName) => {
+    console.log(`Uploading ${fieldName} to ${endpoint}`);
+    const formData = new FormData();
+    formData.append(fieldName, file);
+    console.log('FormData content:', formData);
+    
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
     try {
-      const response = await axios.post("https://your-backend-api.com/submit", {
-        ...formData,
-        userType,
+      const response = await axios.post(endpoint, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
       });
-      console.log("Data sent successfully:", response.data);
+      console.log(`Upload response for ${fieldName}:`, response.data);
+      return response.data;
     } catch (error) {
-      console.error("Error sending data:", error);
+      console.error(`Error uploading ${fieldName} to ${endpoint}:`, error);
+      console.log('Error response:', error.response);
+      if (error.response && error.response.status === 500) {
+        throw new Error(`Server error (500) while uploading ${fieldName}. Please try again later.`);
+      }
+      throw error;
+    }
+  };
+
+  const handleSubmit = async () => {
+    console.log('Submitting form...');
+    if (!validateForm()) {
+      console.log('Form validation failed');
+      return;
+    }
+    setIsSubmitting(true);
+    setUploadError(null);
+
+    try {
+      console.log('Starting file uploads');
+      const uploadPromises = Object.entries(formData).map(([key, file]) => {
+        if (file) {
+          console.log(`Preparing to upload ${key}`);
+          return uploadFile(file, API_ENDPOINTS[userType][key], key);
+        }
+        console.log(`Skipping upload for ${key} - no file`);
+        return Promise.resolve(null);
+      });
+
+      const uploadResults = await Promise.all(uploadPromises);
+      console.log('All file uploads completed:', uploadResults);
+
+      console.log('Posting verification info');
+      const verificationResponse = await axios.post(API_ENDPOINTS[userType].verificationInfo, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log('Verification info response:', verificationResponse.data);
+
+      console.log('Navigating to home page');
+      navigate("/");
+    } catch (error) {
+      console.error("Error submitting verification:", error);
+      if (error.response && error.response.status === 500) {
+        setUploadError("The server encountered an error. Please try again later or contact support if the problem persists.");
+      } else {
+        setUploadError(error.message || "An unexpected error occurred. Please try again.");
+      }
     } finally {
       setIsSubmitting(false);
+      console.log('Form submission completed');
     }
   };
 
@@ -112,78 +179,47 @@ function Verification({ userType  }) {
       case 1:
         return (
           <>
-            <h2 className="text-lg font-semibold mb-4 text-center">Upload contact</h2>
+            <h2 className="text-lg font-semibold mb-4">Upload your ID card images (front & back)</h2>
             <FormField
-              label="Choose your location"
-              name="location"
-              type="select"
-              options={LOCATIONS}
-              value={formData.location}
+              label="Front ID card image"
+              name="frontId"
+              type="file"
               onChange={handleInputChange}
-              error={errors.location}
+              error={errors.frontId}
             />
             <FormField
-              label="Enter phone number"
-              name="phoneNumber"
-              type="tel"
-              value={formData.phoneNumber}
+              label="Back ID card image"
+              name="backId"
+              type="file"
               onChange={handleInputChange}
-              error={errors.phoneNumber}
-            />
-            <FormField
-              label="Enter WhatsApp number"
-              name="whatsAppNumber"
-              type="tel"
-              value={formData.whatsAppNumber}
-              onChange={handleInputChange}
-              error={errors.whatsAppNumber}
+              error={errors.backId}
             />
           </>
         );
       case 2:
-        return (
-          <>
-            <h2 className="text-lg font-semibold mb-4">Upload your ID card images (front & back)</h2>
-            <FormField
-              label="Front ID card image"
-              name="frontID"
-              type="file"
-              onChange={handleInputChange}
-              error={errors.frontID}
-            />
-            <FormField
-              label="Back ID card image"
-              name="backID"
-              type="file"
-              onChange={handleInputChange}
-              error={errors.backID}
-            />
-          </>
-        );
-      case 3:
         return userType === "engineer" ? (
           <>
             <h2 className="text-lg font-semibold mb-4">Upload engineer verification documents</h2>
             <FormField
               label="Engineers Union card"
-              name="engineersUnionCard"
+              name="unionCard"
               type="file"
               onChange={handleInputChange}
-              error={errors.engineersUnionCard}
+              error={errors.unionCard}
             />
             <FormField
               label="Military service status"
-              name="militaryServiceStatus"
+              name="militaryCert"
               type="file"
               onChange={handleInputChange}
-              error={errors.militaryServiceStatus}
+              error={errors.militaryCert}
             />
             <FormField
               label="Graduation certificate"
-              name="graduationCertificate"
+              name="graduationCert"
               type="file"
               onChange={handleInputChange}
-              error={errors.graduationCertificate}
+              error={errors.graduationCert}
             />
           </>
         ) : null;
@@ -193,17 +229,26 @@ function Verification({ userType  }) {
   };
 
   const handleNext = () => {
+    console.log('Moving to next step');
     if (validateForm()) {
-      setCurrentStep((prev) => prev + 1);
+      setCurrentStep((prev) => {
+        console.log('Current step:', prev + 1);
+        return prev + 1;
+      });
     }
   };
 
   const handlePrevious = () => {
-    setCurrentStep((prev) => prev - 1);
+    console.log('Moving to previous step');
+    setCurrentStep((prev) => {
+      console.log('Current step:', prev - 1);
+      return prev - 1;
+    });
   };
 
   const handleSkip = () => {
-    navigate("/"); 
+    console.log('Skipping verification');
+    navigate("/");
   };
 
   return (
@@ -223,71 +268,49 @@ function Verification({ userType  }) {
 
       <div className="bg-white shadow-main min-h-fit dark:bg-gray-800 py-1 rounded-lg shadow-sm px-6 flex-grow">
         <form className="space-y-6">{renderStepContent()}</form>
+
+        {uploadError && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4" role="alert">
+            <strong className="font-bold">Error: </strong>
+            <span className="block sm:inline">{uploadError}</span>
+          </div>
+        )}
       </div>
 
-      <div className="flex justify-between mt-8 sticky  bg-white dark:bg-gray-800 ">
-      <Button
-          onClick={handleSkip} 
-          text="Skip"
-          variant="outline"
-        />
+      <div className="flex justify-between mt-8 sticky bg-white dark:bg-gray-800">
+        <Button onClick={handleSkip} text="Skip" variant="outline" />
         <div className="flex gap-3">
-
-     <Button
-          onClick={handlePrevious}
-          text="Previous"
-          disabled={currentStep === 1}
-          className="btn btn-secondary"
-        />
-        <Button
-          onClick={currentStep === steps.length ? handleSubmit : handleNext}
-          text={currentStep === steps.length ? "Finish" : "Next"}
-          className="btn btn-primary"
-          disabled={isSubmitting}
-        />
-      
-
+          <Button
+            onClick={handlePrevious}
+            text="Previous"
+            disabled={currentStep === 1}
+            className="btn btn-secondary"
+          />
+          <Button
+            onClick={currentStep === steps.length ? handleSubmit : handleNext}
+            text={currentStep === steps.length ? "Finish" : "Next"}
+            className="btn btn-primary"
+            disabled={isSubmitting}
+          />
         </div>
-   
       </div>
     </div>
   );
 }
 
-function FormField({ label, name, type, value, onChange, error, options }) {
+function FormField({ label, name, type, onChange, error }) {
   return (
     <div className="form-control">
       <label className="label">
         <span className="label-text">{label}</span>
       </label>
-      {type === "select" ? (
-        <select
-          name={name}
-          className="select select-bordered w-full"
-          value={value}
-          onChange={onChange}
-        >
-          <option disabled value="">
-            Choose your location
-          </option>
-          {options.map((option, index) => (
-            <option key={index} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      ) : (
-        <input
-          type={type}
-          name={name}
-          className={`input input-bordered w-full ${
-            type === "file" ? "file-input" : ""
-          }`}
-          value={value}
-          onChange={onChange}
-          accept={type === "file" ? "image/*" : undefined}
-        />
-      )}
+      <input
+        type={type}
+        name={name}
+        className={`input input-bordered w-full ${type === "file" ? "file-input" : ""}`}
+        onChange={onChange}
+        accept={type === "file" ? "image/*" : undefined}
+      />
       {error && <span className="text-error">{error}</span>}
     </div>
   );

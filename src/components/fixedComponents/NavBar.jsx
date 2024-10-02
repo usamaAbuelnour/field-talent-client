@@ -215,12 +215,15 @@ export default function NavBar({
               </div>
               <div className="px-2  space-y-1 sm:px-3 bg-white dark:bg-dark shadow-inner">
                     
-                    <NavLink
-                      to="/profile"
-                      icon={UserPen }
-                      isfrommob={true}
-                      label="profile"
-                    />
+                  
+                      <Link
+                        to={userType ==="engineer" ?"/profile": "/ClientProfile"}
+                        className="flex gap-1 px-4 py-2 text-sm text-text   dark:text-text-dark hover:bg-s-light dark:hover:bg-slate-600 transition-colors duration-150"
+                        role="menuitem"
+                      >
+                        <UserPen size={15} />
+                         <span> my Profile </span>
+                      </Link>
                   </div>
               <div className="px-2  space-y-1 sm:px-3 bg-white dark:bg-dark shadow-inner">
                 <button
