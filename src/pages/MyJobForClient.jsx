@@ -39,7 +39,7 @@ export const JobCard = ({ job }) => {
 
       <div className="mb-4 sm:mb-6">
         <span className="font-semibold text-main text-sm sm:text-base">Description:</span>
-        <p className='mt-2 text-sm sm:text-base dark:text-white'>
+        <p className='mt-2 text-sm sm:text-base dark:text-white break-all'>
           {isLongDescription && !showFullDescription ? shortDescription : job.description}
         </p>
         {isLongDescription && (
@@ -60,7 +60,7 @@ export const JobCard = ({ job }) => {
           {job.service.map((service, index) => (
             <span
               key={index}
-              className="text-main dark:text-white border p-2 border-gray-300 border-y-2 sm:p-1 dark:border-accent rounded-full text-xs sm:text-sm"
+              className="text-main dark:text-white border p-2 lg:p-3 border-gray-400 border-y-2 sm:p-1 dark:border-accent rounded-full text-xs sm:text-sm"
             >
               {service}
             </span>
@@ -69,15 +69,16 @@ export const JobCard = ({ job }) => {
       </div>
 
       <div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center text-center sm:text-left">
-        <p className="mb-2 sm:mb-0 text-xs sm:text-sm dark:text-white">
+        <p className=" sm:mb-0 text-xs sm:text-sm dark:text-white">
           <span className="font-semibold dark:text-white text-main">Location:</span> {job.location}
         </p>
-        <button 
-          onClick={handleViewProposals} 
-          className="bg-main text-white py-1 px-2 sm:py-2 sm:px-4 rounded text-xs sm:text-sm mt-2 sm:mt-0"
-        >
-          View Proposals
-        </button>
+        <Button
+          text="View Proposals"
+          onClick={handleViewProposals}
+          variant="fill"
+          size="sm"
+          className="mt-2 sm:mt-0"
+        />
       </div>
     </div>
   );
