@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import Button from "./Button";
+import Nodata from "../../../public/Nodata.svg"
 
 function NoPage({title,description,buttonText,buttonTo}) {
     return (
@@ -26,8 +27,8 @@ function NoPage({title,description,buttonText,buttonTo}) {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-accent to-teal-50 dark:from-main-dark dark:to-main  rounded-full filter blur-3xl opacity-30 animate-pulse"></div>
               <img
-                src="Nodata.svg"
-                alt="Lost in Space"
+                src={Nodata}
+                alt=""
                 className="relative z-10 w-full max-w-lg mx-auto rounded-lg shadow-2xl transform hover:scale-105 transition-transform duration-300"
               />
             </div>

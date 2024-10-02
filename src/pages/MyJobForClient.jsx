@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable react/prop-types */
+import  { useEffect, useState } from 'react';
 import apiService from '../Api/AxiosServiceConfiguration';
 import Loading from '../components/uiComponents/Loading';
-import { MapPin } from 'lucide-react';
 import Button from "../components/uiComponents/Button"
 import { useNavigate } from 'react-router-dom';
 
