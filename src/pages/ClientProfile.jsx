@@ -9,6 +9,7 @@ import {
   PhoneCall,
   MapPin,
   Check,
+  AlertCircle,
 } from "lucide-react";
 import Button from "../components/uiComponents/Button";
 import axios from "axios";
@@ -30,7 +31,7 @@ const ClientProfile = ({ token }) => {
     mobile: "loading.....",
     whatsAppPhoneNumbers: "loading.....",
     location: "loading.....",
-    verificationStatus:null,
+    verificationStatus: null,
   });
 
   const fetchClientData = useCallback(async () => {
@@ -39,38 +40,38 @@ const ClientProfile = ({ token }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const myData = response.data;
-      {
-        myData.clientId
-          ? setClient({
-              name: `${myData.firstName} ${myData.lastName}` || "your name",
-              email: myData.email || "example@example.com",
-              jobCount: myData.clientId.jobsCount || "no job yet",
-              joinedDate: myData.createdAt || "not available",
-              lastJob: myData.lastJob ? myData.lastJob : "not fond",
-              personalIMAGE:
-                myData.clientId.personalImage ||
-                "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?w=740&t=st=1727728576~exp=1727729176~hmac=dab7ffbb993a0c134e1704edf8d78553ed28f121ea6316e88d273ba620035a48",
-              mobile: myData.clientId.phoneNumbers?.[0] || "not available",
-              whatsAppPhoneNumbers:
-                myData.clientId.whatsAppPhoneNumbers?.[0] || "not available",
-              location: myData.clientId.governorate || "egypt",
-              verificationStatus:null,
-            })
-          : setClient({
-              name: `${myData.firstName} ${myData.lastName}` || "your name",
-              email: myData.email || "example@example.com",
-              jobCount: "No Job ",
-              joinedDate: myData.createdAt || "Not Available",
-              lastJob: "Not Found Yet",
-              personalIMAGE:
-                "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?w=740&t=st=1727728576~exp=1727729176~hmac=dab7ffbb993a0c134e1704edf8d78553ed28f121ea6316e88d273ba620035a48",
-              mobile: "Add Your Mobile",
-              whatsAppPhoneNumbers: "Add Your WhatsApp Phone Number",
-              location: "Egypt",
-              verificationStatus:null,
-            });
-        console.log(myData, client);
+      if (myData.clientId) {
+        setClient({
+          name: `${myData.firstName} ${myData.lastName}` || "your name",
+          email: myData.email || "example@example.com",
+          jobCount: myData.clientId.jobsCount || "no job yet",
+          joinedDate: myData.createdAt || "not available",
+          lastJob: myData.lastJob ? myData.lastJob : "not found",
+          personalIMAGE:
+            myData.clientId.personalImage ||
+            "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?w=740&t=st=1727728576~exp=1727729176~hmac=dab7ffbb993a0c134e1704edf8d78553ed28f121ea6316e88d273ba620035a48",
+          mobile: myData.clientId.phoneNumbers?.[0] || "not available",
+          whatsAppPhoneNumbers:
+            myData.clientId.whatsAppPhoneNumbers?.[0] || "not available",
+          location: myData.clientId.governorate || "egypt",
+          verificationStatus: myData.verificationStatus || null,
+        });
+      } else {
+        setClient({
+          name: `${myData.firstName} ${myData.lastName}` || "your name",
+          email: myData.email || "example@example.com",
+          jobCount: "No Job ",
+          joinedDate: myData.createdAt || "Not Available",
+          lastJob: "Not Found Yet",
+          personalIMAGE:
+            "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?w=740&t=st=1727728576~exp=1727729176~hmac=dab7ffbb993a0c134e1704edf8d78553ed28f121ea6316e88d273ba620035a48",
+          mobile: "Add Your Mobile",
+          whatsAppPhoneNumbers: "Add Your WhatsApp Phone Number",
+          location: "Egypt",
+          verificationStatus: null,
+        });
       }
+      console.log(myData, client);
     } catch (error) {
       console.log(error);
     }
@@ -120,6 +121,27 @@ const ClientProfile = ({ token }) => {
   const handleImageChange = (event) => {
     setSelectedImage(event.target.files[0]);
   };
+
+  const renderVerificationStatus = () => {
+    switch (client.verificationStatus) {
+      case "pending":
+        return (
+          <div className="text-yellow-500 mt-2 flex items-center justify-center">
+            <AlertCircle size={20} className="mr-2" />
+            Verification pending
+          </div>
+        );
+      case "reject":
+        return (
+          <div className="text-red-500 mt-2 flex items-center justify-center">
+            <AlertCircle size={20} className="mr-2" />
+            Verification rejected. Please update your information and try again.
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
   console.log(client);
 
   return (
@@ -134,21 +156,24 @@ const ClientProfile = ({ token }) => {
                   src={client.personalIMAGE}
                   alt="client image"
                 />
-                {client.verificationStatus ==="accepted" && (
-                  <div className="flex gap-1 absolute top-0 right-0 ">
-                    <Check
-                      className="bg-accent text-white rounded-full "
-                      size={20}
-                    />
-                  </div>
-                )}
                 <Pencil
-                  className="text-white absolute -right-1 -bottom-1 bg-main rounded-full p-1 cursor-pointer"
+                  className="text-white absolute -right-1 bottom-10 bg-main rounded-full p-1 cursor-pointer"
                   size={26}
                   onClick={() => setShowModal(true)}
                 />
+                {client.verificationStatus === "accepted" && (
+                  <div className="flex gap-1 absolute top-1 right-1">
+                    <Check
+                      className="bg-accent text-white rounded-full p-1"
+                      size={24}
+                    />
+                  </div>
+                )}
               </div>
             </div>
+
+            {renderVerificationStatus()}
+
             <h2 className="md:text-4xl sm:text-xl font-bold text-main mb-2 flex items-center dark:text-accent">
               {client.name}
             </h2>
@@ -157,7 +182,7 @@ const ClientProfile = ({ token }) => {
             </p>
           </div>
           <div className="flex justify-center my-5 gap-4">
-            {client.verificationStatus!=="accepted" && (
+            {client.verificationStatus !== "accepted" && (
               <Button
                 to="/verification"
                 text="Verify your account"
@@ -168,7 +193,9 @@ const ClientProfile = ({ token }) => {
             <Button
               to="/AddProfileData"
               text="update your profile"
-              variant={client.verificationStatus ==="accepted" ? "fill" : "outline"}
+              variant={
+                client.verificationStatus === "accepted" ? "fill" : "outline"
+              }
               size="sm"
             />
           </div>
