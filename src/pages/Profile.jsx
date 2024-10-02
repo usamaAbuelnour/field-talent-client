@@ -1,10 +1,19 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useEffect, useState, useCallback } from "react";
-import { User, Mail, MapPin, Pencil, MapPinCheck, Check } from "lucide-react";
+import {
+  User,
+  Mail,
+  MapPin,
+  Pencil,
+  MapPinCheck,
+  Check,
+  AlertCircle,
+} from "lucide-react";
 import axios from "axios";
 import Button from "../components/uiComponents/Button";
 import Timeline from "../components/profileComponents/Timeline ";
+
 function Profile({ token }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -30,7 +39,9 @@ function Profile({ token }) {
       finalProject: "loading.....",
       projectGrade: "loading.....",
     },
+    verificationStatus: null,
   });
+
   const fetchEngineerData = useCallback(async () => {
     try {
       const response = await axios.get(
@@ -68,6 +79,7 @@ function Profile({ token }) {
           ],
           jobExperience: myData.engineerId.workExperience || [],
           verificationStatus: myData.verificationStatus,
+
           education: {
             graduationFrom:
               myData.education?.graduationFrom || "Cairo University",
@@ -111,6 +123,7 @@ function Profile({ token }) {
       console.error(error);
     }
   }, [token]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchEngineerData();
@@ -153,37 +166,58 @@ function Profile({ token }) {
     setSelectedImage(null);
   };
 
+  const renderVerificationStatus = () => {
+    switch (user.verificationStatus) {
+      case "pending":
+        return (
+          <div className="text-yellow-500  flex items-center justify-center">
+            <AlertCircle size={20} className="mr-2" />
+            Verification pending
+          </div>
+        );
+      case "reject":
+        return (
+          <div className="text-red-500  flex items-center justify-center">
+            <AlertCircle size={20} className="mr-2" />
+            Verification rejected. Please update your information and try again.
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  console.log(user.verificationStatus);
+
   return (
     <>
       <div className="relative pt-20 mb-10 min-h-screen bg-base-200 dark:bg-dark text-text dark:text-light-dark">
         <header className="px-4 sm:px-6 lg:px-20 mb-10">
           <div className="flex flex-col justify-center items-center space-y-6 lg:space-y-8">
-            <div className="relative avatar">
-              <div className="w-24 sm:w-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+            <div className="relative inline-block ">
+              <div className="relative ">
                 <img
+                  className="w-36 h-36 rounded-full border-4 border-main shadow-lg object-cover"
                   src={personalIMAGE}
                   alt={`${user.personalInfo.name}'s Avatar`}
-                  className="w-full h-full object-cover"
                 />
-                {user.verificationStatus && (
-                  <div className="flex gap-1 absolute top-0 right-0">
-                    <Check
-                      className="bg-accent text-white rounded-full p-1"
-                      size={24}
-                    />
-                  </div>
-                )}
+                <Pencil
+                  className="text-white absolute -right-1 bottom-10 bg-main rounded-full p-1 cursor-pointer"
+                  size={26}
+                  onClick={() => setShowModal(true)}
+                />
+                {user.verificationStatus ==="accepted" &&<div className="flex gap-1 absolute top-0 right-0">
+                  <Check
+                    className="bg-accent text-white rounded-full p-1"
+                    size={24}
+                  />
+                </div>}
               </div>
-
-              <Pencil
-                className="text-white absolute -right-4 -bottom-1 bg-main rounded-full p-1 cursor-pointer"
-                size={26}
-                onClick={() => setShowModal(true)}
-              />
             </div>
+            {renderVerificationStatus()}
             <div className="flex flex-col w-full max-w-2xl">
               <section className="flex flex-col sm:flex-row justify-center items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6">
-                <h3 className="text-2xl font-semibold text-main dark:text-accent flex items-center">
+                <h3 className="text-xl font-semibold text-main dark:text-accent flex items-center">
                   <User className="inline mr-2 text-accent dark:text-s-light" />
                   <span className="break-words">
                     {user.personalInfo.name || "N/A"}
@@ -203,18 +237,20 @@ function Profile({ token }) {
                 </div>
               </section>
               <div className="flex justify-center my-5 gap-4">
-              {User.verificationStatus!=="accepted" && (
-              <Button
-                to="/verification"
-                text="Verify your account"
-                variant="fill"
-                size="sm"
-              />
-            )}
+                {user.verificationStatus !== "accepted" && (
+                  <Button
+                    to="/verification"
+                    text="Verify your account"
+                    variant="fill"
+                    size="sm"
+                  />
+                )}
                 <Button
                   to="/AddProfileData"
                   text="Update your profile"
-                  variant={User.verificationStatus!=="accepted" ? "fill" : "outline"}
+                  variant={
+                    user.verificationStatus === "accepted" ? "fill" : "outline"
+                  }
                   size="sm"
                 />
               </div>
@@ -296,22 +332,20 @@ function Profile({ token }) {
                   <p className="font-medium break-words">
                     Graduation from {user.education.graduationFrom}
                   </p>
-                  <p className="break-words">{user.education.specialization}</p>
-                  <p className="italic">
-                    Graduation Date: {user.education.graduationYear}
+                  <p className="font-medium break-words">
+                    Graduation Year: {user.education.graduationYear}
                   </p>
-                  <p>Grade: {user.education.grade}</p>
-                  <p>
-                    Final Project:
-                    <span className="font-semibold ml-1 break-words">
-                      {user.education.finalProject}
-                    </span>
+                  <p className="font-medium break-words">
+                    Specialization: {user.education.specialization}
                   </p>
-                  <p>
-                    Project Grade:
-                    <span className="text-main dark:text-accent font-bold ml-1">
-                      {user.education.projectGrade}
-                    </span>
+                  <p className="font-medium break-words">
+                    Grade: {user.education.grade}
+                  </p>
+                  <p className="font-medium break-words">
+                    Final Project: {user.education.finalProject}
+                  </p>
+                  <p className="font-medium break-words">
+                    Project Grade: {user.education.projectGrade}
                   </p>
                 </div>
                 <img
