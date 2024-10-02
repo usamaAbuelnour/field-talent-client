@@ -65,7 +65,7 @@ export default function Login({ handleLogin, isUserLoggedIn, redirectingUrl }) {
         response.data.name,
         response.data.email,
         userType,
-        response.data.isVerified
+        response.data.verificationStatus
       );
       navigate(redirectingUrl, { replace: true });
     } catch (error) {

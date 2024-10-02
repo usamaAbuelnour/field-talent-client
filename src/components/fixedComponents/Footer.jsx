@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unknown-property */
 /* eslint-disable react/prop-types */
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 
@@ -8,20 +7,22 @@ const FooterLink = ({ href, children }) => (
   </a>
 );
 
-const SocialIcon = ({ Icon, href }) => (
-  <a href={href} className="text-gray-300 hover:text-white transition-colors duration-300">
+const SocialIcon = ({ Icon, href, label }) => (
+  <a href={href} aria-label={label} className="text-gray-300 hover:text-white transition-colors duration-300">
     <Icon size={24} />
   </a>
 );
 
 function Footer() {
   return (
-    <div className='relative'>
-      <svg width="100%" height="100%" id="svg" viewBox="0 0 1440 390" xmlns="http://www.w3.org/2000/svg" className="transition duration-300 ease-in-out delay-150 mt-0 pt-0">
-        <path d="M 0,400 L 0,150 C 238.5,165.5 477,181 717,181 C 957,181 1198.5,165.5 1440,150 L 1440,400 L 0,400 Z" stroke="none" strokeWidth="0" fill="#115e59" fillOpacity="1" className="transition-all duration-300 ease-in-out delay-150 path-0 "></path>
-        </svg> 
-      <footer className="bg-main absolute md:top-52 top-24 w-full text-white mt-0">
+    <div className="relative">
+      <div className="absolute inset-x-0 top-0 -z-10">
+        <svg width="100%" height="200" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#115e59" fillOpacity="1" d="M0,320L0,160L240,186.7C480,213,960,267,1440,240L1440,320L0,320Z"></path>
+        </svg>
+      </div>
 
+      <footer className="bg-main w-full text-white pt-32 relative">
         <div className="container mx-auto px-4 ">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
@@ -58,10 +59,10 @@ function Footer() {
             <div>
               <h4 className="text-xl font-semibold mb-4">Follow Us</h4>
               <div className="flex space-x-4">
-                <SocialIcon Icon={Facebook} href="https://facebook.com" />
-                <SocialIcon Icon={Twitter} href="https://twitter.com" />
-                <SocialIcon Icon={Instagram} href="https://instagram.com" />
-                <SocialIcon Icon={Linkedin} href="https://linkedin.com" />
+                <SocialIcon Icon={Facebook} href="https://facebook.com" label="Facebook" />
+                <SocialIcon Icon={Twitter} href="https://twitter.com" label="Twitter" />
+                <SocialIcon Icon={Instagram} href="https://instagram.com" label="Instagram" />
+                <SocialIcon Icon={Linkedin} href="https://linkedin.com" label="LinkedIn" />
               </div>
             </div>
           </div>

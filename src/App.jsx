@@ -17,7 +17,7 @@ import Verification from "./pages/Verification";
 import CategoryDetails from "./pages/CategoryDetails";
 import ClientProfile from "./pages/ClientProfile";
 import AddProfileData from "./pages/AddProfileData";
-import ShowProposal from './pages/ShowProposal';
+import ShowProposal from "./pages/ShowProposal";
 import "./App.css";
 import { useState, useEffect } from "react";
 
@@ -28,7 +28,7 @@ function App() {
     token: "",
     userType: "",
     isUserLoggedIn: false,
-    isVerified: false,
+    verificationStatus: null,
   };
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem("darkMode");
@@ -52,14 +52,14 @@ function App() {
     localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
   }, [isDarkMode, redirectingUrl]);
 
-  const handleLogin = (token, name, email, userType, isVerified) => {
+  const handleLogin = (token, name, email, userType, verificationStatus) => {
     const newUser = {
       ...userSchema,
       email: email,
       name: name,
       token: token,
       userType: userType,
-      isVerified: isVerified,
+      verificationStatus: verificationStatus,
       isUserLoggedIn: true,
     };
     setUser(newUser);
@@ -115,7 +115,7 @@ function App() {
             path="registration"
             element={
               <Registration
-                isVerified={user.isVerified}
+                verificationStatus={user.verificationStatus}
                 redirectingUrl={redirectingUrl}
                 handleLogin={handleLogin}
                 isUserLoggedIn={user.isUserLoggedIn}
@@ -140,9 +140,8 @@ function App() {
             path="/engineerProposals"
             element={
               <PrivateRoute
-                element={<EngineerProposals     token={user.token}/>}
+                element={<EngineerProposals token={user.token} />}
                 isUserLoggedIn={user.isUserLoggedIn}
-
                 handleRedirectingUrl={handleRedirectingUrl}
                 pageAllowFor={"engineer"}
                 userType={user.userType}
@@ -221,7 +220,9 @@ function App() {
                 element={
                   <Verification
                     userType={user.userType}
-                    isVerified={user.isVerified}
+                    token={user.token}
+                    redirectingUrl={redirectingUrl}
+                    verificationStatus={user.verificationStatus}
                   />
                 }
                 isUserLoggedIn={user.isUserLoggedIn}
@@ -236,10 +237,7 @@ function App() {
             element={
               <PrivateRoute
                 element={
-                  <AddProfileData
-                    userType={user.userType}
-                    token={user.token}
-                  />
+                  <AddProfileData userType={user.userType} token={user.token} />
                 }
                 isUserLoggedIn={user.isUserLoggedIn}
                 handleRedirectingUrl={handleRedirectingUrl}
@@ -254,8 +252,7 @@ function App() {
             element={<CategoryDetails />}
           />
 
-          <Route path="/showProposal"
-                 element={<ShowProposal />} />
+          <Route path="/showProposal" element={<ShowProposal />} />
 
           <Route
             path="*"

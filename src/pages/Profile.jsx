@@ -44,41 +44,67 @@ function Profile({ token }) {
 
       const myData = response.data;
       console.log(myData);
-      setPersonalIMAGE(myData.engineerId.personalImage);
 
-      setUser({
-        personalInfo: {
-          name: `${myData.firstName} ${myData.lastName}`,
-          email: myData.email,
-          governorate: myData.engineerId.governorate || "Egypt",
-          profileOverview:
-            myData.engineerId.profileOverview || "YOUR profile Overview",
-        },
-        skills: myData.engineerId.skills || [
-          "CAD",
-          "Revit",
-          "SAP",
-          "Fishing work",
-          "Structural Design",
-          "AutoCAD",
-          "Project Management",
-          "Site Supervision",
-          "Construction Safety",
-        ],
-        jobExperience: myData.engineerId.workExperience || [],
-        isVerified: myData.isVerified,
-        education: {
-          graduationFrom:
-            myData.education?.graduationFrom || "Cairo University",
-          graduationYear: myData.education?.graduationYear || "2020",
-          specialization:
-            myData.education?.specialization || "Computer Science",
-          grade: myData.education?.grade || "good",
-          finalProject:
-            myData.education?.finalProject || "Blockchain-Based Voting System",
-          projectGrade: myData.education?.projectGrade || "very good",
-        },
-      });
+      if (myData.engineerId) {
+        setUser({
+          personalInfo: {
+            name: `${myData.firstName} ${myData.lastName}`,
+            email: myData.email,
+            governorate: myData.engineerId.governorate || "Egypt",
+            profileOverview:
+              myData.engineerId.profileOverview || "YOUR profile Overview",
+            personalImage: myData.engineerId.personalImage,
+          },
+          skills: myData.engineerId.skills || [
+            "CAD",
+            "Revit",
+            "SAP",
+            "Fishing work",
+            "Structural Design",
+            "AutoCAD",
+            "Project Management",
+            "Site Supervision",
+            "Construction Safety",
+          ],
+          jobExperience: myData.engineerId.workExperience || [],
+          verificationStatus: myData.verificationStatus,
+          education: {
+            graduationFrom:
+              myData.education?.graduationFrom || "Cairo University",
+            graduationYear: myData.education?.graduationYear || "2020",
+            specialization:
+              myData.education?.specialization || "Computer Science",
+            grade: myData.education?.grade || "good",
+            finalProject:
+              myData.education?.finalProject ||
+              "Blockchain-Based Voting System",
+            projectGrade: myData.education?.projectGrade || "very good",
+          },
+        });
+        if (myData.engineerId.personalImage) {
+          setPersonalIMAGE(myData.engineerId.personalImage);
+        }
+      } else {
+        setUser({
+          personalInfo: {
+            name: `${myData.firstName} ${myData.lastName}`,
+            email: myData.email,
+            governorate: "Egypt",
+            profileOverview: "profile Overview show her after ",
+          },
+          skills: ["profile Overview show her after"],
+          jobExperience: [],
+          verificationStatus: myData.verificationStatus,
+          education: {
+            graduationFrom: " University",
+            graduationYear: " like 2020",
+            specialization: "example :civil",
+            grade: "example: very good",
+            finalProject: " example : structure design",
+            projectGrade: "example : very good",
+          },
+        });
+      }
       console.log(myData, user);
     } catch (error) {
       setErrorMessage("Error fetching user data. Please try again.");
@@ -97,7 +123,7 @@ function Profile({ token }) {
   const handleUpload = async () => {
     if (!selectedImage) return;
 
-    const formData = new formData();
+    const formData = new FormData();
     formData.append("personalImage", selectedImage);
 
     setIsUploading(true);
@@ -112,7 +138,6 @@ function Profile({ token }) {
           },
         }
       );
-
       setPersonalIMAGE(response.data);
 
       handleClose();
@@ -140,7 +165,7 @@ function Profile({ token }) {
                   alt={`${user.personalInfo.name}'s Avatar`}
                   className="w-full h-full object-cover"
                 />
-                {user.isVerified && (
+                {user.verificationStatus && (
                   <div className="flex gap-1 absolute top-0 right-0">
                     <Check
                       className="bg-accent text-white rounded-full p-1"
@@ -149,13 +174,12 @@ function Profile({ token }) {
                   </div>
                 )}
               </div>
-              <button
+
+              <Pencil
+                className="text-white absolute -right-4 -bottom-1 bg-main rounded-full p-1 cursor-pointer"
+                size={26}
                 onClick={() => setShowModal(true)}
-                aria-label="Edit Profile"
-                className="absolute bottom-0 right-0 bg-white dark:bg-dark p-1 rounded-full shadow-md"
-              >
-                <Pencil className="text-main dark:text-accent" size={16} />
-              </button>
+              />
             </div>
             <div className="flex flex-col w-full max-w-2xl">
               <section className="flex flex-col sm:flex-row justify-center items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6">
@@ -179,18 +203,18 @@ function Profile({ token }) {
                 </div>
               </section>
               <div className="flex justify-center my-5 gap-4">
-                {!user.isVerified && (
-                  <Button
-                    to="/verification"
-                    text="Verify your account"
-                    variant="fill"
-                    size="sm"
-                  />
-                )}
+              {User.verificationStatus!=="accepted" && (
+              <Button
+                to="/verification"
+                text="Verify your account"
+                variant="fill"
+                size="sm"
+              />
+            )}
                 <Button
                   to="/AddProfileData"
                   text="Update your profile"
-                  variant={user.isVerified ? "fill" : "outline"}
+                  variant={User.verificationStatus!=="accepted" ? "fill" : "outline"}
                   size="sm"
                 />
               </div>
@@ -246,20 +270,21 @@ function Profile({ token }) {
                 Experience
               </h1>
               {user.jobExperience.length > 0 ? (
-            <Timeline
-              items={user.jobExperience.map(job => ({
-                date: job.startDate && job.finishDate
-                  ? `${job.startDate} - ${job.finishDate}`
-                  : job.date || "Date not specified",
-                title: job.name || "Job Title Not Specified",
-                description: job.description || "No description available"
-              }))}
-            />
-          ) : (
-            <p className="text-center text-gray-500">
-              No job experience added yet.
-            </p>
-          )}
+                <Timeline
+                  items={user.jobExperience.map((job) => ({
+                    date:
+                      job.startDate && job.finishDate
+                        ? `${job.startDate} - ${job.finishDate}`
+                        : job.date || "Date not specified",
+                    title: job.name || "Job Title Not Specified",
+                    description: job.description || "No description available",
+                  }))}
+                />
+              ) : (
+                <p className="text-center text-gray-500">
+                  No job experience added yet.
+                </p>
+              )}
             </div>
 
             <section className="education mt-10 bg-white dark:bg-main-dark p-6 rounded-lg shadow-lg">
