@@ -68,8 +68,8 @@ export const JobCard = ({ job }) => {
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center text-center sm:text-left">
-        <p className=" sm:mb-0 text-xs sm:text-sm dark:text-white">
+      <div className="flex flex-col mt-2 sm:flex-row justify-center sm:justify-between items-center text-center sm:text-left">
+        <p className="sm:mb-0 text-xs sm:text-sm dark:text-white">
           <span className="font-semibold dark:text-white text-main">Location:</span> {job.location}
         </p>
         <Button
