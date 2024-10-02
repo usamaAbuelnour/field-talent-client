@@ -168,7 +168,7 @@ const ClientProfile = ({ token }) => {
             <Button
               to="/AddProfileData"
               text="update your profile"
-              variant={client.verificationStatus ==="" ? "fill" : "outline"}
+              variant={client.verificationStatus ==="accepted" ? "fill" : "outline"}
               size="sm"
             />
           </div>
