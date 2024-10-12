@@ -77,7 +77,7 @@ export const JobCard = ({ job }) => {
           onClick={handleViewProposals}
           variant="fill"
           size="sm"
-          className="mt-2 sm:mt-0"
+          className="mt-2 sm:mt-0 rounded-full"
         />
       </div>
     </div>
