@@ -13,8 +13,10 @@ import {
 import axios from "axios";
 import Button from "../components/uiComponents/Button";
 import Timeline from "../components/profileComponents/Timeline ";
+import Loading from "../components/uiComponents/Loading";
 
 function Profile({ token }) {
+  const [isLoading, setIsLoading] = useState();
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -39,11 +41,12 @@ function Profile({ token }) {
       finalProject: "loading.....",
       projectGrade: "loading.....",
     },
-    verificationStatus: null,
+    verificationState: null,
   });
 
   const fetchEngineerData = useCallback(async () => {
     try {
+      setIsLoading(true);
       const response = await axios.get(
         "https://field-talent.vercel.app/engineers",
         {
@@ -67,30 +70,28 @@ function Profile({ token }) {
             personalImage: myData.engineerId.personalImage,
           },
           skills: myData.engineerId.skills || [
-            "CAD",
-            "Revit",
-            "SAP",
-            "Fishing work",
-            "Structural Design",
-            "AutoCAD",
-            "Project Management",
-            "Site Supervision",
-            "Construction Safety",
+            "skill 1",
+            "skill 2",
+            "skill 3",
+            "skill 4",
+            "skill 5",
           ],
           jobExperience: myData.engineerId.workExperience || [],
-          verificationStatus: myData.verificationStatus,
+          verificationState: myData.verificationState.status,
 
           education: {
             graduationFrom:
-              myData.education?.graduationFrom || "Cairo University",
-            graduationYear: myData.education?.graduationYear || "2020",
+              myData.education?.graduationFrom || " cairo University (example)",
+            graduationYear:
+              myData.education?.graduationYear || "2020 (example)",
             specialization:
-              myData.education?.specialization || "Computer Science",
-            grade: myData.education?.grade || "good",
+              myData.education?.specialization || "Computer Science (example)",
+            grade: myData.education?.grade || "good (example)",
             finalProject:
               myData.education?.finalProject ||
-              "Blockchain-Based Voting System",
-            projectGrade: myData.education?.projectGrade || "very good",
+              "Blockchain-Based Voting System (example)",
+            projectGrade:
+              myData.education?.projectGrade || "very good (example)",
           },
         });
         if (myData.engineerId.personalImage) {
@@ -101,12 +102,12 @@ function Profile({ token }) {
           personalInfo: {
             name: `${myData.firstName} ${myData.lastName}`,
             email: myData.email,
-            governorate: "Egypt",
+            governorate: "example:cairo",
             profileOverview: "profile Overview show her after ",
           },
           skills: ["profile Overview show her after"],
           jobExperience: [],
-          verificationStatus: myData.verificationStatus,
+          verificationState: myData.verificationState.status,
           education: {
             graduationFrom: " University",
             graduationYear: " like 2020",
@@ -121,6 +122,8 @@ function Profile({ token }) {
     } catch (error) {
       setErrorMessage("Error fetching user data. Please try again.");
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   }, [token]);
 
@@ -166,8 +169,8 @@ function Profile({ token }) {
     setSelectedImage(null);
   };
 
-  const renderVerificationStatus = () => {
-    switch (user.verificationStatus) {
+  const renderverificationState = () => {
+    switch (user.verificationState) {
       case "pending":
         return (
           <div className="text-yellow-500  flex items-center justify-center">
@@ -186,18 +189,19 @@ function Profile({ token }) {
         return null;
     }
   };
-
-  console.log(user.verificationStatus);
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
       <div className="relative pt-20 mb-10 min-h-screen bg-base-200 dark:bg-dark text-text dark:text-light-dark">
-        <header className="px-4 sm:px-6 lg:px-20 mb-10">
-          <div className="flex flex-col justify-center items-center space-y-6 lg:space-y-8">
-            <div className="relative inline-block ">
-              <div className="relative ">
+        <header className="px-4 sm:px-6 lg:px-20">
+          <div className="flex flex-col lg:flex-row justify-center lg:gap-4 ">
+            <div className="relative  flex justify-center items-center ">
+              <div className="relative   ">
                 <img
-                  className="w-36 h-36 rounded-full border-4 border-main shadow-lg object-cover"
+                  className="w-36 h-36 rounded-full border-4 border-main shadow-lg object-cover "
                   src={personalIMAGE}
                   alt={`${user.personalInfo.name}'s Avatar`}
                 />
@@ -206,24 +210,26 @@ function Profile({ token }) {
                   size={26}
                   onClick={() => setShowModal(true)}
                 />
-                {user.verificationStatus ==="accepted" &&<div className="flex gap-1 absolute top-0 right-0">
-                  <Check
-                    className="bg-accent text-white rounded-full p-1"
-                    size={24}
-                  />
-                </div>}
+                {user.verificationState === "accepted" && (
+                  <div className="flex gap-1 absolute top-0 right-0">
+                    <Check
+                      className="bg-accent text-white rounded-full p-1"
+                      size={24}
+                    />
+                  </div>
+                )}
               </div>
             </div>
-            {renderVerificationStatus()}
-            <div className="flex flex-col w-full max-w-2xl">
-              <section className="flex flex-col sm:flex-row justify-center items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6">
+              <section className="flex 
+               flex-col space-y-1 lg:space-y-3 justify-center items-center ">
                 <h3 className="text-xl font-semibold text-main dark:text-accent flex items-center">
                   <User className="inline mr-2 text-accent dark:text-s-light" />
                   <span className="break-words">
-                    {user.personalInfo.name || "N/A"}
+                    {user.personalInfo.name|| "engineer name"}
                   </span>
                 </h3>
-                <div className="flex items-center text-text dark:text-s-light">
+                <div className="flex ">
+                   <div className="flex items-center text-text dark:text-s-light">
                   <Mail className="mr-2 text-accent dark:text-s-light" />
                   <span className="break-words">
                     {user.personalInfo.email || "N/A"}
@@ -235,9 +241,13 @@ function Profile({ token }) {
                     {user.personalInfo.governorate || "N/A"}
                   </span>
                 </div>
+                </div>
+    {renderverificationState()}
+
               </section>
-              <div className="flex justify-center my-5 gap-4">
-                {user.verificationStatus !== "accepted" && (
+          </div>
+          <div className="flex justify-center my-5 gap-4">
+                {user.verificationState !== "accepted" && (
                   <Button
                     to="/verification"
                     text="Verify your account"
@@ -249,17 +259,15 @@ function Profile({ token }) {
                   to="/AddProfileData"
                   text="Update your profile"
                   variant={
-                    user.verificationStatus === "accepted" ? "fill" : "outline"
+                    user.verificationState === "accepted" ? "fill" : "outline"
                   }
                   size="sm"
                 />
               </div>
-            </div>
-          </div>
         </header>
         <hr className="w-11/12 mx-auto border-s-light dark:border-main" />
         <div className="flex flex-col lg:flex-row mt-8 px-4 sm:px-6 lg:px-20">
-          <aside className="lg:max-w-lg lg:sticky top-10 right-10 mb-8 lg:mb-0 p-6 bg-base-100 dark:bg-dark shadow-lg rounded-lg lg:max-h-[calc(100vh-40px)] overflow-y-auto">
+          <aside className="lg:min-w-64 lg:sticky top-10 right-10 mb-8 lg:mb-0 p-6 bg-base-100 dark:bg-dark shadow-lg rounded-lg lg:max-h-[calc(100vh-40px)] overflow-y-auto">
             <div>
               <section className="mb-10">
                 <h4 className="text-lg font-bold text-main dark:text-accent mb-4">
@@ -330,22 +338,53 @@ function Profile({ token }) {
               <div className="flex flex-col lg:flex-row items-center lg:items-start">
                 <div className="w-full lg:w-2/3 space-y-4 text-sm sm:text-base text-text dark:text-light-dark">
                   <p className="font-medium break-words">
-                    Graduation from {user.education.graduationFrom}
+                    <span className="font-semibold text-lg">                      Graduation from:
+                    </span>
+                    <span className="text-main font-medium">
+                    {user.education.graduationFrom}
+                    </span>
                   </p>
                   <p className="font-medium break-words">
-                    Graduation Year: {user.education.graduationYear}
+                    <span className="font-semibold text-lg">                      Graduation Year:
+                    </span>
+                    <span className="text-main font-medium">
+
+                    {user.education.graduationYear}
+                    </span>
                   </p>
                   <p className="font-medium break-words">
-                    Specialization: {user.education.specialization}
+                    <span className="font-semibold text-lg">                      Specialization:
+                    </span>
+                    <span className="text-main font-medium">
+
+                    {user.education.specialization}
+                    </span>
+
                   </p>
                   <p className="font-medium break-words">
-                    Grade: {user.education.grade}
+                    <span className="font-semibold text-lg">Grade:</span>
+                    <span className="text-main font-medium">
+
+                    {user.education.grade}
+                    </span>
+
                   </p>
                   <p className="font-medium break-words">
-                    Final Project: {user.education.finalProject}
+                    <span className="font-semibold text-lg">                      Final Project:
+                    </span>
+                    <span className="text-main font-medium">
+
+                    {user.education.finalProject}
+                    </span>
+
                   </p>
                   <p className="font-medium break-words">
-                    Project Grade: {user.education.projectGrade}
+                    <span className="font-semibold text-lg">                      Project Grade:{" "}
+                    </span>
+                    <span className="text-main font-medium">
+                    {user.education.projectGrade}
+                    </span>
+
                   </p>
                 </div>
                 <img
