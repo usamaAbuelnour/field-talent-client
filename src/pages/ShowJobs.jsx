@@ -145,15 +145,7 @@ const ShowJobs = ({ isDarkMode }) => {
 
   return (
     <div className={`${isDarkMode ? "dark" : ""} container mx-auto p-2 sm:p-5`}>
-      <h1 className="font-bold mb-4 sm:mb-8 mt-10 sm:mt-20 text-center">
-        <span className="font-serif shadow-lg rounded-lg text-main text-lg sm:text-xl md:text-2xl lg:text-3xl inline-block p-3 sm:p-5 dark:text-accent">
-          <Bell
-            className="inline-block ml-2 text-main text-lg sm:text-xl md:text-2xl lg:text-3xl"
-            size={20}
-          />
-          Available Jobs
-        </span>
-      </h1>
+   <div className="mt-24">
 
       <FilterJobs
         locationOptions={locationOptions}
@@ -166,6 +158,7 @@ const ShowJobs = ({ isDarkMode }) => {
         selectedServices={selectedServices}
         setSelectedServices={handleServiceChange}
       />
+      </div>
 
       <div className="flex flex-wrap px-2 sm:px-5 md:px-10 lg:px-20">
         {jobs.length > 0 ? (
