@@ -100,13 +100,13 @@ const ApplyPopup = ({ closePopup, jobId }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center">
       <div className="bg-white p-6 rounded-lg shadow-lg w-9/12 dark:bg-main-dark">
-        <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-4 dark:text-accent">Apply for Job</h2>
+        <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-4 text-main dark:text-accent">Apply for Job</h2>
 
         <textarea
           placeholder="Write your Cover letter (at least 150 characters) ..."
           value={applicationText}
           onChange={(e) => setApplicationText(e.target.value)}
-          className={`w-full h-32 mb-2 p-2 border rounded overflow-y-auto resize-none dark:text-white dark:bg-main-dark ${
+          className={`w-full h-32 mb-2 p-2  rounded overflow-y-auto resize-none focus:border-main border-2 dark:text-white dark:bg-main-dark ${
             descriptionError ? 'border-red-500' : ''
           }`}
           style={{ minHeight: '150px', maxHeight: '300px' }}
@@ -119,7 +119,7 @@ const ApplyPopup = ({ closePopup, jobId }) => {
           value={expectedSalary}
           onChange={handleSalaryChange}
           onKeyPress={handleKeyPress}
-          className={`w-full mb-2 p-2 border rounded dark:bg-main-dark ${
+          className={`w-full mb-2 p-2 border-2 rounded dark:bg-main-dark ${
             salaryError ? 'border-red-500' : ''
           }`}
         />
@@ -134,7 +134,7 @@ const ApplyPopup = ({ closePopup, jobId }) => {
           </button>
           <button
             onClick={closePopup}
-            className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 dark:text-white dark:bg-gray-600"
+            className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200 dark:text-white dark:bg-gray-400"
           >
             Cancel
           </button>

@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 
 import {
-  UserPen ,
+  UserPen,
   BriefcaseBusiness,
   LogIn,
   LogOut,
@@ -30,7 +30,11 @@ export default function NavBar({
   const [inLogin, setInLogin] = useState(false);
   let location = useLocation();
 
-  const { isUserLoggedIn, name, email,userType } = user;
+  const { isUserLoggedIn, name, email, userType, profileImage } = user;
+  console.log("User Data:", user);
+
+
+  const defaultAvatar = "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp";
   console.log(userType)
   useEffect(() => {
     setInLogin(
@@ -53,11 +57,10 @@ export default function NavBar({
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out
     ${isDarkMode ? "dark" : ""}
-    ${
-      isScrolled
-        ? "bg-white dark:bg-main-dark shadow-md dark:shadow-sm dark:shadow-light-dark"
-        : "dark:bg-dark-light"
-    }
+    ${isScrolled
+          ? "bg-white dark:bg-main-dark shadow-md dark:shadow-sm dark:shadow-light-dark"
+          : "dark:bg-dark-light"
+        }
     dark:text-s-light`}
     >
 
@@ -76,21 +79,21 @@ export default function NavBar({
               label="Field Talent"
               isfrommob={true}
             />
-            {userType&&
-            
-             <div className=" md:ml-6 flex ">
-              <NavLink
-                to={userType==="engineer"?"/engineerProposals":"/My-Job"}
-                icon={BriefcaseBusiness}
-                label={userType==="engineer"?"show my proposals":"my jobs"}
-                isfrommob={true}
-              />
-            </div>
-            
+            {userType &&
+
+              <div className=" md:ml-6 flex ">
+                <NavLink
+                  to={userType === "engineer" ? "/engineerProposals" : "/My-Job"}
+                  icon={BriefcaseBusiness}
+                  label={userType === "engineer" ? "show my proposals" : "my jobs"}
+                  isfrommob={true}
+                />
+              </div>
+
             }
-           
+
           </div>
- 
+
 
 
 
@@ -101,15 +104,14 @@ export default function NavBar({
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className={`flex items-center focus:outline-none transition-colors duration-300
-                  ${
-                    isScrolled
+                  ${isScrolled
                       ? "text-dark dark:text-s-light hover:text-main"
                       : "text-white hover:text-s-light"
-                  }`}
+                    }`}
                 >
                   <img
                     className="h-8 w-8 rounded-full object-cover border-2 border-main"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                    src={profileImage || defaultAvatar}
                     alt="User avatar"
                   />
                   <span className="ml-2 hidden md:inline text-main dark:text-accent">
@@ -129,12 +131,12 @@ export default function NavBar({
                       aria-labelledby="user-menu"
                     >
                       <Link
-                        to={userType ==="engineer" ?"/profile": "/ClientProfile"}
+                        to={userType === "engineer" ? "/profile" : "/ClientProfile"}
                         className="flex gap-1 px-4 py-2 text-sm text-text   dark:text-text-dark hover:bg-s-light dark:hover:bg-slate-600 transition-colors duration-150"
                         role="menuitem"
                       >
                         <UserPen size={15} />
-                         <span> my Profile </span>
+                        <span> my Profile </span>
                       </Link>
                       <button
                         className="block w-full text-left px-4 py-2 text-sm text-text  dark:text-text-dark hover:bg-s-light dark:hover:bg-slate-600 transition-colors duration-150"
@@ -150,9 +152,8 @@ export default function NavBar({
             ) : (
               <Link
                 to="/login"
-                className={`flex items-center ${
-                  inLogin ? "hidden" : ""
-                } gap-2 bg-main text-text-dark    px-4 py-2 rounded-md hover:bg-main-600 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md`}
+                className={`flex items-center ${inLogin ? "hidden" : ""
+                  } gap-2 bg-main text-text-dark    px-4 py-2 rounded-md hover:bg-main-600 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-md`}
               >
                 <LogIn size={20} />
                 <span>LogIn</span>
@@ -167,11 +168,10 @@ export default function NavBar({
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className={`inline-flex items-center justify-center p-2 rounded-md transition-colors duration-300
-              ${
-                isScrolled
-                  ? "text-dark dark:text-s-light hover:text-main hover:bg-s-light dark:hover:bg-slate-700"
-                  : "text-main dark:text-s-light hover:text-dark hover:bg-white hover:bg-opacity-20"
-              } focus:outline-none focus:ring-2 focus:ring-inset focus:ring-main`}
+              ${isScrolled
+                    ? "text-dark dark:text-s-light hover:text-main hover:bg-s-light dark:hover:bg-slate-700"
+                    : "text-main dark:text-s-light hover:text-dark hover:bg-white hover:bg-opacity-20"
+                  } focus:outline-none focus:ring-2 focus:ring-inset focus:ring-main`}
               >
                 {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>{" "}
@@ -187,9 +187,8 @@ export default function NavBar({
 
 
       <div
-        className={`md:hidden transition-all duration-300 ease-in-out ${
-          isMenuOpen ? "max-h-screen" : "max-h-0"
-        }
+        className={`md:hidden transition-all duration-300 ease-in-out ${isMenuOpen ? "max-h-screen" : "max-h-0"
+          }
         overflow-hidden`}
       >
         {isUserLoggedIn && (
@@ -199,7 +198,7 @@ export default function NavBar({
                 <div className="flex-shrink-0">
                   <img
                     className="h-10 w-10 rounded-full border-2 border-main"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                    src={profileImage || defaultAvatar}
                     alt="User avatar"
                   />
                 </div>
@@ -211,20 +210,20 @@ export default function NavBar({
                     {email}
                   </div>
                 </div>
-               
+
               </div>
               <div className="px-2  space-y-1 sm:px-3 bg-white dark:bg-dark shadow-inner">
-                    
-                  
-                      <Link
-                        to={userType ==="engineer" ?"/profile": "/ClientProfile"}
-                        className="flex gap-1 px-4 py-2 text-sm text-text   dark:text-text-dark hover:bg-s-light dark:hover:bg-slate-600 transition-colors duration-150"
-                        role="menuitem"
-                      >
-                        <UserPen size={15} />
-                         <span> my Profile </span>
-                      </Link>
-                  </div>
+
+
+                <Link
+                  to={userType === "engineer" ? "/profile" : "/ClientProfile"}
+                  className="flex gap-1 px-4 py-2 text-sm text-text   dark:text-text-dark hover:bg-s-light dark:hover:bg-slate-600 transition-colors duration-150"
+                  role="menuitem"
+                >
+                  <UserPen size={15} />
+                  <span> my Profile </span>
+                </Link>
+              </div>
               <div className="px-2  space-y-1 sm:px-3 bg-white dark:bg-dark shadow-inner">
                 <button
                   className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-dark dark:text-accent hover:bg-s-light dark:hover:bg-slate-700 transition-colors duration-150"
