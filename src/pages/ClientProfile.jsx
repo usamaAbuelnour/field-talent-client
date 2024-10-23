@@ -13,12 +13,13 @@ import {
 } from "lucide-react";
 import Button from "../components/uiComponents/Button";
 import axios from "axios";
-
+import Loading from '../components/uiComponents/Loading'
 const API_URL = "https://field-talent.vercel.app";
 
 const ClientProfile = ({ token }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [isLoading,setIsLoading]= useState()
   const [isUploading, setIsUploading] = useState(false);
   const [client, setClient] = useState({
     name: "loading.....",
@@ -31,11 +32,13 @@ const ClientProfile = ({ token }) => {
     mobile: "loading.....",
     whatsAppPhoneNumbers: "loading.....",
     location: "loading.....",
-    verificationStatus: null,
+    verificationState: null,
   });
 
   const fetchClientData = useCallback(async () => {
     try {
+      setIsLoading(true)
+
       const response = await axios.get(`${API_URL}/clients`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -54,7 +57,7 @@ const ClientProfile = ({ token }) => {
           whatsAppPhoneNumbers:
             myData.clientId.whatsAppPhoneNumbers?.[0] || "not available",
           location: myData.clientId.governorate || "egypt",
-          verificationStatus: myData.verificationStatus || null,
+          verificationState: myData.verificationState.status| null,
         });
       } else {
         setClient({
@@ -68,12 +71,15 @@ const ClientProfile = ({ token }) => {
           mobile: "Add Your Mobile",
           whatsAppPhoneNumbers: "Add Your WhatsApp Phone Number",
           location: "Egypt",
-          verificationStatus: null,
+          verificationState: null,
         });
       }
       console.log(myData, client);
     } catch (error) {
       console.log(error);
+    }
+    finally{
+      setIsLoading(false)
     }
   }, [token]);
 
@@ -122,8 +128,8 @@ const ClientProfile = ({ token }) => {
     setSelectedImage(event.target.files[0]);
   };
 
-  const renderVerificationStatus = () => {
-    switch (client.verificationStatus) {
+  const renderverificationState = () => {
+    switch (client.verificationState) {
       case "pending":
         return (
           <div className="text-yellow-500 mt-2 flex items-center justify-center">
@@ -142,8 +148,10 @@ const ClientProfile = ({ token }) => {
         return null;
     }
   };
-  console.log(client);
+  if (isLoading){
+    return (<Loading/>)
 
+  }
   return (
     <div className="flex items-center justify-center min-h-screen mt-20 md:mt-7 md:px-6 sm:px-2">
       <div className="p-2 w-full mx-auto">
@@ -161,7 +169,7 @@ const ClientProfile = ({ token }) => {
                   size={26}
                   onClick={() => setShowModal(true)}
                 />
-                {client.verificationStatus === "accepted" && (
+                {client.verificationState === "accepted" && (
                   <div className="flex gap-1 absolute top-1 right-1">
                     <Check
                       className="bg-accent text-white rounded-full p-1"
@@ -172,7 +180,7 @@ const ClientProfile = ({ token }) => {
               </div>
             </div>
 
-            {renderVerificationStatus()}
+            {renderverificationState()}
 
             <h2 className="md:text-4xl sm:text-xl font-bold text-main mb-2 flex items-center dark:text-accent">
               {client.name}
@@ -182,7 +190,7 @@ const ClientProfile = ({ token }) => {
             </p>
           </div>
           <div className="flex justify-center my-5 gap-4">
-            {client.verificationStatus !== "accepted" && (
+            {client.verificationState !== "accepted" && (
               <Button
                 to="/verification"
                 text="Verify your account"
@@ -194,7 +202,7 @@ const ClientProfile = ({ token }) => {
               to="/AddProfileData"
               text="update your profile"
               variant={
-                client.verificationStatus === "accepted" ? "fill" : "outline"
+                client.verificationState === "accepted" ? "fill" : "outline"
               }
               size="sm"
             />

@@ -13,10 +13,11 @@ const Button = ({
 }) => {
   const baseClasses =
     "btn font-semibold rounded focus:outline-none focus:ring-2 focus:ring-opacity-50";
+
   const sizeClasses = {
-    sm: "btn-sm",
-    md: "btn-md",
-    lg: "btn-lg",
+    sm: "h-8 px-3 text-sm",
+    md: "h-10 px-4 text-base",
+    lg: "h-12 px-6 text-lg"
   };
   const variantClasses = {
     fill: "bg-main text-white hover:bg-teal-700",

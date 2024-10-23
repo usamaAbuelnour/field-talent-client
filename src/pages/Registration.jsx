@@ -174,7 +174,7 @@ export default function Registration({
                   ? "Join as Client"
                   : "Create Account"
               }
-              className="text-lg sm:text-xl lg:text-3xl lg:p-3 mt-6 lg:mt-10"
+              className="text-lg sm:text-xl lg:text-3xl "
               disabled={!selectedType}
               onClick={moveToStageTwo}
             />
