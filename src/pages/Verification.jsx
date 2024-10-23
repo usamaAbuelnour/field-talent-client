@@ -252,8 +252,8 @@ function Verification({ userType, token ,verificationStatus,redirectingUrl}) {
   };
 
   return (
-    <div className=" max-w-2xl min-h-screen flex flex-col mx-auto py-10 px-10">
-      <div className="">
+    <div className="max-w-2xl min-h-screen flex flex-col mx-auto py-10 px-10">
+      <div className="dark:text-white">
         <Stepper
           activeStep={currentStep - 1}
           steps={steps.map((label) => ({ label }))}
