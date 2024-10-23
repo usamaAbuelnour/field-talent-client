@@ -77,7 +77,7 @@ function Profile({ token }) {
             "skill 5",
           ],
           jobExperience: myData.engineerId.workExperience || [],
-          verificationState: myData.verificationState.status,
+          verificationState: myData.verificationState,
 
           education: {
             graduationFrom:
@@ -107,7 +107,7 @@ function Profile({ token }) {
           },
           skills: ["profile Overview show her after"],
           jobExperience: [],
-          verificationState: myData.verificationState.status,
+          verificationState: myData.verificationState,
           education: {
             graduationFrom: " University",
             graduationYear: " like 2020",
@@ -129,6 +129,7 @@ function Profile({ token }) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+  
     fetchEngineerData();
   }, [fetchEngineerData]);
 
@@ -170,7 +171,8 @@ function Profile({ token }) {
   };
 
   const renderverificationState = () => {
-    switch (user.verificationState) {
+    if(user.verificationState){
+    switch (user.verificationState.status) {
       case "pending":
         return (
           <div className="text-yellow-500  flex items-center justify-center">
@@ -182,17 +184,17 @@ function Profile({ token }) {
         return (
           <div className="text-red-500  flex items-center justify-center">
             <AlertCircle size={20} className="mr-2" />
-            Verification rejected. Please update your information and try again.
+            Verification rejected. { user.verificationState && user.verificationState.remarks}.
           </div>
         );
       default:
         return null;
-    }
+    }}
   };
   if (isLoading) {
     return <Loading />;
   }
-
+console.log(user)
   return (
     <>
       <div className="relative pt-20 mb-10 min-h-screen bg-base-200 dark:bg-dark text-text dark:text-light-dark">
@@ -210,7 +212,7 @@ function Profile({ token }) {
                   size={26}
                   onClick={() => setShowModal(true)}
                 />
-                {user.verificationState === "accepted" && (
+                { user.verificationState && user.verificationState.status === "accepted"  && (
                   <div className="flex gap-1 absolute top-0 right-0">
                     <Check
                       className="bg-accent text-white rounded-full p-1"
@@ -220,16 +222,18 @@ function Profile({ token }) {
                 )}
               </div>
             </div>
-              <section className="flex 
-               flex-col space-y-1 lg:space-y-3 justify-center items-center ">
-                <h3 className="text-xl font-semibold text-main dark:text-accent flex items-center">
-                  <User className="inline mr-2 text-accent dark:text-s-light" />
-                  <span className="break-words">
-                    {user.personalInfo.name|| "engineer name"}
-                  </span>
-                </h3>
-                <div className="flex ">
-                   <div className="flex items-center text-text dark:text-s-light">
+            <section
+              className="flex 
+               flex-col space-y-1 lg:space-y-3 justify-center items-center "
+            >
+              <h3 className="text-xl font-semibold text-main dark:text-accent flex items-center">
+                <User className="inline mr-2 text-accent dark:text-s-light" />
+                <span className="break-words">
+                  {user.personalInfo.name || "engineer name"}
+                </span>
+              </h3>
+              <div className="flex  gap-2">
+                <div className="flex items-center text-text dark:text-s-light">
                   <Mail className="mr-2 text-accent dark:text-s-light" />
                   <span className="break-words">
                     {user.personalInfo.email || "N/A"}
@@ -241,29 +245,28 @@ function Profile({ token }) {
                     {user.personalInfo.governorate || "N/A"}
                   </span>
                 </div>
-                </div>
-    {renderverificationState()}
-
-              </section>
+              </div>
+              {renderverificationState()}
+            </section>
           </div>
           <div className="flex justify-center my-5 gap-4">
-                {user.verificationState !== "accepted" && (
-                  <Button
-                    to="/verification"
-                    text="Verify your account"
-                    variant="fill"
-                    size="sm"
-                  />
-                )}
-                <Button
-                  to="/AddProfileData"
-                  text="Update your profile"
-                  variant={
-                    user.verificationState === "accepted" ? "fill" : "outline"
-                  }
-                  size="sm"
-                />
-              </div>
+            {user.verificationState && user.verificationState.status !== "accepted" && user.verificationState.status !== "pending" && (
+              <Button
+                to="/verification"
+                text="Verify your account"
+                variant="fill"
+                size="sm"
+              />
+            )}
+            <Button
+              to="/AddProfileData"
+              text="Update your profile"
+              variant={
+                user.verificationState && user.verificationState.status === "accepted" ? "fill" : "outline"
+              }
+              size="sm"
+            />
+          </div>
         </header>
         <hr className="w-11/12 mx-auto border-s-light dark:border-main" />
         <div className="flex flex-col lg:flex-row mt-8 px-4 sm:px-6 lg:px-20">
@@ -338,53 +341,55 @@ function Profile({ token }) {
               <div className="flex flex-col lg:flex-row items-center lg:items-start">
                 <div className="w-full lg:w-2/3 space-y-4 text-sm sm:text-base text-text dark:text-light-dark">
                   <p className="font-medium break-words">
-                    <span className="font-semibold text-lg">                      Graduation from:
+                    <span className="font-semibold text-lg">
+                      {" "}
+                      Graduation from:
                     </span>
                     <span className="text-main font-medium">
-                    {user.education.graduationFrom}
+                      {user.education.graduationFrom}
                     </span>
                   </p>
                   <p className="font-medium break-words">
-                    <span className="font-semibold text-lg">                      Graduation Year:
+                    <span className="font-semibold text-lg">
+                      {" "}
+                      Graduation Year:
                     </span>
                     <span className="text-main font-medium">
-
-                    {user.education.graduationYear}
+                      {user.education.graduationYear}
                     </span>
                   </p>
                   <p className="font-medium break-words">
-                    <span className="font-semibold text-lg">                      Specialization:
+                    <span className="font-semibold text-lg">
+                      {" "}
+                      Specialization:
                     </span>
                     <span className="text-main font-medium">
-
-                    {user.education.specialization}
+                      {user.education.specialization}
                     </span>
-
                   </p>
                   <p className="font-medium break-words">
                     <span className="font-semibold text-lg">Grade:</span>
                     <span className="text-main font-medium">
-
-                    {user.education.grade}
+                      {user.education.grade}
                     </span>
-
                   </p>
                   <p className="font-medium break-words">
-                    <span className="font-semibold text-lg">                      Final Project:
+                    <span className="font-semibold text-lg">
+                      {" "}
+                      Final Project:
                     </span>
                     <span className="text-main font-medium">
-
-                    {user.education.finalProject}
+                      {user.education.finalProject}
                     </span>
-
                   </p>
                   <p className="font-medium break-words">
-                    <span className="font-semibold text-lg">                      Project Grade:{" "}
+                    <span className="font-semibold text-lg">
+                      {" "}
+                      Project Grade:{" "}
                     </span>
                     <span className="text-main font-medium">
-                    {user.education.projectGrade}
+                      {user.education.projectGrade}
                     </span>
-
                   </p>
                 </div>
                 <img

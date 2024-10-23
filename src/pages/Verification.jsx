@@ -267,7 +267,7 @@ function Verification({ userType, token ,verificationStatus,redirectingUrl}) {
         />
       </div>
 
-      <div className="bg-white border-main border-2   shadow-main min-h-fit dark:bg-gray-800 py-1 rounded-lg shadow-sm px-6 flex-grow">
+      <div className="bg-gradient-to-r from-main-light to-main-dark  border-main border-2   shadow-main min-h-fit dark:bg-gray-800  py-1 rounded-lg shadow-sm px-6 flex-grow">
         <form className="space-y-6">{renderStepContent()}</form>
 
         {uploadError && (

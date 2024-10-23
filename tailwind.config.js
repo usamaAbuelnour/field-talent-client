@@ -11,6 +11,9 @@ export default {
           DEFAULT: '#115e59',
           dark: '#1d353b',
         },
+        'main-light':{
+          DEFAULT: '#e6fff7'
+        },
         'text': {
           DEFAULT: '#374151',
           dark: '#f3f4f6'

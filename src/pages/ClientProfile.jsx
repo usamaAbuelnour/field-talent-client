@@ -32,7 +32,6 @@ const ClientProfile = ({ token }) => {
     mobile: "loading.....",
     whatsAppPhoneNumbers: "loading.....",
     location: "loading.....",
-    verificationState: null,
   });
 
   const fetchClientData = useCallback(async () => {
@@ -43,6 +42,7 @@ const ClientProfile = ({ token }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const myData = response.data;
+      console.log(myData.verificationState)
       if (myData.clientId) {
         setClient({
           name: `${myData.firstName} ${myData.lastName}` || "your name",
@@ -57,7 +57,7 @@ const ClientProfile = ({ token }) => {
           whatsAppPhoneNumbers:
             myData.clientId.whatsAppPhoneNumbers?.[0] || "not available",
           location: myData.clientId.governorate || "egypt",
-          verificationState: myData.verificationState.status| null,
+          verificationState: myData.verificationState|| null,
         });
       } else {
         setClient({
@@ -129,7 +129,8 @@ const ClientProfile = ({ token }) => {
   };
 
   const renderverificationState = () => {
-    switch (client.verificationState) {
+    if(client.verificationState){  switch (client.verificationState.status) {
+      
       case "pending":
         return (
           <div className="text-yellow-500 mt-2 flex items-center justify-center">
@@ -141,12 +142,13 @@ const ClientProfile = ({ token }) => {
         return (
           <div className="text-red-500 mt-2 flex items-center justify-center">
             <AlertCircle size={20} className="mr-2" />
-            Verification rejected. Please update your information and try again.
+            Verification rejected.{client.verificationState && client.verificationState.remarks}
           </div>
         );
       default:
         return null;
-    }
+    }}
+  
   };
   if (isLoading){
     return (<Loading/>)
@@ -169,7 +171,7 @@ const ClientProfile = ({ token }) => {
                   size={26}
                   onClick={() => setShowModal(true)}
                 />
-                {client.verificationState === "accepted" && (
+                {client.verificationState && client.verificationState.status === "accepted" && (
                   <div className="flex gap-1 absolute top-1 right-1">
                     <Check
                       className="bg-accent text-white rounded-full p-1"
@@ -190,7 +192,7 @@ const ClientProfile = ({ token }) => {
             </p>
           </div>
           <div className="flex justify-center my-5 gap-4">
-            {client.verificationState !== "accepted" && (
+            {( client.verificationState && client.verificationState.status !== "pending" && client.verificationState.status !== "accepted" )&& (
               <Button
                 to="/verification"
                 text="Verify your account"
@@ -202,7 +204,7 @@ const ClientProfile = ({ token }) => {
               to="/AddProfileData"
               text="update your profile"
               variant={
-                client.verificationState === "accepted" ? "fill" : "outline"
+                client.verificationState && client.verificationState.status === "accepted" ? "fill" : "outline"
               }
               size="sm"
             />
