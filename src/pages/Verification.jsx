@@ -179,7 +179,7 @@ function Verification({ userType, token ,verificationStatus,redirectingUrl}) {
       case 1:
         return (
           <>
-            <h2 className="text-lg font-semibold mb-4 pt-5">Upload your ID card images (front & back)</h2>
+            <h2 className="text-lg font-semibold mb-4 pt-5 dark:text-accent">Upload your ID card images (front & back)</h2>
             <FormField
               label="Front ID card image"
               name="frontId"
@@ -193,13 +193,14 @@ function Verification({ userType, token ,verificationStatus,redirectingUrl}) {
               type="file"
               onChange={handleInputChange}
               error={errors.backId}
+              className="dark:bg-main"
             />
           </>
         );
       case 2:
         return userType === "engineer" ? (
           <>
-            <h2 className="text-lg font-semibold mb-4">Upload engineer verification documents</h2>
+            <h2 className="text-lg font-semibold mb-4 dark:text-white">Upload engineer verification documents</h2>
             <FormField
               label="Engineers Union card"
               name="unionCard"
@@ -253,7 +254,7 @@ function Verification({ userType, token ,verificationStatus,redirectingUrl}) {
 
   return (
     <div className="max-w-2xl min-h-screen flex flex-col mx-auto py-10 px-10">
-      <div className="">
+      <div className="dark:text-white">
         <Stepper
           activeStep={currentStep - 1}
           steps={steps.map((label) => ({ label }))}
@@ -302,12 +303,13 @@ function FormField({ label, name, type, onChange, error }) {
   return (
     <div className="form-control">
       <label className="label">
-        <span className="label-text">{label}</span>
+        <span className="label-text dark:text-white">{label}</span>
+
       </label>
       <input
         type={type}
         name={name}
-        className={`input input-bordered border-main w-full ${type === "file" ? "file-input" : ""}`}
+        className={`input input-bordered border-main w-full ${type === "file" ? "file-input" : ""}  dark:bg-main dark:text-white`}
         onChange={onChange}
         accept={type === "file" ? "image/*" : undefined}
       />

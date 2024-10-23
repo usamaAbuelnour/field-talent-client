@@ -138,7 +138,7 @@ function AddProfileData({ userType, token }) {
       case 1:
         return (
           <>
-            <h2 className="text-lg font-semibold mb-4 text-center">Personal Information</h2>
+            <h2 className="text-lg font-semibold mb-4 text-center dark:text-accent">Personal Information</h2>
             <FormField
               label="Choose your governorate"
               name="governorate"
@@ -146,14 +146,17 @@ function AddProfileData({ userType, token }) {
               options={GOVERNORATES}
               value={formData.governorate}
               onChange={handleInputChange}
+              className="dark:text-white "
             />
-            <div className="flex justify-between gap-5   ">
+            <div className="flex justify-between gap-5 dark:text-white   ">
               <FormField
                 label="Phone Number"
                 name="phoneNumbers[0]"
                 type="tel"
                 value={formData.phoneNumbers[0]}
                 onChange={handleInputChange}
+                
+
               />
               <FormField
                 label="WhatsApp Number"
@@ -161,21 +164,25 @@ function AddProfileData({ userType, token }) {
                 type="tel"
                 value={formData.whatsAppPhoneNumbers[0]}
                 onChange={handleInputChange}
+              
+
               />
-            </div>
+            </div> 
             <FormField
               label="Profile Overview"
               name="profileOverview"
               type="textarea"
               value={formData.profileOverview}
               onChange={handleInputChange}
+              className="dark:text-white"
+
             />
           </>
         );
       case 2:
         return (
           <>
-            <h2 className="text-lg font-semibold mb-4">Work Experience</h2>
+            <h2 className="text-lg font-semibold mb-4 dark:text-accent">Work Experience</h2>
             <FormField
               label="Choose your top 6 skills"
               name="skills"
@@ -185,7 +192,7 @@ function AddProfileData({ userType, token }) {
               onChange={handleInputChange}
               maxSelections={6}
             />
-            <h2 className="text-lg font-semibold mb-4">Upload Your Work Experience</h2>
+            <h2 className="text-lg font-semibold mb-4 dark:text-accent">Upload Your Work Experience</h2>
             {formData.workExperience.map((exp, index) => (
               <div key={index} className={`exp${index + 1}`}>
                 <FormField
@@ -238,7 +245,7 @@ function AddProfileData({ userType, token }) {
   }, [navigate]);
 
   return (
-    <div className="max-w-2xl min-h-screen flex flex-col mx-auto py-10 px-10">
+    <div className="max-w-2xl min-h-screen flex flex-col mx-auto py-10 px-10  dark:text-white">
       <FormStepper currentStep={currentStep} steps={steps} />
       <div className="bg-white shadow-main min-h-fit dark:bg-gray-800 py-1 rounded-lg shadow-sm px-6 flex-grow">
         <form className="space-y-6">{renderStepContent()}</form>
