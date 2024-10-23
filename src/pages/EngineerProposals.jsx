@@ -51,7 +51,8 @@ const EngineerProposals = ({ token }) => {
     setSelectedProposal(null);
   };
 
-  const filteredProposals = engineerProposals.proposal.filter(proposal => {
+  // Filter proposals based on the selected status
+  const filteredProposals = (engineerProposals.proposal || []).filter(proposal => {
     if (statusFilter === 'all') return true;
     return proposal.status === statusFilter;
   });
@@ -70,7 +71,7 @@ const EngineerProposals = ({ token }) => {
         <Loading />
       ) : noProposals ? (
         <NoPage
-          title={"There are no Proposals"}
+          title={"There're no proposals!!"}
           description={"Dear engineer, you have not submitted any proposals yet."}
           buttonText={"Show Jobs to Apply"}
           buttonTo={"/showjobs"}
