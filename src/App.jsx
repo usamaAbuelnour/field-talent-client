@@ -17,7 +17,7 @@ import Verification from "./pages/Verification";
 import CategoryDetails from "./pages/CategoryDetails";
 import ClientProfile from "./pages/ClientProfile";
 import AddProfileData from "./pages/AddProfileData";
-import ShowProposal from './pages/ShowProposal';
+import ShowProposal from "./pages/ShowProposal";
 import JobDetailsForClientToSeeProposal from "./pages/JobDetailsForClientToSeeProposal";
 import "./App.css";
 import { useState, useEffect } from "react";
@@ -30,6 +30,7 @@ function App() {
     userType: "",
     isUserLoggedIn: false,
     verificationStatus: null,
+    personalImgUrl: "personalEngineerImage.png",
   };
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem("darkMode");
@@ -78,6 +79,14 @@ function App() {
 
   const handleRedirectingUrl = (lastRedirectingUrl) => {
     setRedirectingUrl(lastRedirectingUrl);
+  };
+  const handlePersonalImgUrl = (personalImgUrl) => {
+    const newUser = {
+      ...user,
+      personalImgUrl: personalImgUrl,
+    };
+    console.log(personalImgUrl);
+    setUser(newUser);
   };
   console.log(user);
 
@@ -193,7 +202,12 @@ function App() {
             path="/profile"
             element={
               <PrivateRoute
-                element={<Profile token={user.token} />}
+                element={
+                  <Profile
+                    token={user.token}
+                    handlePersonalImgUrl={handlePersonalImgUrl}
+                  />
+                }
                 isUserLoggedIn={user.isUserLoggedIn}
                 handleRedirectingUrl={handleRedirectingUrl}
                 pageAllowFor={"engineer"}
@@ -253,11 +267,12 @@ function App() {
             element={<CategoryDetails />}
           />
 
-          <Route path="/showProposal/:jobId"
-            element={<ShowProposal />} />
+          <Route path="/showProposal/:jobId" element={<ShowProposal />} />
 
-            <Route path="/job/:jobId" 
-            element={<JobDetailsForClientToSeeProposal />} />
+          <Route
+            path="/job/:jobId"
+            element={<JobDetailsForClientToSeeProposal />}
+          />
 
           <Route
             path="*"

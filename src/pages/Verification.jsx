@@ -179,7 +179,7 @@ function Verification({ userType, token ,verificationStatus,redirectingUrl}) {
       case 1:
         return (
           <>
-            <h2 className="text-lg font-semibold mb-4 pt-5">Upload your ID card images (front & back)</h2>
+            <h2 className="text-lg font-semibold mb-4 pt-6">Upload your ID card images (front & back)</h2>
             <FormField
               label="Front ID card image"
               name="frontId"
@@ -252,7 +252,7 @@ function Verification({ userType, token ,verificationStatus,redirectingUrl}) {
   };
 
   return (
-    <div className="max-w-2xl min-h-screen flex flex-col mx-auto py-10 px-10">
+    <div className=" max-w-2xl min-h-screen flex flex-col mx-auto py-10 px-10">
       <div className="">
         <Stepper
           activeStep={currentStep - 1}
@@ -266,7 +266,7 @@ function Verification({ userType, token ,verificationStatus,redirectingUrl}) {
         />
       </div>
 
-      <div className="bg-white border-main border-2   shadow-main min-h-fit dark:bg-gray-800 py-1 rounded-lg shadow-sm px-6 flex-grow">
+      <div className="bg-gradient-to-r from-main-light to-main-dark  border-main border-2   shadow-main min-h-fit dark:bg-gray-800  py-1 rounded-lg shadow-sm px-6 flex-grow">
         <form className="space-y-6">{renderStepContent()}</form>
 
         {uploadError && (
