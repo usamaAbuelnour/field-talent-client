@@ -179,7 +179,7 @@ function Verification({ userType, token ,verificationStatus,redirectingUrl}) {
       case 1:
         return (
           <>
-            <h2 className="text-lg font-semibold mb-4 pt-6">Upload your ID card images (front & back)</h2>
+            <h2 className="text-lg font-semibold mb-4 pt-5 dark:text-accent">Upload your ID card images (front & back)</h2>
             <FormField
               label="Front ID card image"
               name="frontId"
