@@ -179,7 +179,7 @@ function Verification({ userType, token ,verificationStatus,redirectingUrl}) {
       case 1:
         return (
           <>
-            <h2 className="text-lg font-semibold mb-4">Upload your ID card images (front & back)</h2>
+            <h2 className="text-lg font-semibold mb-4 pt-5">Upload your ID card images (front & back)</h2>
             <FormField
               label="Front ID card image"
               name="frontId"
@@ -266,7 +266,7 @@ function Verification({ userType, token ,verificationStatus,redirectingUrl}) {
         />
       </div>
 
-      <div className="bg-white shadow-main min-h-fit dark:bg-gray-800 py-1 rounded-lg shadow-sm px-6 flex-grow">
+      <div className="bg-white border-main border-2   shadow-main min-h-fit dark:bg-gray-800 py-1 rounded-lg shadow-sm px-6 flex-grow">
         <form className="space-y-6">{renderStepContent()}</form>
 
         {uploadError && (
@@ -307,7 +307,7 @@ function FormField({ label, name, type, onChange, error }) {
       <input
         type={type}
         name={name}
-        className={`input input-bordered w-full ${type === "file" ? "file-input" : ""}`}
+        className={`input input-bordered border-main w-full ${type === "file" ? "file-input" : ""}`}
         onChange={onChange}
         accept={type === "file" ? "image/*" : undefined}
       />
