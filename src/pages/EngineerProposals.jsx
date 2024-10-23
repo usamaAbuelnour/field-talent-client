@@ -51,7 +51,6 @@ const EngineerProposals = ({ token }) => {
     setSelectedProposal(null);
   };
 
-  // Filter proposals based on the selected status
   const filteredProposals = (engineerProposals.proposal || []).filter(proposal => {
     if (statusFilter === 'all') return true;
     return proposal.status === statusFilter;
