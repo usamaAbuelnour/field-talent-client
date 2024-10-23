@@ -27,7 +27,7 @@ function FormField({ label, name, type, value, onChange, options, error, maxSele
         return (
           <select
             name={name}
-            className="select select-bordered w-full"
+            className="select select-bordered w-full dark:bg-main dark:text-white"
             value={value || ""}
             onChange={onChange}
           >
@@ -48,7 +48,7 @@ function FormField({ label, name, type, value, onChange, options, error, maxSele
               <button
                 key={index}
                 type="button"
-                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors dark:bg-main dark:text-white ${
                   Array.isArray(value) && value.includes(option)
                     ? 'bg-main text-white'
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -65,7 +65,7 @@ function FormField({ label, name, type, value, onChange, options, error, maxSele
         return (
           <textarea
             name={name}
-            className="textarea textarea-bordered w-full"
+            className="textarea textarea-bordered w-full dark:bg-main dark:text-white"
             value={value || ""}
             onChange={onChange}
           />
@@ -75,7 +75,7 @@ function FormField({ label, name, type, value, onChange, options, error, maxSele
           <input
             type="file"
             name={name}
-            className="file-input file-input-bordered w-full"
+            className="file-input file-input-bordered w-full dark:bg-main dark:text-white"
             onChange={onChange}
             accept="image/*"
           />
@@ -85,7 +85,7 @@ function FormField({ label, name, type, value, onChange, options, error, maxSele
           <input
             type={type}
             name={name}
-            className="input input-bordered w-full"
+            className="input input-bordered w-full dark:bg-main dark:text-white"
             value={value || ""}
             onChange={onChange}
           />
@@ -94,14 +94,14 @@ function FormField({ label, name, type, value, onChange, options, error, maxSele
   };
 
   return (
-    <div className="form-control">
-      <label className="label" htmlFor={name}>
-        <span className="label-text">{label}</span>
+    <div className="form-control ">
+      <label className="label " htmlFor={name}>
+        <span className="label-text dark:text-white ">{label}</span>
       </label>
       {renderInput()}
       {error && <span className="text-red-500 text-sm mt-1">{error}</span>}
       {type === "multiselect" && maxSelections && (
-        <span className="text-sm mt-1 text-gray-600">
+        <span className="text-sm mt-1 text-gray-600  dark:text-white">
           اختر حتى {maxSelections} {maxSelections !== 1 ? 'خيارات' : 'خيار'}
         </span>
       )}
