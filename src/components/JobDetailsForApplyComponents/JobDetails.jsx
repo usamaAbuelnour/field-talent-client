@@ -42,8 +42,8 @@ const JobDetails = ({ job }) => {
 
 
 
-      <p className="text-gray-700 my-8 dark:text-white text-base  md:text-xl mx-2 break-words border-2 border-y-main border-x-0 shadow-sm p-2 pb-5">
-       <span className='block   bg-gradient-to-t from-slate-50 to-slate-100 rounded-md text-center mb-4 pb-2 dark:bg-gradient-to-r dark:to-transparent  dark:from-main-dark'> Description : </span> {job.description || <FieldLoader />}
+      <p className="text-gray-700 my-8 dark:text-white text-base  md:text-xl mx-2 break-words border border-y-slate-100 border-x-0 shadow-sm p-2 pb-5">
+       <span className='block   bg-gradient-to-t from-slate-50 to-slate-100 rounded-md text-center mb-4 pb-2 dark:bg-gradient-to-r dark:to-transparent w-fit dark:from-main-dark'> Description  </span> {job.description || <FieldLoader />}
       </p>
 
       <div className="text-lg  md:text-xl font-semibold mb-2 dark:text-white text-main mx-4">
