@@ -20,9 +20,9 @@ const JobDetails = ({ job }) => {
     window.scrollTo(0, 0); 
   }, []);
   return (
-    <div className='mt-16  border-2 shadow-md rounded-lg border-t-0 dark:border-slate-800'>
+    <div className='md:mt-16 mt-24 border-2 shadow-md rounded-lg border-t-0 dark:border-slate-800'>
       
-      <h2 className="rounded-md bg-gradient-to-r from-green-50  to-slate-50 pb-1 mb-6 text-2xl  md:text-3xl text-main text-center dark:text-accent dark:bg-gradient-to-r dark:to-main  dark:from-main-dark ">
+      <h2 className="rounded-md bg-gradient-to-r from-green-50  to-slate-50 pb-1 mb-2 md:mb-6 text-2xl  md:text-3xl text-main text-center dark:text-accent dark:bg-gradient-to-r dark:to-main  dark:from-main-dark ">
         {job.title}
       </h2>
 
