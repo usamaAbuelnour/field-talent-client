@@ -1,12 +1,17 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import apiService from '../../Api/AxiosServiceConfiguration';
+import AlertError from './../uiComponents/AlertError';
+import AlertSuccess from './../uiComponents/AlertSuccess';
 
 const ApplyPopup = ({ closePopup, jobId }) => {
   const [applicationText, setApplicationText] = useState('');
   const [expectedSalary, setExpectedSalary] = useState('EGP ');
   const [descriptionError, setDescriptionError] = useState('');
   const [salaryError, setSalaryError] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage,setSuccessMessage] = useState('');
+
 
   const validateDescription = () => {
     const charCount = applicationText.trim().length;
@@ -64,20 +69,20 @@ const ApplyPopup = ({ closePopup, jobId }) => {
             jobId: response.data.jobId,
             totalCost: response.data.totalCost,
             status: response.data.status,
-          });
+          }); 
+          setSuccessMessage("The proposal has been sent successfully. Keep an eye on the status in the 'Show My Proposals' page.");
+
         } else {
           console.log("Failed to send data.");
         }
   
-        closePopup();
+        
       } catch (error) {
-        console.error('Error sending proposal:', error);
-        if (error.response) {
-          console.error('Error Status:', error.response.status);
-        } else if (error.request) {
-          console.error('No response received:', error.request);
+        
+        if (error.response.status === 409) {
+          setErrorMessage("You've already applied to this job!");
         } else {
-          console.error('Error:', error.message);
+          setErrorMessage("An error occurred while sending the proposal.");
         }
       }
     }
@@ -98,10 +103,11 @@ const ApplyPopup = ({ closePopup, jobId }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center">
+    <div className="fixed inset-0 flex items-center justify-center md:mt:0 mt-20 z-10">
       <div className="bg-white p-6 rounded-lg shadow-lg w-9/12 dark:bg-main-dark">
-        <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-4 text-main dark:text-accent">Apply for Job</h2>
-
+        <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-4 text-main dark:text-accent ">Apply for Job</h2>
+        {successMessage && <AlertSuccess message={successMessage} />}
+        {errorMessage && <AlertError message={errorMessage} />}
         <textarea
           placeholder="Write your Cover letter (at least 150 characters) ..."
           value={applicationText}

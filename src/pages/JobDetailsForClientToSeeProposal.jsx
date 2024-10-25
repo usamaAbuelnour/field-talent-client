@@ -15,6 +15,8 @@ const JobDetailsForClientToSeeProposal = () => {
  
   
   const location = useLocation();
+  console.log( location);
+  
   const job = location.state?.job;
   const [proposals, setProposals] = useState(job?.proposals || []);
   const [acceptedProposal, setAcceptedProposal] = useState(null);
