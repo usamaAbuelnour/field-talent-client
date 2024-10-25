@@ -2,7 +2,7 @@
 import ApplyPopup from './../JobDetailsForApplyComponents/ApplyPopup';
 export default function AlertError({message}) {
     return (
-      <div role="alert" className="alert alert-error bg-gradient-to-r from-red-500 to-red-300 animate-pulse delay-1000 mx-2 border border-y-2  border-red-700 rounded-full text-black font-semibold ">
+      <div role="alert" className="alert alert-error bg-gradient-to-r from-red-500 to-red-300 animate-pulse delay-1000 mx-2 my-2 border border-y-2  border-red-700 rounded-full text-black font-semibold ">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className="h-6 w-6 shrink-0 stroke-current "
