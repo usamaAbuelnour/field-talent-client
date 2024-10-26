@@ -121,7 +121,7 @@ const JobDetailsForClientToSeeProposal = () => {
           {proposals.map((proposal, index) => (
             <div
               key={index}
-              className=" dark:bg-main mb-7  dark:bg-opacity-25  p-4 md:p-5  rounded-lg hover:shadow-lg shadow-md transition-all duration-300 ease-in-out transform hover:-translate-y-1 border border-main dark:border-main"
+              className=" dark:bg-main mb-12  dark:bg-opacity-25  p-4 md:p-5  rounded-lg hover:shadow-lg shadow-md transition-all duration-300 ease-in-out transform hover:-translate-y-1 border border-main dark:border-main"
             >
               <div className="text-base md:text-lg  flex flex-col">
                 <div className="flex flex-col  mb-0">
