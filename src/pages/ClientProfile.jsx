@@ -138,7 +138,7 @@ const ClientProfile = ({ token }) => {
             Verification pending
           </div>
         );
-      case "reject":
+      case "rejected":
         return (
           <div className="text-red-500 mt-2 flex items-center justify-center">
             <AlertCircle size={20} className="mr-2" />

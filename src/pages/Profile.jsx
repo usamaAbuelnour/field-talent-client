@@ -180,7 +180,7 @@ function Profile({ token }) {
             Verification pending
           </div>
         );
-      case "reject":
+      case "rejected":
         return (
           <div className="text-red-500  flex items-center justify-center">
             <AlertCircle size={20} className="mr-2" />
