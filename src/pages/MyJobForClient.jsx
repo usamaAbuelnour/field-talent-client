@@ -52,16 +52,16 @@ export default function MyJobForClient() {
     );
   }
   
-  // if (!jobs || jobs.length === 0) {
-  //   return (
-  //     <NoPage 
-  //       title="No Jobs" 
-  //       description="You didn't add any jobs." 
-  //       buttonText="Add Job" 
-  //       buttonTo="/add-job" 
-  //     />
-  //   );
-  // }
+  if (!jobs || jobs.length === 0) {
+    return (
+      <NoPage 
+        title="No Jobs" 
+        description="You didn't add any jobs." 
+        buttonText="Add Job" 
+        buttonTo="/add-job" 
+      />
+    );
+  }
 
   return (
     <div className="md:mx-20 px-4 py-4 my-10">
