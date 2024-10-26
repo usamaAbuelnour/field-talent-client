@@ -70,8 +70,10 @@ const ApplyPopup = ({ closePopup, jobId }) => {
             totalCost: response.data.totalCost,
             status: response.data.status,
           }); 
-          setSuccessMessage("The proposal has been sent successfully. Keep an eye on the status in the 'Show My Proposals' page.");
-
+          setSuccessMessage("The proposal has been sent successfully. ");
+          setTimeout(function() {
+            closePopup(); 
+        }, 2000); 
         } else {
           console.log("Failed to send data.");
         }
@@ -125,7 +127,7 @@ const ApplyPopup = ({ closePopup, jobId }) => {
           value={expectedSalary}
           onChange={handleSalaryChange}
           onKeyPress={handleKeyPress}
-          className={`w-full mb-2 p-2 border-2 rounded dark:bg-main-dark ${
+          className={`w-full mb-2 p-2 border-2 dark:text-white rounded dark:bg-main-dark ${
             salaryError ? 'border-red-500' : ''
           }`}
         />
