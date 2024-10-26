@@ -18,18 +18,23 @@ import { useNavigate } from 'react-router-dom';
     const toggleDescription = () => {
       setShowFullDescription(!showFullDescription);
     };
+
+    const counter = job.proposals.filter(proposal => proposal.status === "pending").length;
+    console.log(counter);
   
     return (
         
-      <div className="bg-slate-100 rounded-lg shadow-sm p-4 md:p-6 mb-2 border border-main dark:bg-gradient-to-r dark:from-main dark:to-main-dark dark:bg-opacity-20 dark:shadow-2xl text-center text-left">
+      <div className="bg-slate-100 rounded-lg shadow-sm p-4 md:p-6 mb-2 border border-main dark:bg-gradient-to-r dark:from-main dark:to-main-dark dark:bg-opacity-20 dark:shadow-2xl  text-left">
         <div className="relative mb-8 md:mb-10">
-          <p className=" text-sm text-gray-600 dark:text-gray-400 mb-2 md:mb-0 absolute top-0 left-0">
+          <p className=" text-sm text-gray-600 dark:text-gray-400 mb-2 md:mb-0 absolute md:top-0 left-0">
             <span>Date:</span> {new Date(job.createdAt).toLocaleDateString()}
           </p>
           <h2 className="text-xl dark:text-accent md:text-2xl font-bold text-main text-center absolute top-5 md:top-0 left-1/2 -translate-x-1/2 text-nowrap">
             {job.title}
           </h2>
-        </div>
+          {counter!==0 && <div className=' flex justify-end  w-full  ' ><p className='md:w-6 md:h-6 w-5 h-5 md:text-base text-sm rounded-full  animate-pulse  bg-gradient-to-t dark:from-main dark:to-black from-slate-200 to-slate-300 text-center text-accent '>{counter}</p></div>}
+
+        </div> 
   
   
         <div className="mb-2 mt-14 md:mt-2 md border border-x-0 py-2 pb-4 text-left">
@@ -74,19 +79,22 @@ import { useNavigate } from 'react-router-dom';
             {job.service.map((service, index) => (
               <span
                 key={index}
-                className="text-main dark:text-white border md:p-2 lg:p-3 border-gray-400 border-y-2 p-1 dark:border-accent rounded-full text-sm"
+                className="text-main dark:text-white border md:p-2  md:text-base  border-gray-400 border-y-2 p-1.5 dark:border-accent rounded-full text-sm"
               >
                 {service}
               </span>
             ))}
           </div>
+          <div className='flex md:flex-col align-middle mt-1 md:mt-0'>
+
           <Button
             text="View Proposals"
             onClick={handleViewProposals}
             variant="fill"
             size="sm"
-            className="mt-2 md:mt-0 border-accent border-y-2  dark:border-accent rounded-full  w-fit"
+            className="m-0 pb-0 md:pb-2 lg:pb-0 border-accent border-y-2  dark:border-accent rounded-full  w-fit"
           />
+          </div>
         </div>
       </div>
     );
