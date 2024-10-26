@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 
@@ -26,13 +27,25 @@ export default function NavBar({
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [inLogin, setInLogin] = useState(false);
+  const navigate = useNavigate();
+
   let location = useLocation();
 
   const { isUserLoggedIn, name, email, userType, profileImage } = user;
   console.log("User Data:", user);
+  const handleLogoutAndCloseModal=()=>
+    {
+      handleLogout()
+      setModalOpen(false)
+      navigate("login", { replace: true });
 
+    }
+    const handelOpenLogout = () => setModalOpen(true);
+    const cancelLogout = () =>setModalOpen(false);
 
   const defaultAvatar = "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp";
   console.log(userType)
@@ -141,7 +154,7 @@ export default function NavBar({
                       <button
                         className="block w-full text-left px-4 py-2 text-sm text-text  dark:text-text-dark hover:bg-s-light dark:hover:bg-slate-600 transition-colors duration-150"
                         role="menuitem"
-                        onClick={handleLogout}
+                        onClick={handelOpenLogout}
                       >
                         Logout
                       </button>
@@ -227,16 +240,46 @@ export default function NavBar({
               <div className="px-2  space-y-1 sm:px-3 bg-white dark:bg-dark shadow-inner">
                 <button
                   className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-dark dark:text-accent hover:bg-s-light dark:hover:bg-slate-700 transition-colors duration-150"
-                  onClick={handleLogout}
+                  onClick={handelOpenLogout}
                 >
                   <LogOut size={20} className="inline mr-2" />
                   Logout
                 </button>
               </div>
+   
             </div>
           </>
         )}
+    
       </div>
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div
+            className="bg-white rounded-xl shadow-xl p-6 max-w-md w-full mx-4"
+          >
+            <h2 className="text-xl font-semibold text-gray-900">
+              Confirm Logout
+            </h2>
+            <p className="mt-2 text-gray-600">
+              Are you sure you want to log out of your account?
+            </p>
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                onClick={cancelLogout}
+                className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleLogoutAndCloseModal}
+                className="px-4 py-2 text-white bg-main hover:bg-main/90 rounded-lg transition-colors duration-200"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

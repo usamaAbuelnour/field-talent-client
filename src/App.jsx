@@ -31,6 +31,7 @@ function App() {
     verificationStatus: null,
     personalImgUrl: "personalEngineerImage.png",
   };
+
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem("darkMode");
     return savedTheme ? JSON.parse(savedTheme) : false;
