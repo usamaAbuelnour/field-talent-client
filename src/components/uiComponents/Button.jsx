@@ -42,7 +42,7 @@ const Button = ({
 
   const buttonVariants = {
     initial: { scale: 1 },
-    hover: { scale: 1.04, transition: { duration: 0.2 } },
+    hover: {scale: 1.04, transition: { duration: 0.2 } },
     tap: { scale: 0.93, transition: { duration: 0.1 } }
   };
 
