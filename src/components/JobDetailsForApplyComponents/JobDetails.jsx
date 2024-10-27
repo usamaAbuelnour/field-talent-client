@@ -22,7 +22,7 @@ const JobDetails = ({ job }) => {
   return (
     <div className='md:mt-16 mt-24 border-2 shadow-md rounded-lg  dark:border-main'>
       
-      <h2 className="rounded-md w-fit mx-auto pt-3  pb-1 mb-2 md:mb-6 text-2xl  md:text-3xl text-accent-dark text-center dark:text-accent  ">
+      <h2 className="rounded-md w-fit mx-auto pt-3  pb-1 mb-2 md:mb-6 text-2xl  md:text-3xl text-main text-center dark:text-accent  ">
        {job.title}
       </h2>
 
