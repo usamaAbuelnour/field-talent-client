@@ -48,7 +48,7 @@ function Verification({ userType, token ,verificationStatus,redirectingUrl}) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (verificationStatus) {
+    if (verificationStatus.status==="accepted") {
       navigate(redirectingUrl, { replace: true });
     }
   }, [verificationStatus, redirectingUrl, navigate]);

@@ -53,6 +53,7 @@ export default function Login({ handleLogin, isUserLoggedIn, redirectingUrl }) {
     try {
       setIsLoading(true);
       const response = await apiService.loginUser(data);
+      console.log(response,"mm")
       let userType = "";
 
       if (response.data.hasOwnProperty("engineerId")) {
@@ -65,7 +66,7 @@ export default function Login({ handleLogin, isUserLoggedIn, redirectingUrl }) {
         response.data.name,
         response.data.email,
         userType,
-        response.data.verificationStatus
+        response.data.verificationState
       );
       navigate(redirectingUrl, { replace: true });
     } catch (error) {

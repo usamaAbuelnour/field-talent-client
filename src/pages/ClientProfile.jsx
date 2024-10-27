@@ -200,6 +200,15 @@ const ClientProfile = ({ token }) => {
                 size="sm"
               />
             )}
+            {
+              client.verificationState === null &&
+              <Button
+              to="/verification"
+              text="Verify your account"
+              variant="fill"
+              size="sm"
+            />
+            }
             <Button
               to="/AddProfileData"
               text="update your profile"

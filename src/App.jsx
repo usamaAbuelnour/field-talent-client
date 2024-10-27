@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import NavBar from "./components/fixedComponents/NavBar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -85,7 +84,6 @@ function App() {
       ...user,
       personalImgUrl: personalImgUrl,
     };
-    console.log(personalImgUrl);
     setUser(newUser);
   };
   console.log(user);
@@ -163,7 +161,7 @@ function App() {
             path="/job-details-for-apply"
             element={
               <PrivateRoute
-                element={<JobDetailsForApply />}
+                element={<JobDetailsForApply user={user} />}
                 isUserLoggedIn={user.isUserLoggedIn}
                 handleRedirectingUrl={handleRedirectingUrl}
                 pageAllowFor={"engineer"}
@@ -176,7 +174,7 @@ function App() {
             path="/add-job"
             element={
               <PrivateRoute
-                element={<Addjob token={user.token} />}
+                element={<Addjob user={user} token={user.token} />}
                 handleRedirectingUrl={handleRedirectingUrl}
                 isUserLoggedIn={user.isUserLoggedIn}
                 pageAllowFor={"client"}

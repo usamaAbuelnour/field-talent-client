@@ -39,7 +39,6 @@ const ApplyPopup = ({ closePopup, jobId }) => {
   };
 
   const handleSendApproval = async () => {
-    console.log("Send Approval clicked");
     const isDescriptionValid = validateDescription();
     const isSalaryValid = validateSalary();
   

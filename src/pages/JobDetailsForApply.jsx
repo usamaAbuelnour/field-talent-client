@@ -3,7 +3,7 @@ import JobDetails from '../components/JobDetailsForApplyComponents/JobDetails';
 import { Navigate } from "react-router-dom";
 import ClientDetails from './../components/JobDetailsForApplyComponents/ClientDetails';
 
-const JobDetailsForApply = () => {
+const JobDetailsForApply = ({user}) => {
   const location = useLocation();
   const job = location.state?.job;
 
@@ -15,7 +15,7 @@ const JobDetailsForApply = () => {
         </div>
         <div className="w-full mt-4 ">
           {job ? (
-            <JobDetails job={job} />
+            <JobDetails user={user} job={job} />
           ) : (
             <Navigate to="/NotFound" />
           )}

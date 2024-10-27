@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 
 import {
@@ -36,7 +35,6 @@ export default function NavBar({
   let location = useLocation();
 
   const { isUserLoggedIn, name, email, userType, profileImage } = user;
-  console.log("User Data:", user);
   const handleLogoutAndCloseModal=()=>
     {
       handleLogout()
@@ -48,7 +46,6 @@ export default function NavBar({
     const cancelLogout = () =>setModalOpen(false);
 
   const defaultAvatar = "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp";
-  console.log(userType)
   useEffect(() => {
     setInLogin(
       location.pathname === "/login" || location.pathname === "/registration"

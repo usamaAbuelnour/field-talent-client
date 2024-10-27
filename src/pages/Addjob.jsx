@@ -4,9 +4,12 @@ import Button from "../components/uiComponents/Button";
 import Loading from "../components/uiComponents/Loading";
 import apiService from "../Api/AxiosServiceConfiguration";
 import Select from "react-select";
+import { Link } from "react-router-dom";
+
 import AlertSuccess from "../components/uiComponents/AlertSuccess.JSX";
 import AlertError from "../components/uiComponents/AlertError.JSX";
-const Addjob = () => {
+const Addjob = ({ user }) => {
+  console.log(user.verificationStatus.status, "add job");
   const initialFormState = {
     title: "",
     description: "",
@@ -20,11 +23,14 @@ const Addjob = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
   const validateForm = () => {
     let newErrors = {};
 
@@ -74,22 +80,30 @@ const Addjob = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
-    setIsSubmitting(true);
-    try {
-      const response = await apiService.addJob({
-        ...formData,
-        location: formData.location.value,
-        category: formData.category.value,
-      });
 
-      setShowSuccess(true);
-      setFormData(initialFormState);
-    } catch (error) {
-      setErrorMessage("Oh, sorry! Something went wrong. You can try again.");
-      console.log(error);
-    } finally {
-      setIsSubmitting(false);
+    if (
+      user.verificationStatus &&
+      user.verificationStatus.status === "accepted"
+    ) {
+      if (!validateForm()) return;
+      setIsSubmitting(true);
+      try {
+        const response = await apiService.addJob({
+          ...formData,
+          location: formData.location.value,
+          category: formData.category.value,
+        });
+
+        setShowSuccess(true);
+        setFormData(initialFormState);
+      } catch (error) {
+        setErrorMessage("Oh, sorry! Something went wrong. You can try again.");
+        console.log(error);
+      } finally {
+        setIsSubmitting(false);
+      }
+    } else {
+      setModalOpen(true);
     }
   };
 
@@ -124,7 +138,7 @@ const Addjob = () => {
 
     return services.length > 0 ? (
       services.map((service) => (
-    <label key={service} className="block truncate">
+        <label key={service} className="block truncate">
           <input
             type="checkbox"
             value={service}
@@ -300,7 +314,7 @@ const Addjob = () => {
             </div>
 
             <div className=" md:w-1/2 hidden md:block  ">
-            <div>
+              <div>
                 <label className=" text-gray-600 dark:text-white font-medium mb-2">
                   Description
                 </label>
@@ -309,14 +323,17 @@ const Addjob = () => {
                   value={formData.description}
                   onChange={handleChange}
                   className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-main h-full min-h-[325px] max-h-[325px]
-                    ${errors.description ? "border-red-500" : "border-gray-300"}`}
+                    ${
+                      errors.description ? "border-red-500" : "border-gray-300"
+                    }`}
                   placeholder="Enter description"
                 />
                 {errors.description && (
-                  <p className="text-red-500 text-sm mt-1">{errors.description}</p>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.description}
+                  </p>
                 )}
               </div>
-
             </div>
           </div>
 
@@ -332,6 +349,61 @@ const Addjob = () => {
           </div>
         </form>
       </div>
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          {user.verificationStatus &&
+          user.verificationStatus.status === "pending" ? (
+            <div className="bg-white rounded-xl shadow-xl p-6 max-w-md w-full mx-4">
+              <h2 className="text-xl font-semibold text-gray-900">
+              Wait..verified account
+              </h2>
+              <p className="mt-2 text-gray-600">
+
+              Wait for the account to be verified              </p>
+              <div className="mt-6 flex justify-end gap-3">
+                <button
+                  onClick={handleCloseModal}
+                  className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200"
+                >
+                  Cancel
+                </button>
+                <Link
+                  to={"/"}
+                  onClick={handleCloseModal}
+                  className="px-4 py-2 text-white bg-main hover:bg-main/90 rounded-lg transition-colors duration-200"
+                >
+                  Go Home
+                </Link>
+                
+              </div>
+            </div>
+          ) : (
+            <div className="bg-white rounded-xl shadow-xl p-6 max-w-md w-full mx-4">
+              <h2 className="text-xl font-semibold text-gray-900">
+                Not verified account
+              </h2>
+              <p className="mt-2 text-gray-600">
+                Unfortunately, you cannot add a job without verified account
+              </p>
+              <div className="mt-6 flex justify-end gap-3">
+                <button
+                  onClick={handleCloseModal}
+                  className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200"
+                >
+                  Cancel
+                </button>
+                <Link
+                  to={"/verification"}
+                  onClick={handleCloseModal}
+                  className="px-4 py-2 text-white bg-main hover:bg-main/90 rounded-lg transition-colors duration-200"
+                >
+                  Verify Your Account
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

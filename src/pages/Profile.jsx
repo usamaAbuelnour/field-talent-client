@@ -258,6 +258,15 @@ console.log(user)
                 size="sm"
               />
             )}
+                        {
+              user.verificationState === null &&
+              <Button
+              to="/verification"
+              text="Verify your account"
+              variant="fill"
+              size="sm"
+            />
+            }
             <Button
               to="/AddProfileData"
               text="Update your profile"

@@ -81,7 +81,7 @@ export default function Registration({
         response.data.name,
         response.data.email,
         userType,
-        response.data.verificationStatus
+        response.data.verificationState
       );
 
       navigate("/verification", { replace: true });
