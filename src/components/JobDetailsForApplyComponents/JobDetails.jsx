@@ -70,7 +70,7 @@ const JobDetails = ({ job, user }) => {
       </div>
 
       {isPopupOpen && (
-        user.verificationState && user.verificationState.status === "accepted"? (
+       user.verificationStatus && user.verificationStatus.status === "accepted"? (
           <ApplyPopup closePopup={handleCloseModal} jobId={job._id} />
         ) : (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
