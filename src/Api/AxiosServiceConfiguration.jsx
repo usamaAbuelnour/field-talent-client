@@ -40,6 +40,7 @@ const apiService = {
   getProposals: (data) => api.get('/proposals', data),
   clientJobs: (data) => api.get('/jobs', { params: data }),
  updateProposalStatus: (proposalId, status) => api.patch(`/proposals/${proposalId}`, status),
+ confirm: (proposalId,) => api.patch(`proposals/confirm/${proposalId}`)
 };
 
 export default apiService;

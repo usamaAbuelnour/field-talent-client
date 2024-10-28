@@ -28,6 +28,7 @@ const MyJobCard = ({ job }) => {
   return (
 
     <div className={`${cardClassName} rounded-lg shadow-sm p-4 md:p-6 mb-2 border border-main dark:bg-gradient-to-r dark:from-main dark:to-main-dark dark:bg-opacity-20 dark:shadow-2xl text-left`}>
+
       <div className="relative mb-8 md:mb-10">
         <p className=" text-sm text-gray-600 dark:text-gray-400 mb-2 md:mb-0 absolute md:top-0 left-0">
           <span>Date:</span> {new Date(job.createdAt).toLocaleDateString()}

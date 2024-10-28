@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
+import apiService from "../Api/AxiosServiceConfiguration";
 import Loading from "../components/uiComponents/Loading";
 import Button from "../components/uiComponents/Button";
 import NoPage from "../components/uiComponents/NoPage";
@@ -16,6 +17,7 @@ const EngineerProposals = ({ token }) => {
   const [selectedProposal, setSelectedProposal] = useState(null);
   const [noProposals, setNoProposals] = useState(false);
   const [statusFilter, setStatusFilter] = useState('all');
+  const [proposalId, setProposalId] = useState('');
 
   const fetchEngineerProposals = useCallback(async () => {
     try {
@@ -29,6 +31,9 @@ const EngineerProposals = ({ token }) => {
         }
       );
       const data = response.data;
+      console.log("dddddd", response.data);
+
+
       setNoProposals(typeof data !== "object" || data.proposal.length === 0);
       setEngineerProposals(data);
     } catch (error) {
@@ -45,6 +50,7 @@ const EngineerProposals = ({ token }) => {
 
   const openModal = (proposal) => {
     setSelectedProposal(proposal);
+    setProposalId(proposal._id);
   };
 
   const closeModal = () => {
@@ -57,11 +63,22 @@ const EngineerProposals = ({ token }) => {
   });
 
   const getStatusButtonClass = (status) => {
-    return `px-4 py-2 rounded-lg transition-colors ${
-      statusFilter === status
-        ? 'bg-main text-white'
-        : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200'
-    }`;
+    return `px-4 py-2 rounded-lg transition-colors ${statusFilter === status
+      ? 'bg-main text-white'
+      : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200'
+      }`;
+
+
+  };
+
+  const confirmProposal = async (proposalId) => {
+    try {
+      await apiService.confirm(proposalId);
+      console.log(`Proposal ${proposalId} confirmed successfully!`);
+      closeModal();
+    } catch (error) {
+      console.error("Error confirming proposal:", error);
+    }
   };
 
   return (
@@ -80,7 +97,7 @@ const EngineerProposals = ({ token }) => {
           <h1 className="text-4xl font-bold text-center text-main mb-8">
             My Proposals
           </h1>
-          
+
           <div className="flex flex-wrap gap-4 justify-center mb-8">
             <button
               onClick={() => setStatusFilter('all')}
@@ -106,6 +123,12 @@ const EngineerProposals = ({ token }) => {
             >
               Rejected
             </button>
+            <button
+              onClick={() => setStatusFilter('awaiting confirmation')}
+              className={getStatusButtonClass('awaiting confirmation')}
+            >
+              Awaiting Confirmation
+            </button>
           </div>
 
           {filteredProposals.length === 0 ? (
@@ -128,20 +151,28 @@ const EngineerProposals = ({ token }) => {
                   {proposal.jobId.description}
                 </p>
                 <div className="flex flex-wrap dark:text-white justify-between items-center">
-                  <button
-                    onClick={() => openModal(proposal)}
-                    className="btn bg-main text-white hover:bg-main-dark mb-2 sm:mb-0"
-                  >
-                    View Cover Letter & Budget
-                  </button>
+                  {proposal.status === "awaiting confirmation" ? (
+                    <button
+                      onClick={() => confirmProposal(proposal._id)}
+                      className="btn bg-main text-white hover:bg-main-dark mb-2 sm:mb-0"
+                    >
+                      Confirm
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => openModal(proposal)}
+                      className="btn bg-main text-white hover:bg-main-dark mb-2 sm:mb-0"
+                    >
+                      View Cover Letter & Budget
+                    </button>
+                  )}
                   <p
-                    className={`text-lg font-semibold px-4 py-1 rounded-lg ${
-                      proposal.status === "accepted"
-                        ? "bg-green-100 text-green-600"
-                        : proposal.status === "rejected"
+                    className={`text-lg font-semibold px-4 py-1 rounded-lg ${proposal.status === "accepted"
+                      ? "bg-green-100 text-green-600"
+                      : proposal.status === "rejected"
                         ? "bg-red-100 text-red-600"
                         : "bg-yellow-100 text-yellow-600 dark:opacity-60"
-                    }`}
+                      }`}
                   >
                     {proposal.status.charAt(0).toUpperCase() +
                       proposal.status.slice(1)}
