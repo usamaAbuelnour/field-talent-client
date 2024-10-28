@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import { useLocation } from 'react-router-dom';
 import Button from "../components/uiComponents/Button";
 import apiService from '../Api/AxiosServiceConfiguration';
@@ -12,18 +12,25 @@ const JobDetailsForClientToSeeProposal = () => {
   console.log(job);
   
   const [acceptedProposal, setAcceptedProposal] = useState(null);
-  const [showSmile, setShowSmile] = useState(false);
 
   const [proposals, setProposals] = useState(() => {
     if (job?.acceptedProposal) {
-      const foundProposal = job.proposals.find(p => p._id === job.acceptedProposal);
-      console.log("ffffffffff",foundProposal);
-      setAcceptedProposal(foundProposal)
+      const foundProposal = job.proposals.find(p => p.status === job.acceptedProposal.status);
+      
+      console.log("Found Proposal", foundProposal);
+      
+      setAcceptedProposal(foundProposal);
       
       return foundProposal ? [foundProposal] : job.proposals.filter(p => p.status === 'pending' || p.status === 'awaiting confirmation');
     }
     return job?.proposals.filter(p => p.status === 'pending' || p.status === 'awaiting confirmation');
   });
+
+  useEffect(() => {
+    if (proposals.length === 0) {
+      console.log("No more proposals left");
+    }
+  }, [proposals],[acceptedProposal]);
 
   if (!job) {
     return (
@@ -39,10 +46,15 @@ const JobDetailsForClientToSeeProposal = () => {
 
     try {
       const response = await apiService.updateProposalStatus(proposalId, status);
-      setAcceptedProposal(proposals[index]);
-      setProposals([proposals[index]]);
-      setShowSmile(true);
-      setTimeout(() => setShowSmile(false), 3000);
+      const updatedProposal = { ...proposals[index], status: "accepted" };
+      setAcceptedProposal(updatedProposal);
+      
+      const updatedProposals = proposals.filter((_, i) => i !== index);
+      setProposals(updatedProposals);
+
+      setProposals(prev => [updatedProposal, ...prev]);
+
+
     } catch (error) {
       console.error("Error accepting proposal:", error);
     }
@@ -54,8 +66,9 @@ const JobDetailsForClientToSeeProposal = () => {
 
     try {
       await apiService.updateProposalStatus(proposalId, status);
-      const updatedProposals = proposals.filter((_, i) => i !== index);
-      setProposals(updatedProposals);
+             const updatedProposals = proposals.filter((_, i) => i !== index);
+        setProposals(updatedProposals)
+
     } catch (error) {
       console.error("Error rejecting proposal:", error);
     }
@@ -74,32 +87,30 @@ const JobDetailsForClientToSeeProposal = () => {
 
   return (
     <div className=" min-h-screen mx-auto">
-      {showSmile && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 animate-bounce">
-          <Smile size={64} color="#4CAF50" />
-        </div>
-      )}
+  
 
-      {job?.acceptedProposal ? (
-      <div className='w-full min-h-screen px-6 bg-green-200 dark:bg-accent-dark mx-auto md:p-4 p-1 lg:p-8 rounded-md '>
-      <h2 className="mx-auto md:mx-0 bg-transparent  md:bg-gradient-to-l w-fit pl-0.5 from-green-100 to-green-300 dark:from-teal-900 dark:to-main-dark flex mt-10 items-center justify-center gap-0  text-xlw-fit p-0.5 md:p-3 rounded-full text-2xl md:text-3xl font-semibold pt-20 mb-6 text-main-dark dark:text-accent-dark ">
+      {job?.acceptedProposal || acceptedProposal ? (
+      <div className='w-full bg-gradient-to-br from-main to-main-light min-h-screen px-6  dark:bg-accent-dark mx-auto md:p-4 p-1 lg:p-8 rounded-md '>
+      <h2 className="mx-auto md:mx-0 dark:text-white bg-transparent md:bg-gradient-to-l w-fit pl-0.5 from-green-100 to-green-300 dark:from-teal-900 dark:to-main-dark flex mt-9 md:mt-14 items-center justify-center gap-0  text-xlw-fit p-0.5 md:p-3 rounded-full text-2xl md:text-3xl font-semibold pt-20 mb-2 text-main-dark  ">
          Accepted Proposal 
       </h2>
 
       <div className='flex  md:flex-row-reverse'>
-        <img src={deal} alt="" className="hidden md:block w-1/3 mx-9 md mb-12  pt-0" />
-        <div className="mb-12 flex-grow dark:bg-opacity-25 p-4 md:p-5 rounded-lg hover:shadow-lg shadow-md transition-all duration-300 ease-in-out transform hover:-translate-y-1 border border-main dark:border-main bg- dark:bg-accent">
+        <img src={deal} alt="" className="hidden md:block w-1/3 mx-9 md mb-16  pt-0" />
+        <div className="mb-12 flex-grow dark:bg-opacity-25 p-4 md:p-5 rounded-lg hover:shadow-lg shadow-md  border-2 border-main dark:border-main bg- dark:bg-accent">
           <div className="text-base md:text-lg flex flex-col">
             <div className="flex flex-col mb-0">
               <div className="flex items-center mb-3 justify-center md:justify-start">
                 <FileCheck2 className="inline-block mr-2 text-main dark:text-green-900" />
-                <p className='inline-block font-semibold   w-fit pr-2 pl-1 rounded-md border-2   border-red-800 text-red-600 dark:text-rose-900 dark:border-rose-900'>"Please contact the engineer within 24 hours."</p>
+                <p className='inline-block font-semibold   w-fit pr-2 pl-1 rounded-md border-2   border-red-800 text-red-600  dark:border-rose-900 dark:text-white'>"Please contact the engineer within 24 hours."</p>
               </div>
-              <p className="mt-2 break-all  text-sm md:text-base my-4 border-y pb-3 dark:border-accent">{acceptedProposal?.coverLetter}</p>
+              <p className="mt-2 break-all  text-sm md:text-base my-1 border-y pb-3 dark:border-accent dark:text-slate-200">{acceptedProposal?.coverLetter}</p>
             </div>
-            <p className="text-sm md:text-lg mb-2 md:mb-4"><span>Cost:</span> {acceptedProposal?.totalCost} EGP</p>
-            <p className="text-base md:text-lg mb-3 md:mb-4"><span>Engineer Name :</span> {acceptedProposal?.userId?.firstName || 'Not available'} {acceptedProposal?.userId?.lastName || 'Not available'} </p>
-            <p className="text-base md:text-lg mb-3 md:mb-4"><span>Email:</span> {acceptedProposal?.userId?.email || 'Not available'}</p>
+            <p className="text-sm md:text-lg mb-2 md:mb-3 dark:text-green-100"><span>Cost :</span> {acceptedProposal?.totalCost} EGP</p>
+            <p className="text-base md:text-lg mb-3 md:mb-3 dark:text-green-100"><span>Engineer Name :</span> {acceptedProposal?.userId?.firstName || 'Not available please contact us'} {acceptedProposal?.userId?.lastName || 'Not Available Try Send by Email'} </p>
+            <p className="text-base md:text-lg mb-3 md:mb-3 dark:text-green-100"><span>phone number:</span> {acceptedProposal?.engineerId?.phoneNumbers || 'Not available try send by email'}</p>
+            <p className="text-base md:text-lg mb-3 md:mb-3 dark:text-green-100"><span>whats App :</span> {acceptedProposal?.engineerId?.whatsAppPhoneNumbers || 'Not available try send by email'}</p>
+            <p className="text-base md:text-lg mb-3 md:mb-3 dark:text-green-100"><span>Email:</span> {acceptedProposal?.userId?.email || 'Not available please contact us'}</p>
           </div>
         </div>
       </div>
