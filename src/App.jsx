@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route ,useLocation } from "react-router-dom";
 import NavBar from "./components/fixedComponents/NavBar";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -30,7 +30,15 @@ function App() {
     verificationStatus: null,
     personalImgUrl: "personalEngineerImage.png",
   };
-
+  function ScrollToTop() {
+    const { pathname } = useLocation();
+  
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
+  
+    return null;
+  }
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem("darkMode");
     return savedTheme ? JSON.parse(savedTheme) : false;
@@ -91,6 +99,8 @@ function App() {
   return (
     <>
       <BrowserRouter>
+      <ScrollToTop />
+
         <NavBar
           user={user}
           handleLogout={handleLogout}

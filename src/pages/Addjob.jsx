@@ -199,13 +199,13 @@ const Addjob = ({ user }) => {
   }
 
   return (
-    <div className="flex items-center justify-center  my-14 pt-4 px-4 sm:px-6 lg:px-8 dark:bg-transparent">
-      <div className=" shadow-sm shadow-main max-w-3xl p-4 border-main border-4 rounded-lg dark:bg-main-dark dark:bg-opacity-20 relative">
-        {showSuccess ? (
+    <div className="  flex items-center justify-center  my-14 pt-4 px-4 sm:px-6 lg:px-8 dark:bg-transparent">
+      <div className=" shadow-sm shadow-main max-w-3xl p-4 border-main border-4 rounded-lg dark:bg-main-dark dark:bg-opacity-20 ">
+      <div className="absolute top-10 left-3 ">  {showSuccess ? (
           <AlertSuccess message="Job Added Successfully" />
         ) : (
           errorMessage && <AlertError message={errorMessage} />
-        )}
+        )} </div> 
         <h2 className="dark:text-accent text-xl sm:text-2xl lg:text-3xl font-bold mb-4 text-main text-center">
           Add New Job
         </h2>
