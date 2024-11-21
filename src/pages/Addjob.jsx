@@ -6,8 +6,8 @@ import apiService from "../Api/AxiosServiceConfiguration";
 import Select from "react-select";
 import { Link } from "react-router-dom";
 
-import AlertSuccess from "../components/uiComponents/AlertSuccess.JSX";
-import AlertError from "../components/uiComponents/AlertError.JSX";
+import AlertSuccess from "../components/uiComponents/AlertSuccess";
+import AlertError from "../components/uiComponents/AlertError";
 const Addjob = ({ user }) => {
   console.log(user.verificationStatus.status, "add job");
   const initialFormState = {
